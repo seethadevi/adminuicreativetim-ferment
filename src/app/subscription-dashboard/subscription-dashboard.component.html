@@ -1,0 +1,44 @@
+<div class="main-content" >
+  <div class="container-fluid">
+      <h3>Active Events</h3>
+      <br>
+      <div class="row">
+        <div class="col-md-4" *ngFor="let shop of shops;let i = index">
+          <div class="card card-product">
+            <div class="card-header card-header-image mx-auto changeImageSize" data-header-animation="true">
+              <img class="img" *ngIf="!!shop.picture && !!shop.picture.lg" [src]="shop.picture.lg">
+              <img class="img" *ngIf="!shop.picture" height="152px"  width="152px" src="./assets/img/defaults/pop-up-store-icon.png">
+            </div>
+            <div class="card-body">
+              <div class="card-actions text-center">
+                <button mat-raised-button type="button" (click)="gotoDetailEvent(shop.id, shop.name)"  class="btn btn-default btn-link" matTooltip="View" [matTooltipPosition]="'below'">
+                  <i class="material-icons">art_track</i>
+                </button>
+                <button mat-raised-button type="button" (click)="gotoEditEvent(shop.id)" class="btn btn-success btn-link" matTooltip="Edit" [matTooltipPosition]="'below'">
+                  <i class="material-icons">edit</i>
+                </button>
+              </div>
+              <h4 class="card-title">
+                <a href="#pablo">{{shop.name}}</a>
+              </h4>
+              <div class="card-description">
+                  {{shop.description}}
+              </div>
+            </div>
+            <div class="card-footer">
+              <div class="price">
+                <img *ngIf="shop.shop_type === 'SALES'" width="32"  height="32" src="./assets/img/defaults/sales.png">
+                <img *ngIf="shop.shop_type === 'TASTING'" width="32"  height="32" src="./assets/img/defaults/tasting.png">
+              </div>
+              <div class="stats">
+                <p class="card-category"><i class="material-icons">place</i> {{shop.address.city}}, {{shop.address.country}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12 text-center" *ngIf="shops.length === 0">
+          <h4 >No active event found. <a class="btn btn-link btn-sm btn-rose" (click)="gotoCreateEvent()"  >Click here </a> to create event</h4>
+        </div>
+      </div>
+  </div>
+</div>

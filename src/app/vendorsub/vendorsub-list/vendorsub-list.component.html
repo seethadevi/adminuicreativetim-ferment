@@ -1,0 +1,63 @@
+<!-- <div>
+    <div class="row">
+        <div class="col-8">
+          <div class="content-header">Vendor / Supplier</div>
+        </div>
+        <div class="col-4">
+          <div class="text-right">
+              <button class="btn btn-rose" (click)="createnew()">
+                <i class="ft-plus font-medium-3 mr-2"></i> Create
+              </button>
+          </div>
+        </div>
+      </div>
+
+  <div class="row" matchHeight ="card">
+    <div class="col-xl-3 col-lg-3 col-md-4 col-sm-4" *ngFor="let vendor of vendors" >
+      <div class="card">
+        <div class="card-body">
+          <img class="card-img-top img-fluid imageAlign" src="assets/img/defaults/vendor.png" alt="{{vendor.name}}">
+          <div class="card-block">
+            <h4 class="font-size-small overWriteTitle" *ngIf="!!vendor.name" >{{vendor.name}}</h4>
+            <p class="text-center">
+              <a class="btn btn-raised btn-outline-warning btnAlign" *ngIf="vendor.name !== 'Self' && vendor.isCentral !== 'TRUE' && vendor.sub_id !== ''"  (click)="editVendorDetails(vendor._id)">Edit</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+  <div> -->
+
+ <div class="main-content">
+   <div class="container-fluid">
+     <div class="row">
+       <div class="col-md-10">
+         <div class="input-group no-border">
+           <input type="text" [(ngModel)]="searchString" (keyup.enter)="onSearchText()" class="form-control" placeholder="Search Vendor">
+           <button mat-raised-button type="submit" (click)="onSearchText()" class="btn btn-white btn-round btn-just-icon">
+             <i class="material-icons">search</i>
+             <div class="ripple-container"></div>
+           </button>
+         </div>
+       </div>
+       <div class="col-md-2">
+         <button mat-raised-button class="btn add-new btn-rose" (click)="createnew()">
+         <span class="btn-label">
+         <i class="material-icons">add</i>
+         </span>
+         Create
+         </button>
+       </div>
+     </div>
+     <app-virtual-infinite-scroll [items]="vendors"
+     [actions]="actions"
+     [classList] = "classList"
+     [displayColumnList] = "displayColumnList"
+     [defaultList] = "defaultList"
+     (reloadEvent)="onReloadEvent($event)"
+     (operationEvent)="onOperation($event)" >
+     </app-virtual-infinite-scroll>
+   </div>
+ </div>

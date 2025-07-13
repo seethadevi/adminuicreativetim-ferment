@@ -1,0 +1,23 @@
+<div class="row">
+  <div class="col-12">
+      <div class="content-header">Warehouse</div>
+  </div>
+</div>
+<div class="row justify-content-center">
+  <div class="col-xl-3 col-lg-3 col-md-4 col-sm-4">
+    <div class="card">
+      <div class="card-body">
+        <img class="card-img-top img-fluid" src="assets/img/defaults/warehouse.png" alt="Card image cap">
+        <div class="card-block">
+          <h4 class="font-size-small overWriteTitle" *ngIf="!!warehouseName" >{{warehouseName}}</h4>
+          <p class="text-center">
+            <a class="btn btn-raised btn-outline-warning btnAlign" (click)="updateWarehouse()">Edit</a>
+            <a class="btn btn-raised btn-outline-primary" (click)="gotoWarehouseProduct()">Products</a>
+          </p>
+          <!-- <a class="btn btn-floating halfway-fab bg-warning addBtn" placement="bottom" ngbTooltip="Edit / Update" (click)="updateWarehouse()"><i class="ft-edit-2"></i></a> -->
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

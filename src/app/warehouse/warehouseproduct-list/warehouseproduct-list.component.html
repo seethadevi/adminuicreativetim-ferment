@@ -1,0 +1,119 @@
+<div class="main-sub-content">
+    <div class="container-fluid">
+<section class="friends">
+  <div class="row headerRow">
+    <div class="col-2">
+    <div ngbDropdown class="d-inline-block">
+      <button class="btn btn-outline-primary" id="dropdownMenu1" ngbDropdownToggle>{{searchDropSelect.name}}</button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenu1" ngbDropdownMenu>
+            <button *ngFor="let drop of drops"  class="dropdown-item" (click)="loadDropBtn(searchBtn,drop)">{{drop.name}}</button>
+          </div>
+  </div>
+  </div>
+  <div class="col-8">
+      <i class="text-muted ft-search search-ico"></i>
+      <input class="search-input" matInput autocomplete="off" placeholder="Search" [(ngModel)]="searchString" (keyup.enter)="onSearch($event)" type="text">
+      <button mat-raised-button type="submit" (click)="onSearch(($event))" class="btn btn-white btn-round btn-just-icon">
+        <i class="material-icons">search</i>
+        <div class="ripple-container"></div>
+    </button>
+  </div>
+  <div class="col-2">
+    <div class="text-right">
+      <button class="btn btn-rose newBtn" (click)="createnew()">
+        <i class="material-icons">add</i> Create
+      </button>
+    </div>
+</div>
+</div>
+
+  <div class="displayRow" *ngIf="deviceOS === 'windows'"  ngxInfiniteScroller
+    strategy="scrollingToBottom"
+    (onScrollDown)="nextPage()">
+      <div class="row">
+        <div class="col-md-3" *ngFor="let wsProd of warehouseProducts">
+            <div class="card " >
+                <div class="card-body" (click)='editWarehouseProduct(wsProd.id)'>
+                        <div class="card-img imageContainer">
+                          <img *ngIf="!!wsProd.picture && !!wsProd.picture.lg"  [src]="wsProd.picture.lg" [alt]="wsProd.name" class="imageCard">
+                          <img *ngIf="!wsProd.picture"  [src]="environmentLocal.DEFAULT_WINE_BOTTLE" [alt]="wsProd.name" class="imageCard">
+                        </div>
+                        <div class="imageContainerLogo logoImg">
+                            <img class="imageCardLogo" *ngIf="!!wsProd.logo && !!wsProd.logo.lg" [src]="wsProd.logo.lg" alt="Logo"/>
+                        </div>
+                      <!-- <h4 class="card-title">
+                          <h4 class="font-small-3 ellipsisTxt" placement="top" ngbTooltip="{{wsProd.name}}" >{{ wsProd.name }}</h4>
+                      </h4> -->
+                      <div class="cardtitleBlock ">
+                        <h4 class="card-title block-with-text" >{{ wsProd.name }}</h4>
+                      </div>
+                      <p class="category text-gray font-small-1" style="margin: 0;"> Stock : {{wsProd.stock_availability}}</p>
+                </div>
+            </div>
+        </div>
+      </div>
+  </div>
+  <div *ngIf="deviceOS !== 'windows'" infiniteScroll
+  [infiniteScrollDistance]="2"
+  [infiniteScrollThrottle]="300"
+  (scrolled)="nextPage()" >
+      <div class="row">
+        <div class="col-md-3" *ngFor="let wsProd of warehouseProducts">
+            <div class="card " >
+                <div class="card-body" (click)='editWarehouseProduct(wsProd.id)'>
+                        <div class="card-img imageContainer">
+                          <img *ngIf="!!wsProd.picture && !!wsProd.picture.lg"  [src]="wsProd.picture.lg" [alt]="wsProd.name" class="imageCard">
+                          <img *ngIf="!wsProd.picture"  [src]="environmentLocal.DEFAULT_WINE_BOTTLE" [alt]="wsProd.name" class="imageCard">
+                        </div>
+                        <div class="imageContainerLogo logoImg">
+                            <img class="imageCardLogo" *ngIf="!!wsProd.logo && !!wsProd.logo.lg" [src]="wsProd.logo.lg" alt="Logo"/>
+                        </div>
+                      <!-- <h4 class="card-title">
+                          <h4 class="font-small-3 ellipsisTxt" placement="top" ngbTooltip="{{wsProd.name}}" >{{ wsProd.name }}</h4>
+                      </h4> -->
+                      <div class="cardtitleBlock ">
+                        <h4 class="card-title block-with-text" >{{ wsProd.name }}</h4>
+                      </div>
+                      <p class="category text-gray font-small-1" style="margin: 0;"> Stock : {{wsProd.stock_availability}}</p>
+                </div>
+            </div>
+        </div>
+      </div>
+  </div>
+    <!-- <div class="row">
+            <div class="col-md-3" *ngFor="let wsProd of warehouseProducts">
+              <div class="card card-product"  (click)="editWarehouseProduct(wsProd.id)">
+                <div class="card-header card-header-image" data-header-animation="false">
+                  <a href="#pablo">
+                    
+                      <img *ngIf="!!wsProd.picture && !!wsProd.picture.lg"  [src]="wsProd.picture.lg" [alt]="wsProd.name" class="imageCard">
+                      <img *ngIf="!wsProd.picture"  [src]="environmentLocal.DEFAULT_WINE_BOTTLE" [alt]="wsProd.name" class="imageCard">
+                   
+                  </a>
+                </div>
+                <div class="card-body">
+                  
+                  <h4 class="card-title">
+                      <h4 class="font-small-3 ellipsisTxt" placement="top" ngbTooltip="{{wsProd.name}}" >{{ wsProd.name }}</h4>
+
+                      <div class="imageContainerLogo logoImg">
+                          <img class="imageCardLogo" *ngIf="!!wsProd.logo && !!wsProd.logo.sm" [src]="wsProd.logo.sm" alt="Logo"/>
+                      </div>
+                      <p class="font-small-3" style="margin: 0;"> Stock : {{wsProd.stock_availability}}</p>
+                  </h4>
+                  <div class="card-description">
+                    The place is close to Barceloneta Beach and bus stop just 2 min by walk and near to "Naviglio" where you can enjoy the main night life in Barcelona.
+                  </div>
+                </div>
+                <div class="card-footer">
+                  
+                </div>
+              </div>
+
+             </div>
+            
+            
+          </div> -->
+  </section>
+  </div>
+  </div>

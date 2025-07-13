@@ -1,0 +1,283 @@
+<div class="main-sub-content">
+  <div  class="container-fluid">
+    <section>
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <h4 class="card-title" id="from-actions-bottom-right">{{title}} Notification</h4>
+          </div>
+          <div class="card-body">
+            <div class="px-3">
+              <form novalidate (ngSubmit)="onSubmit(f)" #f="ngForm">
+              <div class="form-body">
+                <div class="row">
+                  <div class="col-md-3">
+                    <div class="row justify-content-center">
+                      <div class="col-sm-12 mb-2">
+                          <label for="country_name">Country *</label>
+                          <select required [disabled]="isEdit || isReadOnly" class="form-control border-primary" id="country" name="country" placeholder="Country" [(ngModel)]="notificationModel.notify_country_code" #country="ngModel">
+                          <option *ngFor="let country of countryList" [value]="country.code">{{country.name}}</option>
+                          </select>
+                          <small *ngIf="f.submitted && country.errors" class="form-text text-muted text-danger">Country Required</small>
+                      </div>
+                    </div>
+                    <div class="row justify-content-center">
+                        <div class="col-sm-12">
+                            <label for="wine">Code</label>
+                            <tag-input [(ngModel)]="codeList" name="codeList"
+                            [placeholder]="'Search a new Code'"
+                            [onTextChangeDebounce]="500"
+                            [secondaryPlaceholder]="'Search Code'"
+                            [onlyFromAutocomplete]="true"
+                            (onAdd) = "onAddingCode($event)"
+                            (onRemove) = "onRemovingCode($event)"
+                            [identifyBy]="'id'"
+                            [removable]="!isEdit || !isReadOnly"
+                            [maxItems] = "1"
+                            [disable]="!notificationModel.notify_country_code"
+                            [displayBy]="'name'">
+                            <tag-input-dropdown
+                            [autocompleteObservable]="requestAutocompleteItems"
+                            [minimumTextLength]="3"
+                            [identifyBy]="'id'"
+                            [displayBy]="'code'">
+                            <ng-template let-item="item" let-index="index">
+                                {{item.code}}
+                            </ng-template>
+                            </tag-input-dropdown>
+                            </tag-input>
+                        </div>
+                    </div>
+                    <!-- <div class="row justify-content-center">
+                      <div class="col-sm-12">
+                        <mat-form-field appearance="outline">
+                          <mat-label>Name</mat-label>
+                          <input matInput [readonly]="notificationModel.notify_status === 'PUBLISHED'" required placeholder="Name" [(ngModel)]="notificationModel.notify_name" name="name" />
+                          <mat-hint class="mat-error" *ngIf="f.submitted && !notificationModel.notify_name">
+                            Name is Required
+                          </mat-hint>
+                        </mat-form-field>
+                      </div>
+                    </div> -->
+                    <div class="row justify-content-center">
+                      <div class="col-sm-12">
+                        <mat-form-field appearance="outline">
+                          <mat-label>Start Date *</mat-label>
+                          <input matInput [disabled]="isReadOnly" [matDatepicker]="stratDatePicker" placeholder="Start date" name="startdate"  [(ngModel)]="startDate">
+                          <mat-datepicker-toggle matSuffix [for]="stratDatePicker"></mat-datepicker-toggle>
+                          <mat-datepicker #stratDatePicker></mat-datepicker>
+                          <mat-hint class="mat-error" *ngIf="f.submitted && !startDate">
+                            Startdate is Required
+                          </mat-hint>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <div class="row justify-content-center">
+                      <div class="col-sm-12">
+                        <mat-form-field appearance="outline">
+                          <mat-label>End Date *</mat-label>
+                          <input matInput  [disabled]="isReadOnly"  [matDatepicker]="endDatepicker" placeholder="End date" name="enddate" [(ngModel)]="endDate">
+                          <mat-datepicker-toggle matSuffix [for]="endDatepicker"></mat-datepicker-toggle>
+                          <mat-datepicker #endDatepicker></mat-datepicker>
+                          <mat-hint class="mat-error" *ngIf="f.submitted  && !endDate">
+                            Enddate is Required
+                          </mat-hint>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <div class="row" *ngIf="CHNANEL_ACCESS_PLANS.indexOf(subPlan) !== -1 && (totalChannel > -1 && totalChannel <= MAX_CHANNAL_ALLOWED_LIMIT && !isReadOnly)">
+                      <div class="btn-group">
+                        <button mat-raised-button type="button" class="btn btn-info" (click)="gotoCreateChannel()"><i class="material-icons">add</i></button>
+                        <button mat-raised-button type="button" class="btn btn-white" (click)="gotoCreateChannel()">Channel</button>
+                      </div>
+                    </div>
+                    <div class="row mt-4" *ngIf="CHNANEL_ACCESS_PLANS.indexOf(subPlan) !== -1 && !(totalChannel > -1 && totalChannel <= MAX_CHANNAL_ALLOWED_LIMIT && !isReadOnly)">
+                        <div class="col-sm-12">
+                          <h5>Channels</h5>
+                        </div>
+                      </div>
+                    <div class="row" *ngIf="CHNANEL_ACCESS_PLANS.indexOf(subPlan) !== -1" >
+                      <div class="channel" *ngFor="let channel of channelList;let i = index" >
+                        <span *ngIf="!!channel.picture && !!channel.picture.sm"  (click)="addChannel(channel, i)" class="channelImg" [ngClass]="[!!channel['isAdded'] ? 'activeCls': '', !!isReadOnly ? 'defulatCursor': '' ]" [ngClass]=" " ><img src="{{channel.picture.sm}}" /></span>
+                        <button *ngIf="!channel.picture" (click)="addChannel(channel, i)" mat-raised-button class="btn btn-just-icon btn-round btn-white change-style" [ngClass]="[!!channel['isAdded'] ? 'activeCls': '', !!isReadOnly ? 'defulatCursor': '' ]" >
+                          <i class="fa fa-group"></i>
+                        </button>
+                      </div>
+                    </div>
+                    <div class="row mt-4">
+                      <div class="col-sm-12">
+                        <h5>Customers</h5>
+                      </div>
+                    </div>
+                    <div class="row mt-2">
+                      <div class="col-sm-12 customer">
+                        <h6><i class="fa fa-tag"></i> &nbsp;Tags</h6>
+                        <span *ngFor="let tag of customer_tag_list;let i = index">
+                          <button   mat-raised-button class="btn btn-just-icon btn-round change-style btn-red {{tag['btnStyle']}}" [ngClass]="[!!tag['isAdded'] ? 'activeCls': '', !!isReadOnly ? 'defulatCursor': '' ]"  (click)="addCustomerTag(tag, i)">
+                          </button>
+                        </span>
+                      </div>
+                    </div>
+                  </div> <!--1st column ends here-->
+                  <div class="col-md-6">
+                    <div class="row justify-content-center">
+                      <div class="col-sm-12">
+                        <mat-form-field appearance="outline">
+                          <mat-label>Title</mat-label>
+                          <input [readonly]="isReadOnly" matInput required placeholder="Title" [(ngModel)]="notificationModel.content_title" name="title" />
+                          <mat-hint class="mat-error" *ngIf="f.submitted && !notificationModel.content_title">
+                            Title is Required
+                          </mat-hint>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <div class="row justify-content-center">
+                      <div class="col-sm-6">
+                        <mat-form-field appearance="outline">
+                          <mat-label>Medium</mat-label>
+                          <mat-select [disabled]="isReadOnly" required id="Medium" name="Medium" [(ngModel)]="notificationModel.notify_medium">
+                          <mat-option *ngFor="let medium of mediumList" [value]="medium.id">
+                          {{medium.name}}
+                          </mat-option>
+                          </mat-select>
+                          <mat-hint class="mat-error" *ngIf="f.submitted && !notificationModel.notify_medium">
+                            Medium is Required
+                          </mat-hint>
+                        </mat-form-field>
+                      </div>
+                      <div class="col-sm-6">
+                        <mat-form-field appearance="outline">
+                          <mat-label>Content Type</mat-label>
+                          <mat-select [disabled]="isReadOnly" required id="Medium" name="content_type" [(ngModel)]="notificationModel.content_type">
+                          <mat-option *ngFor="let contentType of contentTypeList" [value]="contentType.id">
+                          {{contentType.name}}
+                          </mat-option>
+                          </mat-select>
+                          <mat-hint class="mat-error" *ngIf="f.submitted && !notificationModel.content_type">
+                            Content type is Required
+                          </mat-hint>
+                        </mat-form-field>
+                      </div>
+                    </div>
+
+                    <div class='row' *ngIf="notificationModel.content_type === 'EVENT' || notificationModel.content_type === 'EVENT_INVITATION'">
+                      <div class="col-md-6">
+                        <mat-form-field appearance="outline">
+                          <mat-label>Search Event </mat-label>
+                          <mat-select [disabled]="isReadOnly"  id="eventList" name="eventList" [(ngModel)]="sel_event" (selectionChange)="displayEventDetail()"  [compareWith]="compareObjects">
+                          <mat-option *ngFor="let event of eventList" [value]="event">
+                          {{event.name}}
+                          </mat-option>
+                          </mat-select>
+                          <mat-hint class="mat-error" *ngIf="f.submitted && !sel_event && notificationModel.action_type === 'EVENT'">
+                              Event is Required
+                            </mat-hint>
+                        </mat-form-field>
+                      </div>
+                      <div class="col-md-6 my-3">
+                        <mat-checkbox [disabled]="isReadOnly" [(ngModel)]="event_is_invitation" [ngModelOptions]="{standalone: true}" > Invitation</mat-checkbox>
+                      </div>
+                    </div>
+
+                    <div class="row" *ngIf="notificationModel.content_type === 'EVENT' || notificationModel.content_type === 'EVENT_INVITATION' || notificationModel.content_type === 'MSG'">
+                      <div class="col-md-6">
+                        <mat-form-field appearance="outline">
+                          <mat-label>Search Template </mat-label>
+                          <mat-select [disabled]="isReadOnly"  id="emailTemaplateList" name="emailTemaplateList" [(ngModel)]="sel_template" (selectionChange)="seTemplateDetail()" [compareWith]="compareObjects">
+                          <mat-option *ngFor="let template of emailTemplateList" [value]="template">
+                          {{template.name}}
+                          </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+                    </div>
+
+                    <div *ngIf="notificationModel.content_type === 'EVENT' || notificationModel.content_type === 'EVENT_INVITATION'">
+                      <div class="row" *ngIf="!isEmptyObject(notificationModel.content_evtshop)" >
+                        <div class="col-12">
+                          <div class="card card_row">
+                            <div class="row">
+                                <div class="col-4">
+                                  <div class="eventImage">
+                                      <img class="img" *ngIf="!!notificationModel.content_evtshop.picture && !!notificationModel.content_evtshop.picture.sm" [src]="notificationModel.content_evtshop.picture.sm">
+                                      <img class="img" *ngIf="!notificationModel.content_evtshop.picture" height="152px"  width="152px" src="assets/img/defaults/pop-up-store-icon.png">
+                                    </div>
+                                </div>
+                                <div class="col-8">
+                                  <div class="">
+                                    <h4><strong>{{notificationModel.content_evtshop.name}}</strong></h4>
+                                    <p>{{notificationModel.content_evtshop.address['address1']}}</p>
+                                    <p><strong>{{notificationModel.content_evtshop.address['city']}}</strong></p>
+                                    <div>{{notificationModel.content_evtshop.startDate | date : 'dd MMM yyyy'}} - {{notificationModel.content_evtshop.endDate | date : 'dd MMM yyyy'}}</div>
+                                  </div>
+                                </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div *ngIf="notificationModel.content_type === 'BLOG'">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <mat-form-field appearance="outline">
+                                  <mat-label>Blog URL</mat-label>
+                                  <input [readonly]="isReadOnly" matInput placeholder="http://url" [(ngModel)]="notificationModel.content_blog_url" name="weblink" />
+                                  <mat-hint class="mat-error" *ngIf="f.submitted && !notificationModel.content_blog_url && notificationModel.content_type === 'BLOG'">
+                                    Blog Url is Required
+                                  </mat-hint>
+                                </mat-form-field>
+                              </div>
+                        </div>
+                    </div>
+
+
+                    <div *ngIf="notificationModel.content_type === 'MSG'">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Content</mat-label>
+                                   <textarea [readonly]="isReadOnly" required matInput placeholder="Content" [(ngModel)]="notificationModel.content" name="msg_content"></textarea>
+                                  <mat-hint class="mat-error" *ngIf="f.submitted && !notificationModel.content && notificationModel.content_type === 'MSG'">
+                                    Content is Required
+                                  </mat-hint>
+                                </mat-form-field>
+                              </div>
+                        </div>
+                    </div>
+
+
+                  </div> <!--Content Column ends here-->
+                  <div class="col-md-3">
+                    <div class="row">
+                      <div class="col-sm-12 text-center">
+                        <label for="bottlesize">Banner </label><br>
+                        <app-image-upload *ngIf="!isReadOnly" [imgSize]="'sm'" [imageUrl]="thumbnailurlBanner" [uploadUrl]="imgUploadUrl" [name]="'Banner'" [headers]="appservice.getImgUploadHeaders()"  (changeImage)="onFileUploadEventBanner($event)"></app-image-upload>
+                        <img *ngIf="isReadOnly"  style="max-width:175px" [src]="thumbnailurlBanner" alt="Banner">
+                        <div class="text-danger errorTxt" *ngIf="f.submitted && isEmptyObject(notificationModel.content_picture)">
+                            Upload Banner Image
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-actions pull-right">
+                <button type="button" class="btn btn-raised btn-warning mr-1" (click)="onClearValue()">
+                <i class="ft-x"></i> Cancel
+                </button>
+                <button type="submit" class="btn btn-raised btn-primary" *ngIf="!isReadOnly">
+                <i class="fa fa-save"></i> Save
+                </button>
+                <button type="submit" class="btn btn-raised btn-primary" *ngIf="!isReadOnly" (click)="publishClick()">
+                  <i class="fa fa-check-square-o"></i> Publish
+                  </button>
+              </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
