@@ -1,0 +1,91 @@
+<div class="main-sub-content">
+<div  class="container-fluid">
+      <section>
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <h4 class="card-title" id="from-actions-bottom-right">{{title}} Vineyard Details</h4>
+          </div>
+          <div class="card-body">
+            <div class="px-3">
+              <form novalidate (ngSubmit)="onSubmit(f)" #f="ngForm">
+                <div class="form-body">
+                  <div class="row">
+                    <div class="form-group col-md-6 mb-2">
+                      <label for="name">name</label>
+                      <input type="text" [disabled]="isEdit"  class="form-control border-primary" id="name" name="name" placeholder="Name" #name="ngModel" [(ngModel)]="vineyardModel.name"
+                        required />
+                      <small *ngIf="f.submitted && name.errors" class="form-text text-muted danger">Name Required</small>
+                    </div>
+                    <!-- <div class="form-group col-md-6 mb-2">
+                      <label for="seo_name">SEO Name</label>
+                      <input required type="text" class="form-control border-primary" id="seo_nameseo_nameseo_name" name="seo_name" placeholder="SEO Name"  #seo_name="ngModel"  [(ngModel)]="vineyardModel.seo_name" />
+                      <small *ngIf="f.submitted && seo_name.errors" class="form-text text-muted danger">SEO Name Required</small>
+                    </div> -->
+                  </div>
+                  <div class="row">
+                    <div class="form-group col-md-12 mb-2">
+                      <label for="seo_name">Description</label>
+                      <textarea required class="form-control border-primary" id="description" name="description" placeholder="Description" #description="ngModel" [(ngModel)]="vineyardModel.description" ></textarea>
+                      <small *ngIf="f.submitted && description.errors" class="form-text text-muted danger">Description Required</small>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="form-group col-md-6 mb-2">
+                      <label for="address1">Address</label>
+                      <input required type="text" class="form-control border-primary" id="address1" name="address1" placeholder="Address" #address1="ngModel" [(ngModel)]="vineyardModel.address.address1"/>
+                      <small *ngIf="f.submitted && address1.errors" class="form-text text-muted danger">Addrees Required</small>
+                    </div>
+                    <div class="form-group col-md-6 mb-2">
+                      <label for="address2">Address (Optional)</label>
+                      <input required type="text" class="form-control border-primary" id="address2" name="address2" placeholder="Address" #address2="ngModel" [(ngModel)]="vineyardModel.address.address2"/>
+                      <!-- <small *ngIf="f.submitted && address1.errors" class="form-text text-muted danger">Addrees 1 Required</small> -->
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="form-group col-md-6 mb-2">
+                      <label for="zip">Zip / Postal Code</label>
+                      <input required type="text" class="form-control border-primary" id="zip" name="zip" placeholder="Zip" #mobile="ngModel" #zip="ngModel" [(ngModel)]="vineyardModel.address.zip"/>
+                      <small *ngIf="f.submitted && zip.errors" class="form-text text-muted danger">Zip Required</small>
+                    </div>
+                    <div class="form-group col-md-6 mb-2">
+                      <label for="city">City</label>
+                      <input required type="text" class="form-control border-primary" id="city" name="city" placeholder="City" #mobile="ngModel" #city="ngModel" [(ngModel)]="vineyardModel.address.city"/>
+                      <small *ngIf="f.submitted && city.errors" class="form-text text-muted danger">City Required</small>
+                    </div>
+                    <!-- <div class="form-group col-md-6 mb-2">
+                      <label for="state">State</label>
+                      <input required type="text" class="form-control border-primary" id="state" name="state" placeholder="State" #mobile="ngModel" #state="ngModel" [(ngModel)]="vineyardModel.address.state"/>
+                      <small *ngIf="f.submitted && state.errors" class="form-text text-muted danger">State Required</small>
+                    </div> -->
+                  </div>
+                  <div class="row">
+                    <div class="form-group col-md-6 mb-2">
+                        <label for="country">Country</label>
+                          <select required class="form-control border-primary" id="country" name="country" placeholder="Country" [(ngModel)]="vineyardModel.address.country" #country="ngModel"
+                          required>
+                            <option value="">Select Country</option>
+                            <option value="FRANCE">France</option>
+                            <option value="GERMANY">Germany</option>
+                            <!-- <option value="UNITEDKINGDOM">United Kingdom</option> -->
+                        </select>
+                        <small *ngIf="f.submitted && country.errors" class="form-text text-muted danger">Country Required</small>
+                      </div>
+                  </div>
+                </div>
+                <div class="form-actions pull-right">
+                  <button type="button" class="btn btn-raised btn-warning mr-1" (click)="onClearValue()">
+                    <i class="ft-x"></i> Cancel
+                  </button>
+                  <button type="submit" class="btn btn-raised btn-primary">
+                    <i class="fa fa-check-square-o"></i> Save
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
