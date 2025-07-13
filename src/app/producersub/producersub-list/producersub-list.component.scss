@@ -1,0 +1,14 @@
+.add-right{
+    float: right;
+    margin-top:15px;
+}
+.left{
+    float: left;
+}
+.navbar-nav{
+    .nav-item{
+       a:hover{
+            cursor: pointer !important;
+        }
+    }
+}

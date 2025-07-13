@@ -1,0 +1,32 @@
+<app-custom-datatable [headers]="headers"
+                      [items]="requestList"
+                      [actions]="actions"
+                      [showSno]="true"
+                      [showActions]="true"
+                      [showSearch]="false"
+                      [showChooseLimit]="true"
+                      [params]="defaultParams"
+                      [totalRecords]="totalRecords"
+                      (reloadEvent)="onReloadEvent($event)"
+                      (operationEvent)="onOperation($event)">
+</app-custom-datatable>
+
+<swal #deleteSwalBox
+    title="Reject record?"
+    text="Do you want to Reject?"
+    type="question"
+    [showCancelButton]="true"
+    [focusCancel]="true"
+    (confirm)="RejectRecords()"
+    (close)="onCloseDialog($event)">
+</swal>
+
+<swal #approveSwalBox
+    title="Approve record?"
+    text="Do you want to Approve?"
+    type="question"
+    [showCancelButton]="true"
+    [focusCancel]="true"
+    (confirm)="ApproveRecords()"
+    (close)="onCloseDialog($event)">
+</swal>

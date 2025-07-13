@@ -1,0 +1,80 @@
+<div class="main-sub-content">
+<div class="container-fluid">
+  <div class="row">
+	<div class="col-md-12">
+	  <div class="card">
+		<div class="card-header ">
+		  <h4 class="card-title">{{title}} details</h4>
+		</div>
+		<div class="card-body ">
+		  <div class="row">
+			<div class="col-12">
+			  <form novalidate (ngSubmit)="onSubmit(f)" #f="ngForm">
+			  <div class="form-body">
+				<div class="row">
+				  <div class="col-md-8">
+					<div class="row">
+					  <div class="form-group col-12 mb-2">
+						<mat-form-field >
+							<mat-label>Name</mat-label>
+							<input matInput required [(ngModel)]="channelModel.name" name="name" />
+							<mat-error *ngIf="f.submitted && !channelModel.name">
+								Name Required
+							</mat-error>
+						</mat-form-field>
+					  </div>
+					</div>
+					<div class="row">
+					  <div class="form-group col-12 mb-2">
+						<mat-form-field >
+							<mat-label>Description</mat-label>
+							<textarea matInput [(ngModel)]="channelModel.description" name="description" ></textarea>
+						</mat-form-field>
+					  </div>
+					</div>
+					<div class="row">
+					  <div class="form-group col-md-6 mb-2">
+						<mat-form-field >
+							<mat-label>Organization</mat-label>
+							<input matInput required [(ngModel)]="channelModel.org" name="org" >
+							<mat-error *ngIf="f.submitted && !channelModel.name">
+								Organization Required
+							</mat-error>
+						</mat-form-field>
+					  </div>
+					  <!-- <div class="form-group col-md-6 my-3">
+						<mat-checkbox [(ngModel)]="channelModel.isPrivate" [ngModelOptions]="{standalone: true}">Private</mat-checkbox>
+					  </div> -->
+					</div>
+				  </div>
+				  <div class="col-md-4">
+					<div class="row">
+					  <div class="col-md-12 text-center">
+						<label for="bottlesize">Channel Logo*</label><br>
+						<!-- <app-image-upload [imgSize]="'md'" [imageUrl]="thumbnailurlLogo" [uploadUrl]="imgUploadUrl" [name]="'Channel Logo'" [headers]="appservice.getImgUploadHeaders()"  (changeImage)="onFileUploadEventLogo($event)"></app-image-upload> -->
+						<app-image-upload [imgSize]="'md'" [imageUrl]="thumbnailurl" [uploadUrl]="imgUploadUrl" [name]="'Channel Image'" [headers]="appservice.getImgUploadHeaders()"  (changeImage)="onFileUploadEvent($event)"></app-image-upload>
+						<div class="text-danger errorTxt" *ngIf="f.submitted && (!channelModel.picture || appservice.isEmptyObject(channelModel.picture))">
+								Upload Channel Logo
+						</div>
+					  </div>
+					</div>
+				  </div>
+				</div>
+				<div class="form-actions pull-right">
+				  <button type="button" class="btn btn-raised btn-warning mr-1" (click)="onClearValue()">
+				  <i class="ft-x"></i> Cancel
+				  </button>
+				  <button type="submit" class="btn btn-raised btn-primary">
+				  <i class="fa fa-check-square-o"></i> Save
+				  </button>
+				</div>
+			  </div>
+			  <!--Form body-->
+			  </form>
+			</div>
+		  </div>
+		</div>
+	  </div>
+	</div>
+  </div>
+</div>

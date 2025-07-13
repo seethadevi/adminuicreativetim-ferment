@@ -1,0 +1,133 @@
+
+<div class="main-content">
+  <div class="container-fluid">
+    <ngb-tabset #t="ngbTabset" type="pills" [activeId]="activeIdString">
+      <ngb-tab id="ApprovedProducer">
+        <ng-template ngbTabTitle ><b>Approved</b></ng-template>
+        <ng-template ngbTabContent>
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="row">
+                <div class="col-md-10">
+                  <div class="input-group no-border">
+                   <input type="text" [(ngModel)]="searchString" autocomplete="off" (keyup.enter)="onSearchText()" class="form-control" placeholder="Search Producer">
+                   <button mat-raised-button type="submit" (click)="onSearchText()" class="btn btn-white btn-round btn-just-icon">
+                     <i class="material-icons">search</i>
+                     <div class="ripple-container"></div>
+                   </button>
+                  </div>
+                </div>
+                <div class="col-md-2">
+                  <button mat-raised-button class="btn add-new btn-rose" (click)="createnew()">
+                  <span class="btn-label">
+                  <i class="material-icons">add</i>
+                  </span>
+                  Create
+                  </button>
+                </div>
+              </div>
+              <app-virtual-infinite-scroll
+            [items]="winerys"
+            [actions]="actions"
+            [displayColumnList] = "displayColumnList"
+            [classList] = "classList"
+            [defaultList] = "defaultList"
+            (reloadEvent)="onReloadEvent($event)"
+            (operationEvent)="onOperation($event)" >
+            </app-virtual-infinite-scroll>
+            </div>
+          </div>
+        </ng-template>
+      </ngb-tab>
+      <ngb-tab id="PendingProducer">
+        <ng-template ngbTabTitle><b>Pending</b></ng-template>
+        <ng-template ngbTabContent>
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="row">
+                <div class="col-md-10">
+                  <div class="input-group no-border">
+                    <input type="text" [(ngModel)]="searchStringPending" autocomplete="off" (keyup.enter)="onSearchTextPending()" class="form-control" placeholder="Search Producer">
+                    <button mat-raised-button type="submit" (click)="onSearchTextPending()" class="btn btn-white btn-round btn-just-icon">
+                      <i class="material-icons">search</i>
+                      <div class="ripple-container"></div>
+                    </button>
+                  </div>
+                </div>
+                <div class="col-md-2">
+                  <button mat-raised-button class="btn add-new btn-rose" (click)="createnew()">
+                  <span class="btn-label">
+                  <i class="material-icons">add</i>
+                  </span>
+                  Create
+                  </button>
+                </div>
+              </div>
+              <app-virtual-infinite-scroll
+              [items]="winerysPending"
+              [actions]="actions"
+              [displayColumnList] = "displayColumnList"
+              [classList] = "classList"
+              [defaultList] = "defaultList"
+              (reloadEvent)="onReloadEventPending($event)"
+              (operationEvent)="onOperationPending($event)" >
+              </app-virtual-infinite-scroll>
+            </div>
+          </div>
+        </ng-template>
+      </ngb-tab>
+    </ngb-tabset>
+   <swal #deleteSwalWinery
+   title="Delete record?"
+   text="Do you want to delete?"
+   type="question"
+   [showCancelButton]="true"
+   [focusCancel]="true"
+   (confirm)="deleteRecords()"
+   (close)="onCloseDialog($event)">
+   </swal>
+  </div>
+</div>
+
+
+<!-- <div class="main-content" >
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-10">
+          <div class="input-group no-border">
+            <input type="text" [(ngModel)]="searchString" autocomplete="off" (keyup.enter)="onSearchText()" class="form-control" placeholder="Search Producer">
+            <button mat-raised-button type="submit" (click)="onSearchText()" class="btn btn-white btn-round btn-just-icon">
+              <i class="material-icons">search</i>
+              <div class="ripple-container"></div>
+            </button>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <button mat-raised-button class="btn add-new btn-rose" (click)="createnew()">
+          <span class="btn-label">
+          <i class="material-icons">add</i>
+          </span>
+          Create
+          </button>
+        </div>
+      </div>
+      <app-virtual-infinite-scroll
+      [items]="winerys"
+      [actions]="actions"
+      [displayColumnList] = "displayColumnList"
+      [classList] = "classList"
+      [defaultList] = "defaultList"
+      (reloadEvent)="onReloadEvent($event)"
+      (operationEvent)="onOperation($event)" >
+      </app-virtual-infinite-scroll>
+      <swal #deleteSwalWinery
+      title="Delete record?"
+      text="Do you want to delete?"
+      type="question"
+      [showCancelButton]="true"
+      [focusCancel]="true"
+      (confirm)="deleteRecords()"
+      (close)="onCloseDialog($event)">
+      </swal>
+    </div>
+  </div> -->

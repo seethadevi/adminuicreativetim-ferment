@@ -1,0 +1,95 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row" *ngIf="totalChannel > -1 && totalChannel <= MAX_CHANNAL_ALLOWED_LIMIT" >
+          <div class="col-md-12">
+            <button mat-raised-button class="btn add-new btn-rose" (click)="createnew()">
+              <span class="btn-label">
+                <i class="material-icons">add</i>
+              </span>
+              New Channel
+            </button>
+          </div>
+        </div>
+        <div class="">
+            <div class="row justify-content-center">
+                <div *ngFor="let channel of channels" >
+                    <!-- <div class="card card-pricing card-plain" (click)="showMoreInfo(channel)">
+                        <div class="card-body">
+                            <div class="card-icon" *ngIf="!channel.picture" >
+                                <i class="material-icons">group</i>
+                            </div>
+                            <div class="card-avatar" *ngIf="!!channel.picture && !!channel.picture.sm" >
+                               <a> <img class="img" src="{{channel.picture.sm}}" /> </a>
+                            </div>
+                            <h4 class="card-title">
+                                {{channel.name}}&nbsp;<span><i class="material-icons" (click)='editChannelData(channel.id)'>edit</i></span>
+                            </h4>
+                        </div>
+                    </div> -->
+                    <!-- <div class="card mycard" (click)="showMoreInfo(channel)"  [ngClass]="channel.id === selected_channel_id ? 'selection' : '' " >
+                        <div class="card-img imageContainer">
+                            <img *ngIf="!!channel.picture && !!channel.picture.sm" class="imageCard" src="{{channel.picture.sm}}" />
+                            <img *ngIf="!channel.picture" class="imageCard" src="/assets/img/defaults/channel_icon.png" />
+                        </div>
+
+                        <h6 class="card-title text-center">
+                            {{channel.name}}&nbsp;<span><i class="material-icons" (click)='editChannelData(channel.id)'>edit</i></span>
+                        </h6>
+                    </div> -->
+                    <div class="card  mycard card-pricing card-raised" (click)="showMoreInfo(channel)"  [ngClass]="channel.id === selected_channel_id ? 'selection' : '' ">
+                        <div class="card-body removePadding">
+                            <!-- <h6 class="card-category"> {{banner.action_type}}</h6> -->
+                            <div class="card removeMargin removeShadow">
+                                <div class="card-icon removePadding icon-rose">
+                                    <img class="imgStyle" *ngIf="!!channel.picture && !!channel.picture.lg"[src]="channel.picture.lg" [alt]="channel.name">
+                                    <img *ngIf="!channel.picture" class="imgStyle" src="./assets/img/defaults/channel_icon.png" />
+                                </div>
+                            </div>
+                            <p class="card-title">{{ channel.name }}</p>
+                            <a class="btn btn-rose btn-round text-white" (click)='editChannelData(channel.id, $event)'>
+                                <i class="material-icons">edit</i> Edit
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="row justify-content-center" *ngIf="!!moreInfoTab">
+                <div class="col-md-12">
+                    <ul class="nav nav-pills nav-pills-warning" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" href="#customer" role="tablist">
+                            Customers
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#request" role="tablist">
+                            Requests
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card" *ngIf="!!moreInfoTab">
+                <div class="row justify-content-center addTopSapce" >
+                    <div class="col-12">
+                        <div class="row justify-content-center">
+                            <div class="col-md-12">
+                                <div class="tab-content tab-space">
+                                    <div class="tab-pane active" id="customer">
+                                        <app-channel-customer [channelId]="selected_channel_id" [refreshCustComp]="refresh_customer"></app-channel-customer>
+                                    </div>
+                                    <div class="tab-pane" id="request">
+                                        <app-channel-request (messageEventRefresh)="receiveMessage($event)" [channelId]="selected_channel_id"></app-channel-request>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

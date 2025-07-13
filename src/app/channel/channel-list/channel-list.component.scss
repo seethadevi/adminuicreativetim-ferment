@@ -1,0 +1,41 @@
+.mycard{
+    border: 0;
+    border-radius: 6px;
+    color: #333;
+    background: #fff;
+    width: 100%;
+    min-height: 250px;
+    min-width: 132px;
+    width: 175px;
+    max-width: 175px;
+    cursor: pointer;
+    margin: 20px 10px;
+}
+
+.selection {
+    border: 2px solid green;
+}
+.card-title {
+    margin-top: 15px;
+}
+
+.imgStyle{
+    height: 130px;
+    width: 100%;
+    border-radius: 6px 6px 0 0;
+}
+
+.addTopSapce{
+    padding-top: 10px;
+}
+
+.removePadding {
+    padding: 0 !important;
+}
+.removeMargin{
+    margin: 0 !important;
+}
+
+.removeShadow{
+    box-shadow: none;
+}
