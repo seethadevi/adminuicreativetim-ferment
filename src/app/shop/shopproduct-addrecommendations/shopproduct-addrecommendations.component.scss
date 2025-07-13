@@ -1,0 +1,122 @@
+.main-sub-content
+{
+    margin-top:30px;
+}
+.overWriteTitle{
+    font-weight: 100!important;
+    font-size: 1rem!important;
+    text-align: center;
+    margin-bottom: 0.75rem !important;
+}
+.bg-rose{
+    background: linear-gradient(60deg, #ec407a, #d81b60);
+}
+.card{
+    background: transparent;
+    box-shadow: none;
+    border-radius: none;
+}
+.card .card-block{
+    padding: 0.5rem 1rem 1rem;
+    margin-top: 0em;
+}
+.imageAlign{
+    width: 50%;
+    display: block;
+
+    margin: auto;
+    padding-top: 75px;
+}
+
+.smallFont{
+    font-size: 0.8rem!important;
+}
+
+.containerList {
+  min-height: 200px;
+  max-height: 400px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background: #fff;
+  border-radius: 8px;
+}
+
+.listItem {
+    border-bottom: 1px solid #c4c4c4;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+.listItem:last-child{
+    border-bottom: none;
+}
+
+.prodName{
+    font-size: 1rem;
+    font-weight: 400;
+}
+
+ .imageCard {
+    //  width: 50px;
+    //  height: 50px;
+    //  display: block;
+    //  margin: auto;
+    //  border-radius: 50%;
+    //  background: #c4c4c4;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: 0;
+    margin: auto;
+    opacity: 1;
+    max-width: 100%;
+    max-height: 100%;
+ }
+
+ .marginTop {
+     margin-top: 30px;
+ }
+
+ .marginBottom {
+    margin-bottom: 20px;
+ }
+ .content-sub-header{
+     font-weight: 500;
+ }
+ button:disabled{
+     cursor:not-allowed;
+ }
+ .card{
+     background: #fff;
+     .product-details{
+         margin-top:20px;
+         margin-bottom:20px;
+     }
+ }
+ .imageSelectContainer{
+    width: 100px;
+    height: 100px;
+    position: relative;
+    margin: 0 auto;
+    margin-top:20px;
+    margin-bottom:20px;
+}
+ .imageContainer{
+     width: 50px;
+     height: 50px;
+     position: relative;
+     margin: 0 auto;
+ }
+ .search-ico{
+     float:left;
+     font-size:27px;
+     margin-top:6px;
+ }
+ .arrow{
+     margin-top:90%;
+     font-size:16px;
+ }
+ 

@@ -1,0 +1,147 @@
+.main-sub-content{
+    margin: 30px 15px;
+}
+a.newOption:hover {
+    color: white !important;
+    cursor: pointer;
+}
+
+.eventImage{
+    width: 152px;
+    height: 152px;
+    position: relative;
+    margin: 0 auto;
+}
+.eventRow{
+    background: white;
+    margin: 10px 10px;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.eventRow .img{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: 0;
+    margin: auto;
+    opacity: 1;
+    max-width: 100%;
+    max-height: 100%;
+}
+.content_row{
+    padding: 0 20px;
+}
+
+.icon_row{
+    padding: 20px 0;
+}
+.org_name{
+    color:#999;
+}
+
+.nav-link-item{
+    display: inline-block;
+    vertical-align: top;
+    text-align: center;
+    width: 70px;
+}
+.nav-link-item i{
+    font-size: 34px;
+}
+.settings_icon{
+    padding-left: 5px;
+}
+
+.mini_site{
+    font-size: 14px;
+}
+
+
+/* common */
+.ribbon {
+    width: 150px;
+    height: 150px;
+    overflow: hidden;
+    position: absolute;
+  }
+  .ribbon::before,
+  .ribbon::after {
+    position: absolute;
+    z-index: -1;
+    content: '';
+    display: block;
+    border: 5px solid #2980b9;
+  }
+  .ribbon span {
+    position: absolute;
+    display: block;
+    width: 225px;
+    padding: 15px 0;
+    background-color: #fff;
+    box-shadow: 0 5px 10px rgba(0,0,0,.1);
+    color: rgb(0, 50, 250);;
+    font: 700 16px/1 'Lato', sans-serif;
+    text-shadow: 0 1px 1px rgba(0,0,0,.2);
+    text-transform: uppercase;
+    text-align: center;
+  }
+  /* top left*/
+  .ribbon-top-left {
+    top: -10px;
+    left: -10px;
+  }
+  .ribbon-top-left::before,
+  .ribbon-top-left::after {
+    border-top-color: transparent;
+    border-left-color: transparent;
+  }
+  .ribbon-top-left::before {
+    top: 0;
+    right: 0;
+  }
+  .ribbon-top-left::after {
+    bottom: 0;
+    left: 0;
+  }
+  .ribbon-top-left span {
+    // right: -25px;
+    // top: 30px;
+    right: -13px;
+    top: 18px;
+    transform: rotate(-45deg);
+  }
+  .channel {
+    .channelImg {
+        cursor: pointer;
+        width: 60px;
+        height: 60px;
+        overflow: hidden;
+        float: left;
+        z-index: 5;
+        margin-right: 11px;
+        border-radius: 50%;
+        margin-left: 11px;
+        box-shadow: 0 16px 38px -12px rgba(0,0,0,.56), 0 4px 25px 0 rgba(0,0,0,.12), 0 8px 10px -5px rgba(0,0,0,.2);
+        img{
+            width: 100%;
+            height: 100%;
+        }
+    }
+
+    .change-style{
+        margin: 3px;
+        margin: 0;
+        height: 40px;
+        width: 40px;
+        min-width: 40px;
+    }
+    .activeCls{
+        border: 2px solid rgba(10, 68, 46, 1);
+        border-radius: 50%;
+    }
+    .defulatCursor {
+        cursor: alias;
+    }
+}

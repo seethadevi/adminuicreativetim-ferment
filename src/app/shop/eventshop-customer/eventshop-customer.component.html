@@ -1,0 +1,22 @@
+<section>
+    <div class="container-fluid">
+        <div class="row my-2">
+            <div class="col-md-12">
+                <h4>Event Visitor Details</h4>
+            </div>
+        </div>
+        <app-custom-datatable [headers]="headers"
+        [items]="eventVisiters"
+        [actions]="actions"
+        [showSno]="true"
+        [showActions]="false"
+        [showSearch]="false"
+        [showChooseLimit]="true"
+        [params]="defaultParams"
+        [totalRecords]="totalRecords"
+        (reloadEvent)="onReloadEvent($event)"
+        (operationEvent)="onOperation($event)">
+</app-custom-datatable>
+    </div>
+</section>
+

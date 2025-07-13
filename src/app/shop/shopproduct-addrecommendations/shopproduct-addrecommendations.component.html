@@ -1,0 +1,99 @@
+<div class="main-sub-content">
+  <div class="container-fluid">
+
+<div class="row">
+  <div class="col-sm-12">
+    <i class="text-muted ft-search search-ico"></i>
+    <ng-select class="custom search" [items]="shopProductsDropDownlist"
+              bindLabel="name" placeholder="Select Product From Warehouse.."
+              [(ngModel)]="selectedProduct" (change)="onChangeSelect()">
+    </ng-select>
+  </div>
+</div>
+<div class="card">
+  <div class="card-header card-header-rose">
+  <div class=" row" *ngIf="selectedProduct">
+    <div class=" col-sm-2">
+      <div class="imageSelectContainer">
+          <img *ngIf="!selectedProduct.picture"  [src]="environmentLocal.DEFAULT_WINE_BOTTLE" [alt]="selectedProduct.name" class="imageCard">
+          <img *ngIf="!!selectedProduct.picture && !!selectedProduct.picture.sm"  [src]="selectedProduct.picture.sm" [alt]="selectedProduct.name" class="imageCard">
+      </div>
+    </div>
+    <div class=" col-sm-10">
+      <div class="product-details" >
+        <table class="white">
+          <tr>
+            <td style="font-size:26px">{{selectedProduct.name}}</td>
+          </tr>
+          <tr>
+            <td>{{selectedProduct.description}}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card-body row">
+  <div class="col-sm-12">
+      <div class="row">
+        <div class="col-sm-5 marginBottom">
+          <h6 class="content-sub-header">Warehouse Product List</h6>
+          <div class="containerList" dragula="MOVEWHSHOPPRODUCT" [(dragulaModel)]="moveWarehouseProductList">
+            <div class="listItem" *ngFor="let item of moveWarehouseProductList">
+              <div class="row">
+                <div class="col-3">
+                  <div class="imageContainer">
+                    <img *ngIf="!item.picture"  [src]="environmentLocal.DEFAULT_WINE_BOTTLE" [alt]="item.name" class="imageCard">
+                    <img *ngIf="!!item.picture && !!item.picture.sm"  [src]="item.picture.sm" [alt]="item.name" class="imageCard">
+                  </div>
+                </div>
+                <div class="col-9 prodName my-auto">
+                  {{ item.name }} ({{item.stock_availability}})
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="text-danger" *ngIf="onPageLoading && moveWarehouseProductList.length === 0" >
+            <small class="form-text text-muted danger">No new products is available to move to shop.</small>
+          </div>
+        </div>
+        <div class="col-sm-1">
+          <br>
+          <br>
+            <div class="arrow">
+              >>
+            </div>
+        </div>
+        <div class="col-sm-6 marginBottom">
+          <h6  class="content-sub-header">Recommendations Product List</h6>
+          <div class="containerList" dragula="MOVEWHSHOPPRODUCT" [(dragulaModel)]="moveShopProductRecommendationsList">
+            <div class="listItem" *ngFor="let item of moveShopProductRecommendationsList">
+              <div class="row">
+                <div class="col-3">
+                    <div class="imageContainer">
+                      <img *ngIf="!item.picture"  [src]="environmentLocal.DEFAULT_WINE_BOTTLE" [alt]="item.name" class="imageCard">
+                      <img *ngIf="!!item.picture && !!item.picture.sm"  [src]="item.picture.sm" [alt]="item.name" class="imageCard">
+                    </div>
+                </div>
+                <div class="col-9 prodName my-auto">
+                    {{ item.name }} ({{item.stock_availability}})
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="text-danger" *ngIf="isMoveClicked && moveShopProductRecommendationsList.length === 0" >
+            <small class="form-text text-muted danger">No products is available to move.</small>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>
+</div>
+<div class="row justify-content-center marginTop">
+  <button class="btn btn-raised btn-warning" [disabled]="loading" (click)="goToShopProduct(shop.id, shop.name)" style="margin-right: 20px;">Back</button>
+  <button class="btn btn-raised btn-primary" [disabled]="!selectedProduct || moveShopProductRecommendationsList.length == 0" (click)="showConfirmWindow()">Add Products to Recommendations</button>
+</div> <!-- button row ends here-->
+
+  </div>
+</div>

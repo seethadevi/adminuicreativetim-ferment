@@ -1,0 +1,61 @@
+<section>
+
+        <div class="row eventRow" *ngIf="!!shopModel.name">
+            <div class="col-md-2 my-auto">
+                <div class="eventImage">
+                    <img class="img" *ngIf="!!shopModel.picture && !!shopModel.picture.md" [src]="shopModel.picture.md">
+                    <img class="img" *ngIf="!shopModel.picture" height="152px"  width="152px" src="./assets/img/defaults/pop-up-store-icon.png">
+                </div>
+                <div *ngIf="!!shopModel.isWeezEvent" class="ribbon ribbon-top-left">
+                    <span>Weezevent</span>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="content_row">
+                <h5>
+                    <img *ngIf="shopModel.shop_type === 'SALES'" width="32"  height="32" src="./assets/img/defaults/sales.png">
+                    <img *ngIf="shopModel.shop_type === 'TASTING'" width="32"  height="32" src="./assets/img/defaults/tasting.png">
+                    {{shopModel.name}}
+                </h5>
+                <small class="org_name" *ngIf="!!shopModel.organiser_name">by &nbsp;{{shopModel.organiser_name}}</small>
+                <div class="row icon_row">
+                    <div class="col-4 reomovePadding">
+                    <a  *ngIf="!shopModel.isWeezEvent" class="text-primary mini_site"
+                    [href]="webstroreurl+'?shopid='+shopModel._id+'&sub_id='+shopModel.sub_id"
+                    target="_blank">Mini Site</a>
+                    <a  *ngIf="!!shopModel.isWeezEvent" class="text-primary mini_site"
+                    [href]="shopModel.url"
+                    target="_blank">Mini Site</a>
+                    <span class="dropdown settings_icon">
+                        <button href="#" class="btn btn-sm dropdown-toggle btn-info btn-round" data-toggle="dropdown" aria-expanded="true" >
+                        <i class="fa fa-cog"></i>
+                        <b class="caret"></b>
+                        </button>
+                        <ul class="dropdown-menu">
+                        <li><a class="newOption" (click)="editShopDetails(shopModel._id)">Edit</a></li>
+                        <li><a class="newOption" (click)="tariffShopDetails(shopModel._id, shopModel.name)">Tariff</a></li>
+                        </ul>
+                    </span>
+                    </div>
+                    <div class="col-8 reomovePadding">
+                    <a class="nav-link-item" [ngClass]="(viewType === '' || viewType === 'products') ? 'selectedBorder' : ''"  (click)="goToShopProduct(shopModel._id, shopModel.name)" href="javascript:void(0)" role="tablist"><i class="material-icons">reorder</i><div class="nav-display-text">Products</div>  </a>
+                    <a class="nav-link-item" [ngClass]="(viewType === 'orders') ? 'selectedBorder' : ''" *ngIf="shopModel.shop_type !== 'TASTING'"  href="javascript:void(0)" (click)="goToShopOrders(shopModel._id, shopModel.name)"><i class="material-icons">speaker_notes</i> <div class="nav-display-text">Orders</div> </a>
+                    <a class="nav-link-item" [ngClass]="(viewType === 'tickets') ? 'selectedBorder' : ''" href="javascript:void(0)" (click)="goToShopTicket(shopModel._id, shopModel.name)"><i class="material-icons">reorder</i> <div class="nav-display-text">Tickets</div> </a>
+                    <a class="nav-link-item" [ngClass]="(viewType === 'visitors') ? 'selectedBorder' : ''" href="javascript:void(0)" (click)="goToShopVisiters(shopModel._id, shopModel.name)"><i class="material-icons">group</i><div class="nav-display-text">Visitors</div>  </a>
+                    <a class="nav-link-item" [ngClass]="(viewType === 'statistics') ? 'selectedBorder' : ''"href="javascript:void(0)" (click)="goToShopStatistics(shopModel._id, shopModel.name)"><i class="material-icons">insert_chart_outlined</i> <div class="nav-display-text">Statistics</div> </a>
+                    </div>
+                </div>
+                </div>
+            </div>
+            <div class="col-md-2 my-auto">
+                <div class="form-group col-md-12 mb-2 text-center printData">
+                <!-- <div class="text-primary">QR Code</div> -->
+                <qrcode [qrdata]="environmentLocal.WEBSTORE +'/?shopid=' + shopModel._id + '&sub_id=' + shopModel.sub_id" [width]="120" [errorCorrectionLevel]="'M'" [elementType]="img"></qrcode>
+                <!-- <qrcode *ngIf="!!shopModel.isWeezEvent"  [qrdata]="shopModel.url" [size]="94" [level]="'M'" [usesvg]="false"></qrcode> -->
+                </div>
+            </div>
+            </div>
+
+    <!-- <app-shopproduct-list *ngIf="viewType === '' || viewType === 'products'" ></app-shopproduct-list> -->
+    <router-outlet></router-outlet>
+</section>

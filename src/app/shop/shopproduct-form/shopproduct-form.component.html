@@ -1,0 +1,347 @@
+<div class="main-sub-content">
+  <div class="container-fluid">
+    <div class="row product-form">
+      <div class="col-md-12">
+        <div class="card ">
+          <div class="card-header card-header-tabs card-header-rose">
+            {{title | uppercase}} EVENT PRODUCT DETAILS
+          </div>
+          <div class="card-body ">
+            <div class="row">
+              <div class="col-lg-4 col-md-6">
+                <ul class="nav nav-pills nav-pills-rose nav-pills-icons flex-column" role="tablist">
+                  <li class="nav-item" *ngIf="!isEdit">
+                    <a class="nav-link" [ngClass]=" category?'active':''" data-toggle="tab" href="#category" role="tablist">
+                    <i class="material-icons">line_weight</i> Category
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" [ngClass]=" basic?'active':''" data-toggle="tab" href="#info" role="tablist">
+                    <i class="material-icons">info</i> Product Info
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" [ngClass]=" stockinfo?'active':''" data-toggle="tab" href="#stockinfo" role="tablist">
+                    <i class="material-icons">playlist_add</i> Stock Info
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" [ngClass]=" pricinginfo?'active':''" data-toggle="tab" href="#pricinginfo" role="tablist">
+                    <i class="material-icons">money</i> Pricing
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              <div class="col-md-8">
+                <form novalidate (ngSubmit)="onSubmit(f)" #f="ngForm">
+                <div class="tab-content">
+                  <div class="tab-pane" [ngClass]=" category?'active':''"  id="category" *ngIf="!isEdit">
+                  <div class="tab-body">
+                    <div class="row" *ngIf="!isEdit" >
+                      <div class="form-group col-md-12 mb-2">
+                        <label for="category_type">category</label>
+                        <select required class="form-control border-primary" id="category_type" name="category_type" #category_type="ngModel"  placeholder="Select Category type" [(ngModel)]="shopProdModel.category_type"
+                        (change)="setCategoryId($event)">
+                        <option *ngFor="let category of (allCategoryList)" [value]="category.type">{{category.type}}</option>
+                        </select>
+                        <small *ngIf="f.submitted && category_type.errors || f.submitted && !!shopProdModel.category_type" class="form-text text-muted danger">Category type is Required</small>
+                      </div>
+                      <div class="form-group col-md-12 mb-2">
+                        <label for="wine">Product</label>
+                        <tag-input [(ngModel)]="products" name="products"
+                        [placeholder]="'Search a new Product'"
+                        [onTextChangeDebounce]="500"
+                        [secondaryPlaceholder]="'Search Product'"
+                        [onlyFromAutocomplete]="true"
+                        (onAdd) = "onAddingProduct($event)"
+                        (onRemove) = "onRemovingProduct($event)"
+                        [identifyBy]="'id'"
+                        [removable]="!isEdit"
+                        [maxItems] = "1"
+                        [displayBy]="'name'">
+                        <tag-input-dropdown
+                        [autocompleteObservable]="requestAutocompleteItems"
+                        [minimumTextLength]="0"
+                        [identifyBy]="'id'"
+                        [displayBy]="'name'">
+                        <ng-template let-item="item" let-index="index">
+                          <img [src]="item.picture.md" width="16">
+                          {{item.name}}
+                        </ng-template>
+                        </tag-input-dropdown>
+                        </tag-input>
+                        <small *ngIf="f.submitted && !shopProdModel.prod_id" class="form-text text-muted danger">Product Required</small>
+                      </div>
+                      <div class="form-group col-md-1 mt-4">
+                        <!-- <i class="fa fa-bars text-warning handPointer" aria-hidden="true" placement="top" ngbTooltip="Select Product" (click)="openTypeSelectionModal(listofRefProduct)"></i> -->
+                        <i class="ft-search font-large-1 text-warning handPointer" placement="top" ngbTooltip="Product Lookups" (click)="openTypeSelectionModal(listofRefProduct)"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="tab-footer">
+                    <div class="pull-right">
+                      <a mat-raised-button class="btn btn-md" (click)="onClearValue()" >Back</a>
+                      <button mat-raised-button  type="submit"  href="#info" data-toggle="tab" (click)="enableTab('info',$event)" class="btn btn-primary btn-md">Save & Next</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="tab-pane" [ngClass]=" basic?'active':''"  id="info">
+                  <div class="tab-body">
+                    <div class="row">
+                      <div class="col-md-12 mb-1">
+                        <label>Product Information</label>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-8">
+                        <div class="form-group col-md-12 mb-2">
+                          <label for="username">Name</label>
+                          <input type="text" class="form-control border-primary" id="name" name="name" placeholder="Name" #name="ngModel" [(ngModel)]="shopProdModel.name"
+                          required  />
+                          <small *ngIf="f.submitted && name.errors" class="form-text text-muted danger">Product Name is Required</small>
+                        </div>
+                        <div class="form-group col-md-12 mb-2">
+                          <label for="gtin">GTIN (SKU,SSCC,GLN)</label>
+                          <input type="text" id="gtin" class="form-control border-primary" placeholder="GTIN" name="gtin" #gtin="ngModel" [(ngModel)]="shopProdModel.gtin" maxlength="13" minlength="12" >
+                          <!-- <small *ngIf="f.submitted && gtin.errors" class="form-text text-muted danger">GTIN is Required</small> -->
+                        </div>
+                        <div class="form-group col-md-12 mb-2">
+                          <label for="desc">Description</label>
+                          <textarea class="form-control border-primary" id="description" name="description" placeholder="Description" #description="ngModel" [(ngModel)]="shopProdModel.description" ></textarea>
+                        </div>
+                      </div>
+                      <div class="form-group  col-md-4 mb-2">
+                        <div class="imgContainer">
+                          <img *ngIf='!!shopProdModel.picture && !!shopProdModel.picture.lg'  [src]="shopProdModel.picture['lg']" class="productimg" alt="{{name}}"
+                          />
+                          <img *ngIf="!shopProdModel.picture" [src]="'/assets/img/defaults/wine-bottle.png'" class="productimg" alt="{{name}}"
+                          />
+                        </div>
+                        <div class="imgContainer">
+                        <img  *ngIf='!!shopProdModel.logo && !!shopProdModel.logo.lg' [src]="shopProdModel.logo['lg']" class="productimg1" alt="{{name}}"
+                        />
+                        <img *ngIf="!shopProdModel.logo" [src]="'/assets/img/defaults/default-logo.png'" class="productimg1" alt="{{name}}"
+                        />
+                      </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="tab-footer">
+                    <div class="pull-right">
+                      <a mat-raised-button class="btn btn-md" (click)="onClearValue()" >Back</a>
+                      <button mat-raised-button  type="submit"  href="#stockinfo" data-toggle="tab" (click)="enableTab('stockinfo',$event)" class="btn btn-primary btn-md">Save & Next</button>        
+                    </div>
+                  </div>
+                </div>
+                <div class="tab-pane" id="stockinfo">
+                  <div class="tab-body">
+                    <div class="row">
+                      <div class="col-md-12 mb-1">
+                        <label>Stock Information</label>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="form-group col-md-6 mb-2" *ngIf="!isEdit">
+                        <label for="stockAvailablity">Stock (Warehouse Stock : {{warehouseStock}})</label>
+                        <input appNumberOnly type="text" [disabled]="isEdit" id="stockAvailablity" class="form-control border-primary" placeholder="Stock Availability" name="stockAvailablity" [(ngModel)]="shopProdModel.stock_availability">
+                        <small *ngIf="shopProdModel.stock_availability > warehouseStock" class="form-text text-muted danger">Stock request to shop should not exceed warehouse stock.</small>
+                      </div>
+                      <div class="form-group col-md-6 mb-2" *ngIf="isEdit">
+                        <label for="stockAvailablity">Stock (Warehouse Stock : {{warehouseStock}})</label>
+                        <input type="text" [disabled]="isEdit" id="stockAvailablity" class="form-control border-primary" placeholder="Stock Availability" name="stockAvailablity" [(ngModel)]="shopProdModel.stock_availability">
+                      </div>
+                      <div class="form-group col-md-12 mt-4" [hidden]="!isEdit">
+                        <button type="button" class="btn btn-raised btn-sm btn-success mr-1" (click)="openTypeSelectionModal(addstock)">
+                        <i class="ft-plus-circle"></i> Add Stock
+                        </button>
+                        <button type="button" class="btn btn-raised btn-sm btn-danger ml-1" (click)="openTypeSelectionModal(removestock)">
+                        <i class="ft-minus-circle"></i> Remove Stock
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="tab-footer">
+                    <span *ngIf="!isEdit"><br><br><br><br><br></span>
+                    <div class="pull-right">
+                      <a mat-raised-button class="btn btn-md" (click)="onClearValue()" >Back</a>
+                      <button mat-raised-button  type="submit"  href="#pricinginfo" data-toggle="tab" (click)="enableTab('pricinginfo',$event)" class="btn btn-primary btn-md">Save & Next</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="tab-pane" id="pricinginfo">
+                  <div class="row">
+                    <div class="col-md-12 mb-1">
+                      <label>Pricing Information</label>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="form-group col-md-6 mb-2">
+                      <label for="price">Price</label>
+                      <input appDecimal required type="number" (change)="calculateTotalPrice($event)" class="form-control border-primary" id="price" name="price" placeholder="Price" #price="ngModel" [(ngModel)]="shopProdModel.pricing.price"
+                      required />
+                      <small *ngIf="f.submitted && price.errors" class="form-text text-muted danger">Price Required</small>
+                    </div>
+                    <div class="form-group col-md-6 mb-2">
+                      <label for="vat">VAT</label>
+                      <!-- <input type="number" required (change)="calculateTotalPrice($event)" class="form-control border-primary" id="vat" name="vat" placeholder="VAT" #vat="ngModel" [(ngModel)]="shopProdModel.pricing.vat"
+                        /> -->
+                      <select (change)="taxclassOnChange($event)" required class="form-control border-primary" id="vat" name="vat" #vat="ngModel"  placeholder="Select VAT" [(ngModel)]="shopProdModel.pricing.taxclass_id">
+                      <option value="">Select VAT</option>
+                      <option *ngFor="let taxclass of (allTaxclassList)" [value]="taxclass._id">{{taxclass.name}}</option>
+                      </select>
+                      <small *ngIf="f.submitted && vat.errors" class="form-text text-muted danger">Vat Required</small>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="form-group col-md-6 mb-2">
+                      <label for="price_w_vat">Price with VAT</label>
+                      <input type="text" class="form-control border-primary" id="price_w_vat" name="price_w_vat" placeholder="Price with VAT" readonly="readonly" #price_w_vat="ngModel" [(ngModel)]="shopProdModel.pricing.price_w_vat"
+                      />
+                      <small *ngIf="f.submitted && price_w_vat.errors" class="form-text text-muted danger">Price with VAT Required</small>
+                    </div>
+                  </div>
+                  <div class="pull-right">
+                    <span><br><br><br><br><br><br><br></span>
+                    <a mat-raised-button class="btn btn-md" (click)="onClearValue()" >Back</a>
+                    <button mat-raised-button  type="submit"  class="btn btn-primary btn-md">Save</button>
+                  </div>
+                </div>
+              </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ng-template #addstock let-modal>
+        <div class="modal-header">
+          <h4 class="modal-title" id="modal-basic-title">Add Stock</h4>
+          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="form-group col-md-12 mb-2">
+              <label for="product2">Product</label>
+              <!-- <input readonly type="text" class="form-control border-primary changetxt" id="product2" name="product2" placeholder="Name" #product2="ngModel" [(ngModel)]="shopProdModel.name"
+                /> -->
+              <div class='changetxt'> {{shopProdModel.name}}</div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group col-md-6 mb-2">
+              <label for="stock">Warehouse Stock</label>
+              <input type="number" readonly id="stock" class="form-control border-primary" placeholder="Warehouse Stock" name="stock" [(ngModel)]="warehouseStock">
+            </div>
+            <div class="form-group col-md-6 mb-2">
+              <label for="quantity">Quantity</label>
+              <input appNumberOnly maxlength="6" type="text" id="sescription" class="form-control border-primary" placeholder="Quantity" name="quantity" [(ngModel)]="shopaddModel.quantity">
+              <small *ngIf="addStockClick && !shopaddModel.quantity" class="form-text text-muted danger">Quantity is required</small>
+              <small *ngIf="warehouseStock < shopaddModel.quantity" class="form-text text-muted danger">Stock request to shop should not exceed Warehouse stock.</small>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-danger" (click)="modal.close('Close click')">Close</button>
+          <button type="button" class="btn btn-outline-primary ml-2" (click)="addStockToProduct()">Save</button>
+        </div>
+      </ng-template>
+      <ng-template #removestock let-modal>
+        <div class="modal-header">
+          <h4 class="modal-title" id="modal-basic-title">Remove Stock</h4>
+          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="row">
+              <div class="form-group col-md-12 mb-2">
+                <label for="product1">Product</label>
+                <!-- <input readonly type="text" class="form-control border-primary changetxt" id="product1" name="product1" placeholder="Name" #product1="ngModel" [(ngModel)]="warehouseProdModel.name"
+                  /> -->
+                <div class='changetxt'> {{shopProdModel.name}}</div>
+              </div>
+            </div>
+            <!-- <div class="row">
+              <div class="col-md-12 mb-2">
+                <span class="danger">Note** : Only UnTagged products can be removed. Use mobile app to UnTag the products.</span>
+              </div>
+              </div> -->
+            <div class="row">
+              <div class="form-group col-md-6 mb-2">
+                <label for="quantity">Quantity To Remove</label>
+                <input appNumberOnly maxlength="6" type="text" id="sescription" class="form-control border-primary" placeholder="Quantity" name="quantity" [(ngModel)]="shopremoveModel.quantity">
+                <small *ngIf="removeStockClick && !shopremoveModel.quantity" class="form-text text-muted danger">Quantity is required</small>
+                <small *ngIf="shopProdModel.stock_availability < shopremoveModel.quantity" class="form-text text-muted danger">Quantity should not more than the shop available stock.</small>
+                <small *ngIf="removeStockClick && !!shopremoveModel.quantity && shopremoveModel.quantity <= 0" class="form-text text-muted danger">Quantity should be greater than zero.</small>
+              </div>
+              <div class="form-group col-md-6 mb-2">
+                <label for="reason">Reason</label>
+                <select class="form-control border-primary" id="reason" name="reason" placeholder="Reason" [(ngModel)]="shopremoveModel.reason"
+                required>
+                <option value="">Select Reason</option>
+                <option value="DAMAGED">Damaged / Broken</option>
+                <option value="RETURNTOWAREHOUSE">Return to Warehouse</option>
+                </select>
+                <small *ngIf="removeStockClick && !shopremoveModel.reason" class="form-text text-muted danger">Reason is required</small>
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col-md-12 mb-2">
+                <label for="Remarks">Remarks</label>
+                <textarea class="form-control border-primary" id="remarks" name="remarks" placeholder="Remarks" #remarks="ngModel" [(ngModel)]="shopremoveModel.remarks" ></textarea>
+                <small *ngIf="removeStockClick && !shopremoveModel.remarks" class="form-text text-muted danger">Rremarksemarks is required</small>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-danger" (click)="modal.close('Close click')">Close</button>
+          <button type="button" class="btn btn-outline-primary ml-2" (click)="removeStockToProduct()">Save</button>
+        </div>
+      </ng-template>
+      <ng-template #listofRefProduct let-modal>
+        <div class="modal-header">
+          <h4 class="modal-title" id="modal-basic-title">List of Products</h4>
+          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p class="font-medium-1">Select a product</p>
+          <table class="table table-striped text-center">
+            <thead>
+              <tr>
+                <th> # </th>
+                <th>Product Name</th>
+                <th>Producer</th>
+                <th>Vintage</th>
+                <th>Region</th>
+              </tr>
+            </thead>
+          </table>
+          <div class="productTable">
+            <table class="table table-striped text-center">
+              <tbody>
+                <tr *ngFor="let item of productList;let i = index" (click)="selectProductRow(item)" >
+                <td> {{ i + 1 }} </td>
+                <td> {{ item.name }}</td>
+                <td> {{ item.producer.name }} </td>
+                <td *ngIf="!!item.attr.year" > {{ item.attr.year}} </td>
+                <td *ngIf="!item.attr.year" >  - </td>
+                <td *ngIf="!!item.attr.region && !!item.attr.region['name']" > {{ item.attr.region['name'] }} </td>
+                <td *ngIf="!item.attr.region" > - </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <p class="text-danger">Note: Click on the product to select</p>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</div>
+</div>

@@ -1,0 +1,199 @@
+<div class="main-sub-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header ">
+            <h4 class="card-title"> {{title}} Tariff Details</h4>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="row">
+                  <div class="form-group col-md-6">
+                    <label for="ticket_type">Type</label>
+                    <select [disabled]= "isTicketUpdate" class="form-control border-primary" (change)="checkSavedGroup($event)" id="ticket_type" name="ticket_type" placeholder="Type" [(ngModel)]="ticketObject.type" #ticket_type="ngModel">
+                    <option *ngFor="let ticket of ticketsType" [value]="ticket.id">{{ticket.name}}</option>
+                    </select>
+                  </div>
+                  <div class="form-group col-md-6 mb-3" *ngIf="!!ticketObject.type && ticketObject.type === 'GROUP' && (groupNames.length === 0 || !!create_new_group)">
+                    <label for="groupname">Group Name<span class="handPointer" (click)="createNewGroup()" >(Select Group)</span></label>
+                    <input type="text" class="form-control border-primary" id="groupname" name="groupname" placeholder="Group Name" #groupname="ngModel" [(ngModel)]="ticket_group_name"/>
+                    <small *ngIf="!!ticketObject.type && !ticket_group_name" class="form-text text-muted text-danger">Group Name Required</small>
+                  </div>
+                  <div class="form-group col-md-6 mb-3" *ngIf="!!ticketObject.type && ticketObject.type === 'GROUP' && (!create_new_group && groupNames.length !== 0)">
+                    <label for="groupnamesel">Group Name <span class="handPointer" (click)="createNewGroup()" >(Create New Group)</span></label>
+                    <select [disabled]= "isTicketUpdate" class="form-control border-primary"  id="groupnamesel" name="groupnamesel" placeholder="Group Name" #groupnamesel="ngModel" [(ngModel)]="ticket_group_name">
+                    <option value=''>Select Group Name</option>
+                    <option *ngFor="let group of groupNames" [value]="group.id">{{group.name}}</option>
+                    </select>
+                    <small *ngIf="!!ticketObject.type && !ticket_group_name" class="form-text text-muted text-danger">Group Name Required</small>
+                  </div>
+                </div>
+                <div class="row" *ngIf="!!ticketObject.type">
+                  <div class="form-group col-md-6 mb-3">
+                    <label for="ticketname">Name</label>
+                    <input type="text" class="form-control border-primary" id="ticketname" name="ticketname" placeholder="Name" #ticketname="ngModel" [(ngModel)]="ticketObject.name"/>
+                    <small *ngIf="!!ticketObject.type && !ticketObject.name" class="form-text text-muted text-danger">Name Required</small>
+                  </div>
+                  <div class="form-group col-md-6 mb-2">
+                    <label for="ticketprice">Price</label>
+                    <input type="number" class="form-control border-primary" (change)="calculateTotalPrice($event)" id="ticketprice" name="ticketprice" placeholder="Price" #ticketprice="ngModel" [(ngModel)]="ticketObject.price"/>
+                  </div>
+                </div>
+                <div class="row" *ngIf="!!ticketObject.type">
+                  <div class="form-group col-md-6 mb-3">
+                    <label for="ticketvat">VAT(in %)</label>
+                    <input  type="number" class="form-control border-primary" (change)="calculateTotalPrice($event)" id="ticketvat" name="ticketvat" placeholder="VAT" #ticketvat="ngModel" [(ngModel)]="ticketObject.vat"/>
+                  </div>
+                  <div class="form-group col-md-6 mb-2">
+                    <label for="ticketpricevat">Price With VAT</label>
+                    <input type="text" readonly class="form-control border-primary" id="ticketpricevat" name="ticketpricevat" placeholder="Price with VAT" #ticketprice="ngModel" [(ngModel)]="ticketObject.price_vat"/>
+                  </div>
+                </div>
+                <div class="row justify-content-center" *ngIf="!!ticketObject.type">
+                  <div class="col-sm-6">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Start Date</mat-label>
+                      <input matInput [matDatepicker]="stratTicketDatePicker" placeholder="Start date" name="ticketstartdate"  [(ngModel)]="ticketObject.start_date">
+                      <mat-datepicker-toggle matSuffix [for]="stratTicketDatePicker"></mat-datepicker-toggle>
+                      <mat-datepicker #stratTicketDatePicker></mat-datepicker>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-sm-6">
+                    <mat-form-field appearance="outline">
+                      <mat-label>End Date</mat-label>
+                      <input matInput [matDatepicker]="endTicketDatepicker" placeholder="End date" name="ticketenddate" [(ngModel)]="ticketObject.end_date">
+                      <mat-datepicker-toggle matSuffix [for]="endTicketDatepicker"></mat-datepicker-toggle>
+                      <mat-datepicker #endTicketDatepicker></mat-datepicker>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="row" *ngIf="!!ticketObject.type">
+                  <div class="form-group col-md-6 mb-2">
+                    <label for="ticketlimit">Limit</label>
+                    <input type="text" class="form-control border-primary" id="ticketlimit" name="ticketlimit" placeholder="Limit" #ticketlimit="ngModel" [(ngModel)]="ticketObject.limit"/>
+                    <small *ngIf="!!ticketObject.type && !ticketObject.limit && ticketObject.limit <=0 " class="form-text text-muted text-danger">Limit Required</small>
+                  </div>
+                  <div class="form-group col-md-6 mb-3">
+                    <label for="ticketmax">Max</label>
+                    <select class="form-control border-primary" id="ticketmax" name="ticketmax" placeholder="Max" #ticketmax="ngModel" [(ngModel)]="ticketObject.max">
+                    <option *ngFor="let number of numbers" [value]="number">{{number}}</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="row" *ngIf="!!ticketObject.type">
+                  <div class="form-group col-md-6 mb-3">
+                    <a mat-raised-button *ngIf="!isTicketUpdate"  (click)="saveTicketToEvent($event)" class="btn  btn-md btn-info">Add</a>
+                    <a mat-raised-button *ngIf="!!isTicketUpdate"  (click)="updateTicketToEvent($event)" class="btn  btn-md btn-info">Update</a>
+                  </div>
+                </div>
+                <!-- <span *ngIf="!ticketObject.type && tickets.length === 0"><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/></span> -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="row" *ngIf="!!tickets.length" >
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header ">
+            <h4 class="card-title"> Tariff List</h4>
+          </div>
+          <div class="card-body">
+            <div class="ouline_border" *ngIf="tickets.length !== 0">
+              <div *ngFor="let ticket of tickets;let i = index">
+                <table class="table tickettable" *ngIf="i === 0">
+                  <thead>
+                    <tr>
+                      <th class="ticket_type">Ticket Type</th>
+                      <th class="ticket_price">Price</th>
+                      <th class="ticket_praticipant">Participants</th>
+                      <th class="">Action</th>
+                    </tr>
+                  </thead>
+                </table>
+                <table class="table tickettable" *ngIf="ticket['type'] === 'TICKET'">
+                  <thead [hidden]="true">
+                    <tr>
+                      <th class="ticket_type">Ticket Type</th>
+                      <th class="ticket_price">Price</th>
+                      <th class="ticket_praticipant">Participants</th>
+                      <th class="ticket_action">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="ticket_type">
+                        {{ticket.name}}
+                      </td>
+                      <td class="ticket_price">
+                        {{ticket.price_vat}}
+                      </td>
+                      <td class="ticket_praticipant">
+                        {{ticket.participants}}
+                      </td>
+                      <td class="ticket_action">
+                        <i class="material-icons text-info handPointer" (click)="editTicket(ticket,i)">edit</i>
+                        <i class="material-icons text-danger handPointer" (click)="deleteTicket(ticket,i)">delete_forever</i>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div *ngIf="ticket['type'] === 'GROUP'">
+                  <div class="group_name" (click)="deleteTicket(ticket, i)">
+                    &nbsp;{{ticket.name}}
+                    <i class="material-icons text-danger handPointer pull-right" *ngIf="ticket['ticket_arr'].length === 0" (click)="deleteTicket(ticket,i)">delete_forever</i>
+                  </div>
+                  <div *ngFor="let ticket_arr of ticket['ticket_arr'];let group_i = index">
+                    <table class="table tickettable" *ngIf="ticket_arr['type'] === 'TICKET'">
+                      <thead [hidden]="true">
+                        <tr>
+                          <th class="ticket_type">Ticket Type</th>
+                          <th class="ticket_price">Price</th>
+                          <th class="ticket_praticipant">Participants</th>
+                          <th class="ticket_action">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td class="ticket_type">
+                            {{ticket_arr.name}}
+                          </td>
+                          <td class="ticket_price">
+                            {{ticket_arr.price_vat}}
+                          </td>
+                          <td class="ticket_praticipant">
+                            {{ticket_arr.participants}}
+                          </td>
+                          <td class="ticket_action">
+                              <i class="material-icons text-info handPointer" (click)="editGroupTicket(ticket,i, group_i)">edit</i>
+                            <i class="material-icons text-danger handPointer" (click)="deleteGroupTicket(ticket,i, group_i)">delete_forever</i>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <div class="row useFullWidth">
+              <div class="col-md-12">
+                <div class="pull-right" >
+                  <a mat-raised-button  (click)="onClearValue()" class="btn  btn-md">Back</a>
+                  <a mat-raised-button  (click)="onSaveClick()" class="btn btn-rose btn-md"> Save</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

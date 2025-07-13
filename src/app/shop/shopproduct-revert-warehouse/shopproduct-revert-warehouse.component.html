@@ -1,0 +1,122 @@
+<div class="main-sub-content">
+    <div class="container-fluid">
+        
+            <div class="row">
+                <div class="col-lg-12 col-md-12">
+                    <div class="card">
+                      <div class="card-header card-header-tabs card-header-rose">
+                <div class="nav-tabs-navigation">
+                <div class="nav-tabs-wrapper">
+                      <div class="card-icon">
+                              <i class="material-icons">shop</i>
+                            </div>
+                  <span class="nav-tabs-title">Add Product To Shop</span>
+                  <ul class="nav nav-tabs" data-tabs="tabs">
+                    <li class="nav-item">
+                      <a class="nav-link" [ngClass]="all?'active':''" href="#all" data-toggle="tab">
+                        <i class="material-icons">bug_report</i> All Products
+                        <div class="ripple-container"></div>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="#multiple" [ngClass]="multiple?'active':''" data-toggle="tab">
+                        <i class="material-icons">code</i> Multiple Products
+                        <div class="ripple-container"></div>
+                      </a>
+                    </li>
+                  
+                  </ul>
+                </div>
+              </div>
+</div>
+<div class="tab-content">
+    <div class="tab-pane active" id="all">
+      <div class="card-body">
+          <div class="row">
+          <div class="col-sm-12">
+              <div class="card" style="margin: 0">
+                  <div class="card-header">
+                      <h5 class="font-small-3">Move All Products from Warehouse to Shop</h5>
+                  </div>
+                  <div class="card-body">
+                      <div class="card-block">
+                          <div class="row justify-content-center">
+                            <div class="col-3">
+                              <div class="card" style="margin: 0">
+                                <div class="card-body">
+                                  <img class="card-img-top img-fluid" src="assets/img/defaults/pop-up-store-icon.png" style="height:194px;" alt="Shop">
+                                  <div class="card-block">
+                                    <h5 class="font-size-small overWriteTitle justify" > {{ shop_name }} Shop</h5>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-3" *ngIf="loadingCheck">
+                              <img  class="card-img-top img-fluid imageAlign" src="assets/img/defaults/loading/loader2.gif" alt="Loading...">
+                              <span class="smallFont">Please wait, This operation will take some time.</span>
+                            </div>
+                            <div class="col-3" *ngIf="!loadingCheck">
+                              <img  class="card-img-top img-fluid imageAlign arrow-cen" src="assets/img/defaults/arrow.png" alt="Move Product">
+                              <div class="smallFont text-center">Move all product to warehouse</div>
+                            </div>
+                            <div class="col-3">
+                              <div class="card" style="margin: 0">
+                                <div class="card-body">
+                                  <img class="card-img-top img-fluid" src="assets/img/defaults/warehouse.png" alt="Warehouse">
+                                  <div class="card-block">
+                                    <h5 class="font-size-small overWriteTitle" >Warehouse</h5>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                        </div> <!-- Row ends here-->
+                        <div class="row justify-content-center">
+                          <button class="btn btn-raised btn-warning" [disabled]="loading" (click)="gotoShopList()" style="margin-right: 20px;">Back</button>
+                          <button class="btn btn-raised btn-primary" [disabled]="loading" (click)="openConfirmation()">Move all Products</button>
+                        </div> <!-- button row ends here-->
+                        <div class="row">
+                          <div class="col-12">
+                              <p>Notes : </p>
+                              <ul>
+                                  <li> This operration move all the product from selected shop to warehouse.</li>
+                                  <li> If the operation is started, we can't stop in between.</li>
+                                  <li> This operation will take some time to complete, please do not press back or close.</li>
+                              </ul>
+                          </div>
+                         </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      </div>
+      </div>
+
+      <div class="tab-pane" id="multiple">
+          <div class="card-body">
+              <div class="row">
+                  <div class="col-sm-12">
+                          <div class="card">
+                              <div class="card-header">
+                                  <h5 class="font-small-3">Multiple Product to Warehouse</h5>
+                              </div>
+                              <div class="card-body">
+                                  <div class="card-block">
+                                      <div class="row">
+                                           Work in Progress...
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+          </div>
+          </div>
+      </div>
+
+</div>
+</div>
+        </div>
+        </div>
+        </div>
+        

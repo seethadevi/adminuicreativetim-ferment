@@ -1,0 +1,33 @@
+.tickettable{
+    .ticket_type{
+        width:40%;
+    }
+    .ticket_price {
+        width:25%;
+        text-align: center;
+    }
+    .ticket_praticipant {
+        width:25%;
+        text-align: center;
+    }
+    .ticket_action{
+        width: 10%;
+    }
+}
+.group_name {
+    padding: 10px 0;
+    background: #ece9e9;
+    font-weight: 400;
+}
+
+.ouline_border{
+    border: 1px solid #ece9e9;
+}
+
+.handPointer{
+    cursor: pointer;
+}
+
+.useFullWidth {
+    width: 100%;
+}

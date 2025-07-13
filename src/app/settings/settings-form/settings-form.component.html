@@ -1,0 +1,72 @@
+<div class="main-sub-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+            <div class="card">
+                <div class="card-header ">
+                    <h4 class="card-title">{{title}}</h4>
+                </div>
+                <div class="card-body ">
+                    <div class="row">
+                        <div class="col-lg-3 col-md-3">
+                            <ul class="nav nav-pills nav-pills-rose nav-pills-icons flex-column" role="tablist">
+                                <li class="nav-item">
+                                <a class="nav-link" [ngClass]=" selectedTab === listOfTabString[0] ?'active':''" (click)="setSelectedTab(listOfTabString[0])"  data-toggle="tab" href="#weezevent" role="tablist">
+                                    <i class="material-icons">security</i> Weezevent Access
+                                </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-lg-9 col-md-9">
+                            <div class="tab-content">
+                                <div class="tab-pane wizard-container" [ngClass]=" selectedTab === listOfTabString[0] ?'active':''" id="basicinfo">
+                                    <h4 class="card-title" *ngIf="!accessToken" >Generate Weezevent Accesstoken</h4>
+                                    <h4 class="card-title" *ngIf="!!accessToken" >Reset Weezevent Accesstoken</h4>
+                                    <div class="row">
+                                        <div class="form-group col-4  mt-4 text-center">
+                                            <label for="productname">Access Token *</label>
+                                        </div>
+                                        <div class="form-group col-8 mb-2" *ngIf="!!accessToken" >
+                                            <label for="productname">
+                                                {{accessToken}} &nbsp;&nbsp; <button type="button" class="btn btn-next btn-fill btn-info btn-wd"  (click)="showSwal()">Reset Access Token</button>
+                                            </label>
+                                        </div>
+                                        <div class="form-group col-8 mb-2" *ngIf="!accessToken" >
+                                            <button type="button" class="btn btn-next btn-fill btn-info btn-wd" (click)="showSwal()">Generate Access Token</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="row">
+            <div class="col-md-12">
+                <div class="card ">
+                    <div class="card-header ">
+                      <h4 class="card-title" *ngIf="!accessToken" >Generate Weezevent Accesstoken</h4>
+                      <h4 class="card-title" *ngIf="!!accessToken" >Reset Weezevent Accesstoken</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="form-group col-4  mt-4 text-center">
+                                <label for="productname">Access Token *</label>
+                            </div>
+                            <div class="form-group col-8 mb-2" *ngIf="!!accessToken" >
+                                <label for="productname">
+                                    {{encoded_accessToken}} &nbsp;&nbsp; <button type="button" class="btn btn-next btn-fill btn-rose btn-wd"  (click)="showSwal()">Reset Access Token</button>
+                                </label>
+                            </div>
+                            <div class="form-group col-8 mb-2" *ngIf="!accessToken" >
+                                <button type="button" class="btn btn-next btn-fill btn-rose btn-wd" (click)="showSwal()">Generate Access Token</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+    </div>
+</div>
+    

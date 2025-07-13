@@ -1,0 +1,382 @@
+<div class="main-sub-content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-header ">
+              <h4 class="card-title">Event Primary Details</h4>
+            </div>
+            <div class="card-body ">
+              <div class="row">
+                <div [ngClass]="!!isEdit ? 'col-sm-9' : 'col-sm-12' ">
+                  <div class="row justify-content-center">
+                    <div class="col-sm-6">
+                      <mat-form-field appearance="outline">
+                        <mat-label>Name</mat-label>
+                        <input matInput required placeholder="Name" [(ngModel)]="shopModel.name" name="name" />
+                        <mat-hint class="mat-error" *ngIf="eventFromSubmit && !shopModel.name">
+                          Name is Required
+                        </mat-hint>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-6">
+                      <mat-form-field appearance="outline">
+                        <mat-label>Shop Type</mat-label>
+                        <mat-select required id="shopType" name="shopType" [(ngModel)]="shopModel.shop_type" (selectionChange)="selectOptionFlag()">
+                        <mat-option *ngFor="let shoptype of shopTypes" [value]="shoptype.id">
+                        {{shoptype.name}}
+                        </mat-option>
+                        </mat-select>
+                        <mat-hint class="mat-error" *ngIf="eventFromSubmit && !shopModel.shop_type">
+                          Shop Type is Required
+                        </mat-hint>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="row justify-content-center">
+                    <div class="col-md-6">
+                      <mat-form-field appearance="outline">
+                        <mat-label>Country</mat-label>
+                        <mat-select required id="location" name="location" [(ngModel)]="shopModel.country_code" (selectionChange)="selectCountryData()">
+                        <mat-option *ngFor="let country of countryList" [value]="country.code">
+                        {{country.name}}
+                        </mat-option>
+                        </mat-select>
+                        <mat-hint class="mat-error" *ngIf="eventFromSubmit && !shopModel.country_code">
+                          Country is Required
+                        </mat-hint>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-md-6">
+                      <label for="wine">Region*</label>
+                      <tag-input [(ngModel)]="codeList" name="codeList"
+                      [placeholder]="'Search a new Region'"
+                      [onTextChangeDebounce]="500"
+                      [secondaryPlaceholder]="'Search Region'"
+                      [onlyFromAutocomplete]="true"
+                      (onAdd) = "onAddingCode($event)"
+                      (onRemove) = "onRemovingCode($event)"
+                      [identifyBy]="'id'"
+                      [removable]="(!isEdit && codeList.lenght !==0)"
+                      [maxItems] = "1"
+                      [disable]="!shopModel.country_code"
+                      [displayBy]="'name'">
+                      <tag-input-dropdown
+                      [autocompleteObservable]="requestAutocompleteItems"
+                      [minimumTextLength]="3"
+                      [identifyBy]="'id'"
+                      [displayBy]="'code'">
+                      <ng-template let-item="item" let-index="index">
+                        {{item.code}}
+                      </ng-template>
+                      </tag-input-dropdown>
+                      </tag-input>
+                    </div>
+                  </div>
+                  <div class="row justify-content-center">
+                    <div class="col-sm-6">
+                      <mat-form-field appearance="outline">
+                        <mat-label>Start Date *</mat-label>
+                        <input matInput [matDatepicker]="stratDatePicker" placeholder="Start date" name="startdate"  [(ngModel)]="startDate">
+                        <mat-datepicker-toggle matSuffix [for]="stratDatePicker"></mat-datepicker-toggle>
+                        <mat-datepicker #stratDatePicker></mat-datepicker>
+                        <mat-hint class="mat-error" *ngIf="eventFromSubmit && !startDate">
+                          Startdate is Required
+                        </mat-hint>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-sm-6">
+                      <mat-form-field appearance="outline">
+                        <mat-label>End Date *</mat-label>
+                        <input matInput [matDatepicker]="endDatepicker" placeholder="End date" name="enddate" [(ngModel)]="endDate">
+                        <mat-datepicker-toggle matSuffix [for]="endDatepicker"></mat-datepicker-toggle>
+                        <mat-datepicker #endDatepicker></mat-datepicker>
+                        <mat-hint class="mat-error" *ngIf="eventFromSubmit && !endDate">
+                          Enddate is Required
+                        </mat-hint>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="row justify-content-center">
+                    <div class="col-md-5">
+                      <mat-form-field appearance="outline">
+                        <mat-label>Organiser Name</mat-label>
+                        <input required matInput placeholder="Organiser Name" [(ngModel)]="shopModel.organiser_name" name="organiser_name" />
+                        <mat-hint class="mat-error" *ngIf="eventFromSubmit && !shopModel.organiser_name">
+                          Organiser is Required
+                        </mat-hint>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-md-4">
+                      <mat-form-field appearance="outline">
+                        <mat-label>Email</mat-label>
+                        <input matInput [(ngModel)]="shopModel.email" name="email" placeholder="Email">
+                      </mat-form-field>
+                    </div>
+                    <div class="col-md-3">
+                      <mat-form-field appearance="outline">
+                        <mat-label>Mobile</mat-label>
+                        <input matInput placeholder="Mobile" [(ngModel)]="shopModel.mobile" name="mobile">
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="!!isEdit" [ngClass]="!!isEdit ? 'col-sm-3' : '' ">
+                  <div class="row" id="print-QRcode" *ngIf="isEdit" >
+                    <div class="form-group col-md-12 mb-2 text-center printData" id="printData">
+                      <div class="changetxt">QR Code</div>
+                      <div class="hidetext">{{shopModel.name}}</div>
+                      <qrcode [qrdata]="qrURLString"  [width]="120" [errorCorrectionLevel]="'M'" [elementType]="img"></qrcode>
+                    </div>
+                  </div>
+                  <div class="row" *ngIf="isEdit">
+                    <div class="form-group col-md-12 mb-2 text-center">
+                      <button class="btn btn-primary btn-raised"(click)="Print('print-QRcode')">Print</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card ">
+            <div class="card-header card-header-info card-header-icon">
+              <div class="card-icon">
+                <i class="material-icons">import_contacts</i>
+              </div>
+              <h4 class="card-title">Basic Information</h4>
+            </div>
+            <div class="card-body ">
+              <div class="row justify-content-center">
+                <div class="col-12">
+                  <mat-form-field appearance="outline">
+                    <mat-label>Site URL</mat-label>
+                    <input matInput [(ngModel)]="shopModel.url" name="siteurl" placeholder="eg: http://www.shop.com">
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-2 my-3">
+                  <mat-checkbox [(ngModel)]="shopModel.isPrivate" [ngModelOptions]="{standalone: true}">Private</mat-checkbox>
+                </div>
+                <div class="col-md-2 my-3" *ngIf="shopModel.isPrivate">
+                  Channels :
+                </div>
+                <div class="col-md-8 my-1 removePadding" *ngIf="shopModel.isPrivate">
+                  <div class="channel" *ngFor="let channel of channelList;let i = index" >
+                    <span *ngIf="!!channel.picture && !!channel.picture.sm"  (click)="addChannel(channel, i)" class="channelImg" [ngClass]="!!channel['isAdded'] ? 'activeCls': '' " matTooltip="{{channel.name}}" [matTooltipPosition]="'below'"><img src="{{channel.picture.sm}}" /></span>
+                    <button *ngIf="!channel.picture" (click)="addChannel(channel, i)" mat-raised-button class="btn btn-just-icon btn-round btn-white change-style" [ngClass]="!!channel['isAdded'] ? 'activeCls': '' " >
+                    <i class="fa fa-group"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="row justify-content-center">
+                <div class="col-sm-12">
+                  <mat-form-field appearance="outline">
+                    <mat-label>Description</mat-label>
+                    <textarea rows="8" matInput  placeholder="Description" [(ngModel)]="shopModel.description" name="description" ></textarea>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row justify-content-center">
+                <div class="col-6 mb-2 text-center">
+                  <label for="email">Banner</label> <!-- (Note: Recommended Image Size: 2000 x 1600)-->
+                  <br>
+                  <app-image-upload [imgSize]="'lg'" [imageUrl]="thumbnailurl" [uploadUrl]="imgUploadUrl" [name]="'Banner'" [headers]="appService.getImgUploadHeaders()"  (changeImage)="onFileUploadEvent($event)"></app-image-upload>
+                </div>
+                <div class="col-6 mb-2 text-center">
+                  <label for="email">Logo </label>
+                  <br>
+                  <app-image-upload [imgSize]="'lg'" [imageUrl]="thumbnailurl1" [uploadUrl]="imgUploadUrl" [name]="'Logo'" [headers]="appService.getImgUploadHeaders()"  (changeImage)="onFileUploadEvent1($event)"></app-image-upload>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header card-header-info card-header-icon">
+              <div class="card-icon">
+                <i class="material-icons">where_to_vote</i>
+              </div>
+              <h4 class="card-title">Additional Details</h4>
+            </div>
+            <div class="card-body ">
+              <div class="row">
+                <div class="col-lg-3 col-md-3">
+                  <ul class="nav nav-pills nav-pills-rose nav-pills-icons flex-column" role="tablist">
+                    <li class="nav-item">
+                      <a class="nav-link" [ngClass]=" selectedTab === listOfTabString[0] ?'active':''" (click)="setSelectedTab(listOfTabString[0])" data-toggle="tab" href="#location" role="tablist">
+                      <i class="material-icons">my_location</i> Location
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" [ngClass]=" selectedTab === listOfTabString[1] ?'active':''" (click)="setSelectedTab(listOfTabString[1])" data-toggle="tab" href="#additional" role="tablist">
+                      <i class="material-icons">apps</i> App Settings
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+                <div class="col-lg-9 col-md-9">
+                  <div class="tab-content">
+                    <!--Location Tab content start here-->
+                    <div class="tab-pane wizard-container" [ngClass]=" selectedTab === listOfTabString[0] ?'active':''" id="location">
+                      <div class="row">
+                        <div class="form-group col-md-3 mt-4" style="padding-right:0">
+                          <label for="searchtext">Event Location *: </label>
+                        </div>
+                        <div class="form-group col-md-9 mb-2" style="padding-left:0">
+                          <input (keydown)="searchKeyDown($event)" placeholder="search for location" autocorrect="off" autocapitalize="off"
+                          spellcheck="off" type="search" class="form-control" name="search" [(ngModel)]="searchText"  #search>
+                          <small class="form-text text-danger">Note: Press enter to load google map</small>
+                          <small class="form-text text-danger" *ngIf="eventFromSubmit && !shopModel.address.address1">
+                          Location is Required
+                          </small>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-12 mb-1" *ngIf="!!searchText && !!shopModel.address.address1">
+                          <label>Location:</label>
+                          <label class="changetxt">
+                          {{shopModel.address.address1 }},
+                          {{shopModel.address.address2 }}
+                          {{shopModel.address.zip + " " +  shopModel.address.city }},
+                          {{shopModel.address.country }}
+                          </label>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-12 mb-1">
+                          <label>Map:</label>
+                          <agm-map [latitude]="latitude" [longitude]="longitude" [scrollwheel]="false" [zoom]="zoom">
+                          <agm-marker [latitude]="latitude" [longitude]="longitude" [markerDraggable]="false">
+                          <agm-info-window *ngIf="!!searchText" >
+                            <strong>{{searchText}}</strong>
+                          </agm-info-window>
+                          </agm-marker>
+                          </agm-map>
+                        </div>
+                      </div>
+                      <div class="pull-right" >
+                        <a mat-raised-button [hidden]="!isEdit" (click)="onSaveClick()" class="btn btn-rose btn-md"> Save</a>
+                        <a mat-raised-button  (click)="setSelectedTab(listOfTabString[1])" class="btn btn-primary btn-md"> Next</a>
+                      </div>
+                    </div>
+                    <!--Location Tab content end here-->
+                    <div class="tab-pane wizard-container" [ngClass]=" selectedTab === listOfTabString[1] ?'active':''" id="additional">
+                      <div class="row  justify-content-center">
+                        <div class="form-group col-md-6 mb-2">
+                          <mat-form-field appearance="outline">
+                            <mat-label>Geofencing Radius</mat-label>
+                            <input matInput appNumberOnly type="text" maxLength="3" [ngModelOptions]="{standalone: true}" class="border-primary" id="geofencing" name="geofencing" placeholder="Geofencing Radius"
+                            [(ngModel)]="shopModel.geofencing_radius" #geofencing="ngModel"/>
+                          </mat-form-field>
+                        </div>
+                        <div class="col-md-6 my-4">
+                          <mat-checkbox [(ngModel)]="shopModel.cust_mob_evt_show" [ngModelOptions]="{standalone: true}">Shown in customer mobile app</mat-checkbox>
+                        </div>
+                      </div>
+                      <div class="row  justify-content-center">
+                        <div class="col-md-6 mb-2">
+                          <mat-form-field appearance="outline">
+                            <mat-label>Timezone </mat-label>
+                            <mat-select id="shopTimeZone" name="shopTimeZone" [(ngModel)]="shopModel.timezone">
+                            <mat-option *ngFor="let timezone of timezonesList" [value]="timezone">
+                            {{timezone}}
+                            </mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                          <mat-form-field appearance="outline">
+                            <mat-label>Currency *</mat-label>
+                            <input matInput  [disabled]="true"  type="text" maxLength="3" [ngModelOptions]="{standalone: true}" class="border-primary" id="currency"
+                            name="currency" placeholder="Currency"
+                            [(ngModel)]="shopModel.currency.name" #currency="ngModel"/>
+                          </mat-form-field>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6 mb-2">
+                          <mat-form-field appearance="outline">
+                            <mat-label>Score Rating</mat-label>
+                            <input matInput appNumberOnly type="text" class="border-primary" id="score_range" name="score_range" placeholder="Score"
+                            [(ngModel)]="shopModel.score_range" #score_range="ngModel"/>
+                          </mat-form-field>
+                        </div>
+                        <div class="form-group col-md-6 my-4">
+                          <mat-checkbox [(ngModel)]="shopModel.order_transaction_flag" [ngModelOptions]="{standalone: true}">Order Transaction</mat-checkbox>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="form-group col-md-6">
+                          <mat-checkbox [(ngModel)]="shopModel.pricing_flag" [ngModelOptions]="{standalone: true}">Pricing</mat-checkbox>
+                        </div>
+                        <div class="form-group col-md-6">
+                          <mat-checkbox [(ngModel)]="shopModel.cart_flag" [ngModelOptions]="{standalone: true}">Cart</mat-checkbox>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="form-group col-md-6 mb-2">
+                          <label for="prof_type">Professional Type </label>
+                          <ng-select class="col removePaddingSpace" [items]="profTypeList" [multiple]="true" bindValue="id"  [ngModelOptions]="{standalone: true}"
+                          bindLabel="name" placeholder="Select Professional Domain"
+                          [(ngModel)]="shopModel.prof_type">
+                          </ng-select>
+                          <small class="form-text text-danger" *ngIf="eventFromSubmit && !shopModel.prof_type && !!shopModel.shop_type && shopModel.shop_type === 'TASTING'">
+                          Professional Type is Required
+                          </small>
+                        </div>
+                        <div class="form-group col-md-6 mb-2">
+                          <label for="prof_domain">Professional Domain </label>
+                          <ng-select class="col removePaddingSpace" [items]="profDomainList" [multiple]="true" bindValue="id"  [ngModelOptions]="{standalone: true}"
+                          bindLabel="name" placeholder="Select Professional Domain"
+                          [(ngModel)]="shopModel.prof_domain">
+                          </ng-select>
+                          <small class="form-text text-danger" *ngIf="eventFromSubmit && !shopModel.prof_domain && !!shopModel.shop_type && shopModel.shop_type === 'TASTING'">
+                          Professional Domain is Required
+                          </small>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="form-group col-md-6 mb-2">
+                          <label for="prof_type">Category Types </label>
+                          <ng-select class="col removePaddingSpace" [items]="allCategoryList" [multiple]="true" bindValue="type"  [ngModelOptions]="{standalone: true}"
+                          bindLabel="type" placeholder="Select Category Type"
+                          [(ngModel)]="selectedCategories">
+                          </ng-select>
+                        </div>
+                      </div>
+                      <h5 class="info-text"> Choose your Payment Options </h5>
+                      <div class="row panel-wizard">
+                        <div class="col-sm-4">
+                          <div class="choice" (click)="selectPaymentOption('cust_pay_at_till_flag')" [ngClass]=" shopModel.payment_mobile.cust_pay_at_till_flag ? 'active' : ''">
+                          <input type="checkbox" name="paymentoption">
+                          <div class="icon">
+                            <i class="fa fa-credit-card"></i>
+                          </div>
+                          <h6>Pay at Till</h6>
+                        </div>
+                      </div>
+                      <div class="col-sm-4">
+                        <div class="choice" (click)="selectPaymentOption('cust_pay_and_settle_flag')" [ngClass]="!!shopModel.payment_mobile.cust_pay_and_settle_flag ? 'active':''">
+                        <input type="checkbox" name="paymentoption" >
+                        <div class="icon">
+                          <i class="fa fa-money"></i>
+                        </div>
+                        <h6>Pay and Setlle</h6>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="pull-right" >
+                    <a mat-raised-button  (click)="setSelectedTab(listOfTabString[0])" class="btn  btn-md">Prev</a>
+                    <a mat-raised-button  (click)="onSaveClick()" class="btn btn-rose btn-md"> Save</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+  </div>

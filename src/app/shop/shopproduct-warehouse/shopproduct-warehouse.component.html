@@ -1,0 +1,166 @@
+<section id="card" >
+        <div class="card-body">
+            <div class="card-block">
+              <ngb-tabset #t="ngbTabset" type="pills"  [activeId]="activeIdString">
+                <ngb-tab id="multipleProduct">
+                  <ng-template ngbTabTitle ><b>Multiple Products</b></ng-template>
+                  <ng-template ngbTabContent>
+                    <div class="row">
+                      <div class="col-sm-12">
+                        <div class="row">
+                            <div class="col-sm-12 marginBottom  " style="padding: 0">
+                              <label class="container font-small-4">
+                                <input type="checkbox" [(ngModel)]="moveProductStock" [ngModelOptions]="{standalone: true}"/>
+                                  <span class="moveall">&nbsp;&nbsp;Move product to shop with Stock</span>  
+                                  <span class="checkmark"></span>
+                              </label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6 marginBottom">
+                              <h6>Warehouse Product List</h6>
+                              <div class="containerList" dragula="MOVEWHSHOPPRODUCT" [(dragulaModel)]="moveWarehouseProductList">
+                                <div class="listItem" *ngFor="let item of moveWarehouseProductList">
+                                  <div class="row">
+                                    <div class="col-3">
+                                      <div class="imageContainer">
+                                        <img *ngIf="!item.picture"  [src]="environmentLocal.DEFAULT_WINE_BOTTLE" [alt]="item.name" class="imageCard">
+                                        <img *ngIf="!!item.picture && !!item.picture.sm"  [src]="item.picture.sm" [alt]="item.name" class="imageCard">
+                                      </div>
+                                    </div>
+                                    <div class="col-9 prodName my-auto">
+                                      {{ item.name }}
+                                      <div class="text-gray"><small> Stock :  ({{item.stock_availability}})</small></div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="text-danger" *ngIf="onPageLoading && moveWarehouseProductList.length === 0" >
+                                <small class="form-text text-muted danger">No new products is available to move to shop.</small>
+                              </div>
+                            </div>
+                            <div class="col-sm-6 marginBottom">
+                              <h6>Event Product List</h6>
+                              <div class="containerList" dragula="MOVEWHSHOPPRODUCT" [(dragulaModel)]="moveShopProductList">
+                                <div class="listItem" *ngFor="let item of moveShopProductList">
+                                  <div class="row">
+                                    <div class="col-3">
+                                        <div class="imageContainer">
+                                          <img *ngIf="!item.picture"  [src]="environmentLocal.DEFAULT_WINE_BOTTLE" [alt]="item.name" class="imageCard">
+                                          <img *ngIf="!!item.picture && !!item.picture.sm"  [src]="item.picture.sm" [alt]="item.name" class="imageCard">
+                                        </div>
+                                    </div>
+                                    <div class="col-9 prodName my-auto">
+                                        {{ item.name }}
+                                        <div class="text-gray"><small> Stock :  ({{item.stock_availability}})</small></div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="text-danger" *ngIf="isMoveClicked && moveShopProductList.length === 0" >
+                                <small class="form-text text-muted danger">No products is available to move.</small>
+                              </div>
+                            </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row justify-content-center marginTop">
+                      <button class="btn btn-raised btn-warning" [disabled]="loading" (click)="gotoShopProduct()" style="margin-right: 20px;">Back</button>
+                      <button class="btn btn-raised btn-primary" [disabled]="onPageLoading && moveWarehouseProductList.length === 0" (click)="showConfirmWindow()">Move Products</button>
+                    </div> <!-- button row ends here-->
+                  </ng-template>
+                </ngb-tab>
+                <ngb-tab id="allproduct">
+                    <ng-template ngbTabTitle><b>All Product</b></ng-template>
+                    <ng-template ngbTabContent>
+                          <div class="row">
+                              <div class="col-sm-12">
+                                  <div class="card" style="margin: 0">
+                                      <div class="card-header">
+                                          <h5 class="font-small-3">Move All Products from Warehouse to Shop</h5>
+                                      </div>
+                                      <div class="card-body">
+                                          <div class="card-block">
+                                              <div class="row justify-content-center">
+                                                <div class="col-3">
+                                                  <div class="card" style="margin: 0">
+                                                    <div class="card-body">
+                                                      <img class="card-img-top img-fluid" src="assets/img/defaults/warehouse.png" alt="Warehouse">
+                                                      <div class="card-block">
+                                                        <h4 class="font-size-small overWriteTitle" >Warehouse</h4>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                                <div class="col-3" *ngIf="loadingCheck">
+                                                  <img  class="card-img-top img-fluid imageAlign" src="assets/img/defaults/loading/loader2.gif" alt="Loading...">
+                                                  <span class="smallFont">Please wait, This operation will take some time.</span>
+                                                </div>
+                                                <div class="col-3" *ngIf="!loadingCheck">
+                                                  <img  class="card-img-top img-fluid imageAlign" src="assets/img/defaults/loading/arrow.png" alt="Move Product">
+                                                  <div class="smallFont text-center">Move all products to shop</div>
+                                                </div>
+                                                <div class="col-3">
+                                                  <div class="card" style="margin: 0">
+                                                    <div class="card-body">
+                                                      <img class="card-img-top img-fluid" src="assets/img/defaults/pop-up-store-icon.png" style="height:194px;" alt="Shop">
+                                                      <div class="card-block">
+                                                        <h4 class="font-size-small overWriteTitle" > {{ shop_name }} Shop</h4>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                            </div> <!-- Row ends here-->
+                                            <div class="row justify-content-center">
+                                              <button class="btn btn-raised btn-warning" [disabled]="loading" (click)="gotoShopProduct()" style="margin-right: 20px;">Back</button>
+                                              <button class="btn btn-raised btn-primary" [disabled]="loading || total_sum_shopprod_count > 0 " (click)="openConfirmation()">Move all Products</button>
+                                            </div> <!-- button row ends here-->
+                                            <div class="row">
+                                              <div class="col-12">
+                                                  <p>Notes : </p>
+                                                  <ul>
+                                                      <li> This operration move all the product from warehouse to selected shop.</li>
+                                                      <li> If the operation is started, we can't stop in between.</li>
+                                                      <li> This operation will take some time to complete, please do not press back or close.</li>
+                                                  </ul>
+                                              </div>
+                                             </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                    </ng-template>
+                  </ngb-tab>
+              </ngb-tabset>
+            </div>
+          </div>
+          <swal #moveSwalSubscription
+          title=" Do you want move all product from warehouse?"
+          text="This process will take some time to complete"
+          type="question"
+          [showCancelButton]="true"
+          [focusCancel]="true"
+          (confirm)="moveAllProducts()"
+          (close)="onCloseDialog($event)">
+          </swal>
+          <swal #moveWithoutStock
+          title=" Do you want move products from warehouse without stock?"
+          text="This process will not move stock to shop products"
+          type="question"
+          [showCancelButton]="true"
+          [focusCancel]="true"
+          (confirm)="moveProductToShop()"
+          (close)="onCloseDialog($event)">
+          </swal>
+          <swal #moveWithStock
+          title=" Do you want move products from warehouse with stock?"
+          text="This process will move stock to shop product"
+          type="question"
+          [showCancelButton]="true"
+          [focusCancel]="true"
+          (confirm)="moveProductToShop()"
+          (close)="onCloseDialog($event)">
+          </swal> 
+    </section>
+    
