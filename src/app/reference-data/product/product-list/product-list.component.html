@@ -1,0 +1,41 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-10">
+        <div class="input-group no-border">
+          <input type="text" [(ngModel)]="searchString" autocomplete="off" (keyup.enter)="onSearchText()" class="form-control" placeholder="Search Product">
+          <button mat-raised-button type="submit" (click)="onSearchText()" class="btn btn-white btn-round btn-just-icon">
+              <i class="material-icons">search</i>
+              <div class="ripple-container"></div>
+          </button>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <button mat-raised-button class="btn add-new btn-rose" (click)="createnew()">
+          <span class="btn-label">
+            <i class="material-icons">add</i>
+          </span>
+         Create
+        </button>
+      </div>
+    </div>
+    <app-virtual-infinite-scroll [items]="products"
+                                [actions]="actions"
+                                [displayColumnList] = "displayColumnList"
+                                 [classList] = "classList"
+                                 [defaultList] = "defaultList"
+                                (reloadEvent)="onReloadEvent($event)"
+                                (operationEvent)="onOperation($event)" >
+
+    </app-virtual-infinite-scroll>
+    <swal #deleteSwalProduct
+          title="Delete record?"
+          text="Do you want to delete?"
+          type="question"
+          [showCancelButton]="true"
+          [focusCancel]="true"
+          (confirm)="deleteRecords()"
+          (close)="onCloseDialog($event)">
+    </swal>
+  </div>
+</div>

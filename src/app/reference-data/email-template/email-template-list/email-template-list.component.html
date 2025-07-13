@@ -1,0 +1,48 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header card-header-primary card-header-icon">
+            <div class="card-icon">
+              <i class="material-icons">mail</i>
+            </div>
+            <h4 class="card-title left">Email Template</h4>
+            <button mat-raised-button class="btn pull-right btn-primary" (click)="createnew()">
+              <span class="btn-label">
+                <i class="material-icons">add</i>
+              </span>
+              Create
+            </button>
+          </div>
+          <div class="card-body">
+            <div class="toolbar">
+                <!--        Here you can write extra buttons/actions for the toolbar              -->
+            </div>
+           <app-custom-datatable [headers]="headers"
+                                  [items]="emailTemplateList"
+                                  [actions]="actions"
+                                  [showSno]="true"
+                                  [showActions]="true"
+                                  [showSearch]="false"
+                                  [showChooseLimit]="true"
+                                  [params]="defaultParams"
+                                  [totalRecords]="totalRecords"
+                                  (reloadEvent)="onReloadEvent($event)"
+                                  (operationEvent)="onOperation($event)">
+            </app-custom-datatable>
+            <!--<swal #deleteSwalLocation
+            title="Delete record?"
+            text="Do you want to delete?"
+            type="question"
+            [showCancelButton]="true"
+            [focusCancel]="true"
+            (confirm)="deleteRecords()"
+            (close)="onCloseDialog($event)">
+            </swal> -->
+          </div><!-- end content-->
+        </div> <!--  end card  -->
+      </div><!-- end col-md-12 -->
+    </div><!-- end row -->
+  </div>
+</div>

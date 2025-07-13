@@ -1,0 +1,338 @@
+<div class="main-sub-content">
+        <div  class="container-fluid">
+                <section>
+                        <div class="col-md-12">
+                          <div class="card">
+                            <div class="card-header">
+                              <h4 class="card-title" id="from-actions-bottom-right">{{title}} Dynamic Details</h4>
+                            </div>
+                            <div class="card-body">
+                              <div class="px-3">
+                                <form novalidate (ngSubmit)="onSubmit(f)" #f="ngForm">
+                                  <div class="form-body">
+                                    <div class="row">
+                                      <div class="form-group col-md-6 mb-2">
+                                        <label for="category_type">category</label>
+                                        <select [disabled]="isEdit" required class="form-control border-primary" id="category_type" name="category_type" #category_type="ngModel"  placeholder="Select Category" 
+                                        [(ngModel)]="dynamicFormModel.category_type" (change)="getRequiredFormDetails($event)" >
+                                            <option *ngFor="let category of (allCategoryList)" [value]="category.type">{{category.type}}</option>
+                                        </select>
+                                        <small *ngIf="f.submitted && category_type.errors" class="form-text text-muted danger">Category type is Required</small>
+                                      </div>
+                      
+                                   
+                                    </div>
+                      
+                                    <div class="row" *ngIf="!!dynamicFormModel.std_form_component.length" >
+                                      <div class="col-md-12 mb-1">
+                                        <label>Standard Form Component</label>
+                                      </div>
+                                    </div>
+                                    <div class="row" *ngIf="!!dynamicFormModel.std_form_component.length">
+                                      <div class="col-md-12 mb-1">
+                                          <table class="table text-center">
+                                              <thead>
+                                                  <tr>
+                                                      <th>#</th>
+                                                      <th>Type</th>
+                                                      <th>Field</th>
+                                                      <th>Key</th>
+                                                      <th>Display</th>
+                                                      <th>Required</th>
+                                                  </tr>
+                                              </thead>
+                                              <tbody>
+                                                <tr *ngFor="let std of dynamicFormModel.std_form_component;let i = index; ">
+                                                    <td> {{ i + 1 }}</td>
+                                                    <td>{{std.templateOptions.type}}</td>
+                                                    <td>{{std.templateOptions.label}}</td>
+                                                    <td>{{std.key}}</td>
+                                                    <td><span *ngIf="std.isDisplay">Yes</span><span *ngIf="!std.isDisplay">No</span></td>
+                                                    <td><span *ngIf="std.templateOptions.required">Yes</span><span *ngIf="!std.templateOptions.required">No</span></td>
+                                                </tr>
+                                              </tbody>
+                                          </table>
+                                      </div>
+                                    </div>
+                                    <div class="row" *ngIf="!!dynamicFormModel.category_type">
+                                      <div class="col-md-6">
+                                        <label class="mt-1">Dynamic Form Component</label>
+                                      </div>
+                                      <div class="col-md-6">
+                                        <button type="button" class="btn btn-outline-blue" (click)="openTypeSelectionModal(content)"><i class="fa fa-plus-square-o" aria-hidden="true"></i> Add Fields</button>
+                                      </div>
+                                    </div>
+                                    <div class="row" *ngIf="!!dynamicFormModel.dyn_form_component.length">
+                                        <div class="col-md-12 mb-1">
+                                            <table class="table text-center">
+                                                <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>Type</th>
+                                                        <th>Field</th>
+                                                        <th>Key</th>
+                                                        <th>Display</th>
+                                                        <th>Required</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                  <tr *ngFor="let std of dynamicFormModel.dyn_form_component;let i = index; ">
+                                                      <td> {{ i + 1 }}</td>
+                                                      <td>{{std.templateOptions.type}}</td>
+                                                      <td>{{std.templateOptions.label}}</td>
+                                                      <td>{{std.key}}</td>
+                                                      <td><span *ngIf="std.isDisplay">Yes</span><span *ngIf="!std.isDisplay">No</span></td>
+                                                      <td><span *ngIf="std.templateOptions.required">Yes</span><span *ngIf="!std.templateOptions.required">No</span></td>
+                                                      <td>
+                                                          <a class="danger p-0" data-original-title="" title="" (click)="removeFieldRow(i)">
+                                                              <i class="material-icons" style="color:red;cursor: pointer;">delete</i>
+                                                          </a>
+                                                      </td>
+                                                  </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                      </div>
+                                   
+                                  </div>
+                                  <div class="form-actions pull-right">
+                                    <button type="button" class="btn btn-raised btn-warning mr-1" (click)="onClearValue()">
+                                      <i class="ft-x"></i> Cancel
+                                    </button>
+                                    <button type="submit" class="btn btn-raised btn-primary">
+                                      <i class="fa fa-check-square-o"></i> Save
+                                    </button>
+                                  </div>
+                                </form>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </section>
+                      <ng-template #content let-modal>
+                        <div class="modal-header">
+                          <h4 class="modal-title" id="modal-basic-title">Field Type Selection</h4>
+                          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          <form>
+                            <div class="row">
+                              <div class="form-group col-md-6 mb-2">
+                                 <button type="button" class="btn btn-raised btn-lg btn-block btn-outline-info mr-1" (click)="selectFieldType(typecontent,appConstValue.STR_STRING)">
+                                    {{ appConstValue.STR_STRING }}
+                                 </button>
+                              </div>
+                               <div class="form-group col-md-6 mb-2">
+                                <button type="button" class="btn btn-raised btn-lg btn-block  btn-outline-info mr-1" (click)="selectFieldType(typecontent,appConstValue.STR_NUMBER)">
+                                   {{ appConstValue.STR_NUMBER }}
+                                </button>
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="form-group col-md-6 mb-2">
+                                 <button type="button" class="btn btn-raised btn-lg btn-block btn-outline-warning mr-1" (click)="selectFieldType(typecontent,appConstValue.STR_SELECT)">
+                                    {{ appConstValue.STR_SELECT }}
+                                 </button>
+                              </div>
+                               <div class="form-group col-md-6 mb-2">
+                                <button type="button" class="btn btn-raised btn-lg btn-block  btn-outline-warning mr-1" (click)="selectFieldType(typecontent,appConstValue.STR_CHECKBOX)">
+                                   {{ appConstValue.STR_CHECKBOX }}
+                                </button>
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="form-group col-md-6 mb-2">
+                                 <button type="button" class="btn btn-raised btn-lg btn-block btn-outline-info mr-1" (click)="selectFieldType(typecontent,appConstValue.STR_RADIO)">
+                                    {{ appConstValue.STR_RADIO }}
+                                 </button>
+                              </div>
+                            </div>
+                          </form>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-outline-danger" (click)="modal.close('Save click')">Close</button>
+                        </div>
+                      </ng-template>
+                      
+                      <ng-template #typecontent let-modal>
+                        <div class="modal-header">
+                          <h4 class="modal-title" id="modal-basic-title1">{{ currentSelectedFieldType | uppercase}} </h4>
+                          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          <div *ngIf="currentSelectedFieldType === appConstValue.STR_STRING">
+                            <form >
+                              <div class="form-group mb-2">
+                                  <label for="username">Field Name</label>
+                                  <input appAlphabets type="text" class="form-control border-primary" id="name" name="name" placeholder="Field Name" #strname="ngModel" [(ngModel)]="currentFieldValue.strname"
+                                    required />
+                                  <small *ngIf="isSaveClick && !currentFieldValue.strname" class="form-text text-muted danger">Field Name is Required</small>
+                              </div>
+                              <div class="form-check">
+                                <!-- <input type="checkbox" class="form-check-input" id="strRequired" [(ngModel)]="currentFieldValue.strRequired" [ngModelOptions]="{standalone: true}"> -->
+                                <input type="checkbox" [(ngModel)]="currentFieldValue.strRequired" id="strRequired" [ngModelOptions]="{standalone: true}"/>
+                                <label class="form-check-label" for="strRequired">Is this field Required</label>
+                              </div>
+                              <div class="form-check">
+                                <input type="checkbox"  id="strDisplay" [(ngModel)]="currentFieldValue.strDisplay" [ngModelOptions]="{standalone: true}">
+                                <label class="form-check-label" for="strDisplay">Is this field Displayable</label>
+                              </div>
+                            </form>
+                          </div>
+                          <div *ngIf="currentSelectedFieldType === appConstValue.STR_NUMBER">
+                            <form >
+                              <div class="form-group mb-2">
+                                  <label for="numname">Field Name</label>
+                                  <input appAlphabets type="text" class="form-control border-primary" id="numname" name="numname" placeholder="Field Name" #numname="ngModel" [(ngModel)]="currentFieldValue.numname"
+                                    required />
+                                  <small *ngIf="isSaveClick && !currentFieldValue.numname" class="form-text text-muted danger">Field Name is Required</small>
+                              </div>
+                              <div class="form-check">
+                                <input type="checkbox" id="numRequired" [(ngModel)]="currentFieldValue.numRequired" [ngModelOptions]="{standalone: true}">
+                                <label class="form-check-label" for="numRequired">Is this field Required</label>
+                              </div>
+                              <div class="form-check">
+                                <input type="checkbox" id="numDisplay" [(ngModel)]="currentFieldValue.numDisplay" [ngModelOptions]="{standalone: true}">
+                                <label class="form-check-label" for="numDisplay">Is this field Displayable</label>
+                              </div>
+                            </form>
+                          </div>
+                          <div *ngIf="currentSelectedFieldType === appConstValue.STR_SELECT">
+                            <form >
+                              <div class="form-group mb-2">
+                                  <label for="selname">Field Name</label>
+                                  <input appAlphabets type="text" class="form-control border-primary" id="selname" name="selname" placeholder="Field Name" #selname="ngModel" [(ngModel)]="currentFieldValue.selname"
+                                    required  />
+                                  <small *ngIf="isSaveClick && !currentFieldValue.selname" class="form-text text-muted danger">Field Name is Required</small>
+                              </div>
+                             
+                              <div class="row">
+                                  <div class="col-md-12">
+                                    <span class="text-danger">Note :** </span> ID should be unique value in the list of values and fill the all the values without empty.
+                                  </div>
+                              </div>
+                              <div class="row">
+                                <div class="col-md-12 mb-1">
+                                    <table class="table text-center">
+                                      <thead>
+                                        <th>#</th>
+                                        <th>ID</th>
+                                        <th>Value</th>
+                                        <th>Action</th>
+                                      </thead>
+                                      <tbody>
+                                        <tr *ngFor="let item of currentFieldValue.seloptions;let i=index;" >
+                                          <td> {{ i +1 }} </td>
+                                          <td> <input appAlphabetsUnders (blur)="updateValueSelect($event, 'value', i)" class="textboxSize form-control border-primary" type="text" placeholder="eg:value_1"  [value]="item.value"/> </td>
+                                          <td> <input (blur)="updateValueSelect($event, 'label', i)" class="textboxSize1 form-control border-primary" type="text" placeholder="Enter any values" [value]="item.label"/></td>
+                                          <td>
+                                            <a class="danger p-0" data-original-title="" title="" (click)="removeSelectRowOption(i)">
+                                              <i class="ft-x font-medium-3 mr-2"></i>
+                                            </a>
+                                        </td>
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                </div>
+                              </div>
+                              <div class="row">
+                                  <div class="col-md-12 text-center">
+                                      <button type="button" class="btn btn-outline-brown" (click)="addSelectRowOption()">Add Values</button>
+                                  </div>
+                              </div>
+                              <div class="form-check">
+                                <input type="checkbox" id="selRequired" [(ngModel)]="currentFieldValue.selRequired" [ngModelOptions]="{standalone: true}">
+                                <label class="form-check-label" for="selRequired">Is this field Required</label>
+                              </div>
+                              <div class="form-check">
+                                <input type="checkbox" id="selDisplay" [(ngModel)]="currentFieldValue.selDisplay" [ngModelOptions]="{standalone: true}">
+                                <label class="form-check-label" for="selDisplay">Is this field Displayable</label>
+                              </div>
+                            </form>
+                          </div>
+                          <div *ngIf="currentSelectedFieldType === appConstValue.STR_CHECKBOX">
+                            <form >
+                              <div class="form-group mb-2">
+                                  <label for="chkname">Field Name</label>
+                                  <input appAlphabets type="text" class="form-control border-primary" id="chkname" name="chkname" placeholder="Field Name" #chkname="ngModel" [(ngModel)]="currentFieldValue.chkname"
+                                    required />
+                                  <small *ngIf="isSaveClick && !currentFieldValue.chkname" class="form-text text-muted danger">Field Name is Required</small>
+                              </div>
+                              <div class="form-check">
+                                <input type="checkbox" id="chkRequired" [(ngModel)]="currentFieldValue.chkRequired" [ngModelOptions]="{standalone: true}">
+                                <label class="form-check-label" for="chkRequired">Is this field Required</label>
+                              </div>
+                              <div class="form-check">
+                                <input type="checkbox" id="chkDisplay" [(ngModel)]="currentFieldValue.chkDisplay" [ngModelOptions]="{standalone: true}">
+                                <label class="form-check-label" for="chkDisplay">Is this field Displayable</label>
+                              </div>
+                            </form>
+                          </div>
+                      
+                          <div *ngIf="currentSelectedFieldType === appConstValue.STR_RADIO">
+                            <form >
+                              <div class="form-group mb-2">
+                                  <label for="chkname">Field Name</label>
+                                  <input appAlphabets type="text" class="form-control border-primary" id="rdname" name="rdname" placeholder="Label" #rdname="ngModel" [(ngModel)]="currentFieldValue.rdname"
+                                    required />
+                                  <small *ngIf="isSaveClick && !currentFieldValue.rdname" class="form-text text-muted danger">Field Name is Required</small>
+                              </div>
+                             
+                              <div class="row">
+                                  <div class="col-md-12">
+                                    <span class="text-danger">Note :** </span> ID should be unique value in the list of values and fill the all the values without empty.
+                                  </div>
+                              </div>
+                              <div class="row">
+                                <div class="col-md-12 mb-1">
+                                    <table class="table text-center">
+                                      <thead>
+                                        <th>#</th>
+                                        <th>ID</th>
+                                        <th>Value</th>
+                                        <th>Action</th>
+                                      </thead>
+                                      <tbody>
+                                        <tr *ngFor="let item of currentFieldValue.rdoptions;let i=index;" >
+                                          <td> {{ i +1 }} </td>
+                                          <td> <input appAlphabetsUnders (blur)="updateValueRadio($event, 'value', i)" class="textboxSize form-control border-primary" type="text" placeholder="eg:value_1"  [value]="item.value"/> </td>
+                                          <td> <input (blur)="updateValueRadio($event, 'label', i)" class="textboxSize1 form-control border-primary" type="text" placeholder="Enter any values" [value]="item.label"/></td>
+                                          <td>
+                                            <a class="danger p-0" data-original-title="" title="" (click)="removeRadioRowOption(i)">
+                                              <i class="ft-x font-medium-3 mr-2"></i>
+                                            </a>
+                                        </td>
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                </div>
+                              </div>
+                              <div class="row">
+                                  <div class="col-md-12 text-center">
+                                      <button type="button" class="btn btn-outline-brown" (click)="addRadioRowOption()">Add Values</button>
+                                  </div>
+                              </div>
+                              <div class="form-check">
+                                <input type="checkbox" id="rdRequired" [(ngModel)]="currentFieldValue.rdRequired" [ngModelOptions]="{standalone: true}">
+                                <label class="form-check-label" for="rdRequired">Is this field Required</label>
+                              </div>
+                              <div class="form-check">
+                                <input type="checkbox" id="rdDisplay" [(ngModel)]="currentFieldValue.rdDisplay" [ngModelOptions]="{standalone: true}">
+                                <label class="form-check-label" for="rdDisplay">Is this field Displayable</label>
+                              </div>
+                            </form>
+                          </div>
+                      
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-outline-danger" (click)="modal.close('Close click')">Close</button>
+                          <button type="button" class="btn btn-outline-success ml-2" (click)="saveFormlyFieldValue()">Save</button>
+                        </div>
+                      </ng-template>
+</div>
+</div>

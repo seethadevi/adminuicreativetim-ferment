@@ -1,0 +1,50 @@
+<div class="main-sub-content">
+  <div  class="container-fluid">
+    <section>
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+          </div>
+          <div class="card-body">
+            <div class="px-3">
+              <form novalidate (ngSubmit)="onSubmit(f)" #f="ngForm">
+              <div class="form-body">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="row">
+                      <div class="form-group col-md-6 mb-3">
+                        <label for="nameen">Template Name*</label>
+                        <input required type="text" class="form-control border-primary" id="nameen" name="nameen" placeholder="Template Name" #nameen="ngModel" [(ngModel)]="emailTemplateModel.name"/>
+                        <small *ngIf="f.submitted && nameen.errors" class="form-text text-muted text-danger">Name Required</small>
+                      </div>
+                      <div class="col-md-6 my-auto">
+                        <h5>Note: Please wait until email editor load completely.</h5>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="content_container">
+                          <!-- <button class="" (click)="exportHtml()">Export</button> -->
+                          <app-email-editor [options]="options" (loaded)="editorLoaded($event)" #editor></app-email-editor>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-actions pull-right mt-2">
+                <button type="button" class="btn btn-raised btn-warning mr-1" (click)="onClearValue()">
+                <i class="ft-x"></i> Cancel
+                </button>
+                <button type="submit" class="btn btn-raised btn-primary">
+                <i class="fa fa-check-square-o"></i> Save
+                </button>
+              </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>

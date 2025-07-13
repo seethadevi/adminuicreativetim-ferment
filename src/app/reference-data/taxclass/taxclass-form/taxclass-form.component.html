@@ -1,0 +1,57 @@
+<div class="main-sub-content">
+  <div  class="container-fluid">
+    <section>
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <h4 class="card-title" id="from-actions-bottom-right">{{title}} Category Details</h4>
+          </div>
+          <div class="card-body">
+            <div class="px-3">
+              <form novalidate (ngSubmit)="onSubmit(f)" #f="ngForm">
+                <div class="form-body">
+                  <div class="row">
+                      <div class="form-group col-md-6 mb-2">
+                        <label for="country">Country *</label>
+                        <select required class="form-control border-primary" id="country" name="country" placeholder="Country" [(ngModel)]="taxclassModel.country.seo_name" #country="ngModel"
+                        (change)="selectCountryData($event.target.value)">
+                          <option *ngFor="let country of countryList" [value]="country.seo_name">{{country.name}}</option>
+                        </select>
+                          <small *ngIf="f.submitted && country.errors" class="form-text text-muted danger">Country Required</small>
+                      </div>
+                      <div class="form-group col-md-6 mb-2">
+                      <label for="name">Name</label>
+                      <input type="text" class="form-control border-primary" id="name" name="name" placeholder="Name" #name="ngModel" [(ngModel)]="taxclassModel.name"
+                        required  />
+                      <small *ngIf="f.submitted && name.errors" class="form-text text-muted danger">Name is Required</small>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="form-group col-md-6 mb-2">
+                      <label for="percentage">Tax Percentage</label>
+                      <input type="number" class="form-control border-primary" id="percentage" name="percentage" placeholder="Tax Percentage" #percentage="ngModel" [(ngModel)]="taxclassModel.tax_class_percent"
+                        required  />
+                      <small *ngIf="f.submitted && percentage.errors" class="form-text text-muted danger">Tax percentage is Required</small>
+                    </div>
+                    <div class="form-group col-md-6 mb-2">
+                      <label for="description">Description</label>
+                      <textarea class="form-control border-primary" id="description" name="description" placeholder="Description" #description="ngModel" [(ngModel)]="taxclassModel.description" ></textarea> 
+                      </div>
+                  </div>
+                </div>
+                <div class="form-actions pull-right">
+                  <button type="button" class="btn btn-raised btn-warning mr-1" (click)="onClearValue()">
+                    <i class="ft-x"></i> Cancel
+                  </button>
+                  <button type="submit" class="btn btn-raised btn-primary">
+                    <i class="fa fa-check-square-o"></i> Save
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>

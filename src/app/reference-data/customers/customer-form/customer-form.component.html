@@ -1,0 +1,107 @@
+<div class="main-sub-content">
+  <div class="container-fluid">
+    <section>
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <h4 class="card-title" id="from-actions-bottom-right">{{title}} Customer Detail</h4>
+          </div>
+          <div class="card-body">
+            <div class="px-3">
+              <form novalidate (ngSubmit)="onSubmit(f)" #f="ngForm">
+                <div class="form-body">
+                  <div class="row">
+                    <div class="form-group col-md-6 mb-2">
+                      <label for="firstname">First Name<span class="text-danger">*</span></label>
+                      <input type="text" class="form-control border-primary" id="firstname" name="firstname" placeholder="First Name"
+                        required [(ngModel)]="customerModel.firstname" #firstname="ngModel"/>
+                      <small *ngIf="f.submitted && firstname.errors" class="form-text text-muted danger">First Name Required</small>
+                    </div>
+                    <div class="form-group col-md-6 mb-2">
+                      <label for="lastname">Last Name<span class="text-danger">*</span></label>
+                      <input type="text" class="form-control border-primary" id="lastname" name="lastname" placeholder="Last Name"
+                        required [(ngModel)]="customerModel.lastname" #lastname="ngModel"/>
+                      <small *ngIf="f.submitted && lastname.errors" class="form-text text-muted danger">Last Name Required</small>
+                    </div>
+                  </div>
+                  <div class="row" *ngIf="!isEdit">
+                    <div class="form-group col-md-6 mb-2">
+                      <label for="password">Password<span class="text-danger">*</span></label>
+                      <input type="password" class="form-control border-primary" id="password" name="password" placeholder="Password" #password="ngModel"
+                        [(ngModel)]="customerModel.password" required />
+                      <small *ngIf="f.submitted && password.errors" class="form-text text-muted danger">Psssword Required</small>
+                    </div>
+                    <div class="form-group col-md-6 mb-2">
+                      <label for="confirmpassword">Confirm Password<span class="text-danger">*</span></label>
+                      <input type="password" class="form-control border-primary" id="confirmpassword" name="confirmpassword" #confirmpassword="ngModel"
+                        placeholder="Confirm Password" [(ngModel)]="customerModel.confirmpassword" required />
+                      <small *ngIf="f.submitted && confirmpassword.errors" class="form-text text-muted danger">Confirm Psssword Required</small>
+                      <small *ngIf="f.submitted && !confirmpassword.errors &&(f.value.password !== f.value.confirmpassword)" class="form-text text-muted danger">Password and Confirm Password should be same</small>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="form-group col-md-6 mb-2">
+                      <label for="email">Email<span class="text-danger">*</span></label>
+                      <input type="email" [disabled]="isEdit" class="form-control border-primary" id="email" name="email" placeholder="Email" #email="ngModel" [(ngModel)]="customerModel.email"
+                        required email />
+                      <small *ngIf="f.submitted && !f.value.email" class="form-text text-muted danger">Email Required</small>
+                      <small *ngIf="!!f.value.email && email.errors?.email" class="form-text text-muted danger">Invalid Email</small>
+                    </div>
+                    <div class="form-group col-md-6 mb-2">
+                      <label for="mobile">Mobile</label>
+                      <input appMobile type="text" class="form-control border-primary" id="mobile" name="mobile" placeholder="Mobile" #mobile="ngModel" [(ngModel)]="customerModel.mobile"
+                        />
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="form-group col-md-6 mb-2">
+                      <label for="address1">Address</label>
+                      <input type="text" class="form-control border-primary" id="address1" name="address1" placeholder="Address" #address1="ngModel" [(ngModel)]="customerModel.address.address1"/>
+                      <!-- <small *ngIf="f.submitted && address1.errors" class="form-text text-muted danger">Addrees 1 Required</small> -->
+                    </div>
+                    <div class="form-group col-md-6 mb-2">
+                      <label for="address2">Address (Optional)</label>
+                      <input type="text" class="form-control border-primary" id="address2" name="address2" placeholder="Address" #address2="ngModel" [(ngModel)]="customerModel.address.address2"/>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="form-group col-md-6 mb-2">
+                      <label for="zip">Zip / Postal Code</label>
+                      <input type="text" class="form-control border-primary" id="zip" name="zip" placeholder="Zip" #mobile="ngModel" #zip="ngModel" [(ngModel)]="customerModel.address.zip"/>
+                      <!-- <small *ngIf="f.submitted && zip.errors" class="form-text text-muted danger">Zip Required</small> -->
+                    </div>
+                    <div class="form-group col-md-6 mb-2">
+                      <label for="city">City</label>
+                      <input type="text" class="form-control border-primary" id="city" name="city" placeholder="City" #mobile="ngModel" #city="ngModel" [(ngModel)]="customerModel.address.city"/>
+                      <!-- <small *ngIf="f.submitted && city.errors" class="form-text text-muted danger">City Required</small> -->
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="form-group col-md-6 mb-2">
+                        <label for="country">Country</label>
+                        <select required class="form-control border-primary" id="country" name="country" placeholder="Country" [(ngModel)]="customerModel.address.country" #country="ngModel"
+                        >
+                          <option value="">Select Country</option>
+                          <option value="FRANCE">France</option>
+                          <option value="GERMANY">Germany</option>
+                      </select>
+                      <!-- <small *ngIf="f.submitted && country.errors" class="form-text text-muted danger">Country Required</small> -->
+                    </div>
+                  </div>
+                </div>
+                <div class="form-actions pull-right">
+                  <button type="button" class="btn btn-raised btn-warning mr-1" (click)="onClearValue()">
+                    <i class="ft-x"></i> Cancel
+                  </button>
+                  <button type="submit" class="btn btn-raised btn-primary">
+                    <i class="fa fa-check-square-o"></i> Save
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
