@@ -1,0 +1,101 @@
+@import "./../../styles.scss";
+@media (min-width: 992px){
+    .typo-line{
+        padding-left: 140px;
+        margin-bottom: 40px;
+        position: relative;
+    }
+
+    .typo-line .category{
+        transform: translateY(-50%);
+        top: 50%;
+        left: 0px;
+        position: absolute;
+    }
+}
+.sebm-google-map-container {
+  height: 300px;
+}
+#map{
+    position:relative;
+    width:100%;
+    height: calc(100% - 60px);
+    margin-top: 70px;
+}
+
+.places-buttons .btn{
+    margin-bottom: 30px
+}
+
+.space-70{
+    height: 70px;
+    display: block;
+}
+
+.tim-row{
+    margin-bottom: 20px;
+}
+
+.tim-typo{
+    padding-left: 25%;
+    margin-bottom: 40px;
+    position: relative;
+}
+.tim-typo .tim-note{
+    bottom: 10px;
+    color: #c0c1c2;
+    display: block;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 13px;
+    left: 0;
+    margin-left: 20px;
+    position: absolute;
+    width: 260px;
+}
+.tim-row{
+    padding-top: 50px;
+}
+.tim-row h3{
+    margin-top: 0;
+}
+@media (min-width: 992px){
+
+    .typo-line{
+        padding-left: 140px;
+        margin-bottom: 40px;
+        position: relative;
+    }
+
+    .typo-line .category{
+        transform: translateY(-50%);
+        top: 50%;
+        left: 0px;
+        position: absolute;
+    }
+}
+
+/*Added this for the new ngx select dropdown*/
+
+ngx-select-dropdown .ngx-dropdown-container button {
+    border-top: 0 !important;
+    border-left: 0 !important;
+    border-right: 0 !important;
+    border-bottom: 1px solid #ccc !important;
+    border-radius: 0 !important;
+    font-size: 14px !important;
+}
+
+.ngx-dropdown-list-container .search-container input::placeholder {
+    font-size: 14px !important;
+    font-family: Roboto, Helvetica, Arial, sans-serif !important;
+}
+
+.ngx-dropdown-list-container .search-container input{
+    font-size: 14px !important;
+    font-family: Roboto, Helvetica, Arial, sans-serif !important;
+}
+
+ngx-select-dropdown.producer_list .ngx-dropdown-list-container ul.selected-items li span.nsdicon-close{
+    display: none;
+}
