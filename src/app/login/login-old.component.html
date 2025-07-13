@@ -1,0 +1,116 @@
+
+<div class="wrapper wrapper-full-page">
+    <div class="page-header login-page header-filter" filter-color="black" style="background-image: url('./assets/img/wine3.jpeg'); background-size: auto;width:100%;background-repeat: no-repeat; background-position: center;">
+      <!--   you can change the color of the filter page using: data-color="blue | purple | green | orange | red | rose " -->
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-4 col-md-6 col-sm-6 ml-auto">
+            <form novalidate="" (ngSubmit)="onSubmit()" #f="ngForm">
+              <div class="card card-login card-hidden">
+                <div class="card-header card-header-rose text-center">
+                  <h4 class="card-title">Log In</h4>
+                  <div class="social-line">
+                    <img class="fermyntIcon" src="./assets/img/fermynt_logo_trans_white.png">
+                    <!-- <a href="#pablo" class="btn btn-just-icon btn-link btn-white">
+                      <i class="fa fa-facebook-square"></i>
+                    </a>
+                    <a href="#pablo" class="btn btn-just-icon btn-link btn-white">
+                      <i class="fa fa-twitter"></i>
+                    </a>
+                    <a href="#pablo" class="btn btn-just-icon btn-link btn-white">
+                      <i class="fa fa-google-plus"></i>
+                    </a> -->
+                  </div>
+                </div>
+                <div class="card-body ">
+                  <!-- <p class="card-description text-center">Or Be Classical</p> -->
+                  <span class="bmd-form-group">
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">
+                          <i class="material-icons">email</i>
+                        </span>
+                      </div>
+                      <input type="email" class="form-control" name="inputEmail" id="inputEmail" placeholder="Email" ngModel required email>
+                    </div>
+                  </span>
+                  <span class="bmd-form-group">
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">
+                          <i class="material-icons">lock_outline</i>
+                        </span>
+                      </div>
+                      <input type="password" class="form-control" name="inputPass" id="inputPass" placeholder="Password" ngModel required>
+                    </div>
+                  </span>
+                  <a href="javascript:;" class="pull-right" (click)="onForgotPassword()" style="font-size:12px;text-decoration:underline">Forgot Password?</a>
+                </div>
+                <div class="card-footer justify-content-center">
+                  <!-- <a href="#pablo" class="btn btn-rose btn-link btn-lg">Lets Go</a> -->
+                  <button type="submit" class="btn btn-rose btn-link btn-lg">Submit</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <footer class="footer ">
+        <div class="container">
+          <div class="row">
+            <div class="col-sm-6">
+                <a href="https://www.fermynt.com">
+                  FERMYNT
+                </a>
+            </div>
+            <div class="col-sm-6">
+                <div class="text-white">
+                  Copyright  &copy; {{currentDate | date: 'yyyy'}}&nbsp;<a href="https://www.fermynt.com" target="_blank">Fermynt</a>, All rights reserved.
+                </div>
+            </div>
+          </div>
+          <!-- <div class="mx-auto copyright">
+              <a href="https://www.fermynt.com">
+                FERMYNT
+              </a>
+              <div class="pull-right">
+                  &copy;
+                    Copyright  &copy; {{currentDate | date: 'yyyy'}} <a href="https://www.fermynt.com" target="_blank">Fermynt</a>, All rights reserved.
+                </div>
+          </div> -->
+          <!-- <nav class="pull-left">
+            <ul>
+              <li>
+                <a href="https://www.fermynt.com">
+                  FERMYNT
+                </a>
+              </li>
+            </ul>
+          </nav>
+          <div class="copyright pull-right">
+            &copy;
+              Copyright  &copy; {{currentDate | date: 'yyyy'}} <a href="https://www.fermynt.com" target="_blank">Fermynt</a>, All rights reserved.
+          </div> -->
+        </div>
+      </footer>
+    </div>
+  </div>
+
+<!--Login Page Starts-->
+<!-- <section class="login">
+    <div class="row">
+        <div class="col-sm-6 ">
+            <div class="image-container">
+                <div id="logo-container">
+                    <img src="./../../assets/img/fermynt_logo.png" id="logo">
+                </div>
+                <div class="copyright-container">
+                     <div class="termsOfUse">
+                        Terms of Use | Browser and Display Compatibility
+                    </div>
+                    <div class="copyrightMsg">
+                        Copyright  &copy;  {{currentDate | date: 'yyyy'}} <a id="fermynt" href="https://www.fermynt.com">fermynt</a>, All rights reserved.
+                    </div>
+                </div>
+            </div>
+        </div> -->

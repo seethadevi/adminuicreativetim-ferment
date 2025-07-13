@@ -1,0 +1,17 @@
+
+<div class="wrapper">
+    <div class="sidebar" data-color="green" data-background-color="white" data-image="./assets/img/sidebar-1.jpg">
+        <app-sidebar-cmp></app-sidebar-cmp>
+        <!-- <div class="sidebar-background" style="background-image: url(assets/img/sidebar-1.jpg)"></div> -->
+        <div class="sidebar-background" ></div>
+    </div>
+    <div class="main-panel">
+        <app-navbar-cmp></app-navbar-cmp>
+        <router-outlet></router-outlet>
+        <!-- <div>
+            <app-footer-cmp></app-footer-cmp>
+        </div> -->
+    </div>
+    <app-page-loading *ngIf="pageLoading" ></app-page-loading>
+    <!-- <app-fixedplugin></app-fixedplugin> -->
+</div>

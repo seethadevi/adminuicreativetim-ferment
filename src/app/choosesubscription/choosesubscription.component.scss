@@ -1,0 +1,40 @@
+.add-subscription{
+    margin-right:50px;
+}
+.card-actions {
+    button{
+        visibility: hidden;
+    }
+}
+.card {
+    height: 242px;
+}
+
+.card:hover {
+    .card-avatar{
+        cursor: pointer;
+    }
+    button{
+        visibility: visible;
+    }
+}
+
+.img {
+    width: 130px !important;
+    height: 130px !important;
+}
+
+.removeTopPadding{
+    padding-top: 0;
+}
+
+.displayRow {
+    height : 600px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    padding-top: 60px;
+}
+
+.displayRow2{
+    padding-top: 60px;
+}

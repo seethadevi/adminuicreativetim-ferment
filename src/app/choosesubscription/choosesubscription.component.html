@@ -1,0 +1,79 @@
+<div class="main-content removeTopPadding">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <button mat-raised-button class="btn add-new btn-rose pull-right" (click)="createnew()">
+          <span class="btn-label">
+            <i class="material-icons">add</i>
+          </span>
+          Create
+        </button>
+      </div>
+    </div>
+
+    <div class="displayRow"
+      ngxInfiniteScroller
+      strategy="scrollingToBottom"
+      (onScrollDown)="nextPage()" *ngIf="deviceOS==='windows'">
+      <div class="row ">
+        <div class="col-md-3" *ngFor="let sub of subscriptions">
+          <div class="card card-profile" >
+            <div class="card-avatar " data-header-animation="true"  (click)='selectSubscription(sub.id)'>
+                <a>
+                    <img *ngIf="!sub.picture"  class="img" src="./assets/img/subscript-sample.jpg" />
+                    <img *ngIf="!!sub.picture && !!sub.picture.lg"  class="img"  src="{{sub.picture.lg}}" />
+                  </a>
+            </div>
+            <div class="card-body">
+              <div class="card-actions">
+                <button mat-raised-button type="button" (click)="selectSubscription(sub.id)"  class="btn btn-rose btn-link" matTooltip="View" [matTooltipPosition]="'below'">
+                    <i class="material-icons">remove_red_eye</i>
+                </button>
+                <button mat-raised-button type="button" (click)="editSubscription(sub.id)"  class="btn btn-info btn-link" matTooltip="Edit" [matTooltipPosition]="'below'">
+                  <i class="material-icons">edit</i>
+                </button>
+                <!-- <button mat-raised-button type="button" (click)="deleteSubscription(sub.id)" class="btn btn-default btn-link" matTooltip="Remove" [matTooltipPosition]="'below'">
+                  <i class="material-icons">delete</i>
+                </button> -->
+              </div>
+              <h4 class="card-title"> {{sub.name}}</h4>
+              <p class="category text-gray font-small-1 "><strong>{{ sub.type }}</strong><br>{{sub.plan}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="displayRow2" infiniteScroll
+    [infiniteScrollDistance]="2"
+    [infiniteScrollThrottle]="300"
+    (scrolled)="nextPage()" *ngIf="deviceOS !=='windows'">
+      <div class="row ">
+        <div class="col-md-3" *ngFor="let sub of subscriptions">
+          <div class="card card-profile" >
+            <div class="card-avatar " data-header-animation="true"  (click)='selectSubscription(sub.id)'>
+                <a>
+                    <img *ngIf="!sub.picture"  class="img" src="./assets/img/subscript-sample.jpg" />
+                    <img *ngIf="!!sub.picture && !!sub.picture.lg"  class="img"  src="{{sub.picture.lg}}" />
+                  </a>
+            </div>
+            <div class="card-body">
+              <div class="card-actions">
+                <button mat-raised-button type="button" (click)="selectSubscription(sub.id)"  class="btn btn-rose btn-link" matTooltip="View" [matTooltipPosition]="'below'">
+                    <i class="material-icons">remove_red_eye</i>
+                </button>
+                <button mat-raised-button type="button" (click)="editSubscription(sub.id)"  class="btn btn-info btn-link" matTooltip="Edit" [matTooltipPosition]="'below'">
+                  <i class="material-icons">edit</i>
+                </button>
+                <!-- <button mat-raised-button type="button" (click)="deleteSubscription(sub.id)" class="btn btn-default btn-link" matTooltip="Remove" [matTooltipPosition]="'below'">
+                  <i class="material-icons">delete</i>
+                </button> -->
+              </div>
+              <h4 class="card-title"> {{sub.name}}</h4>
+              <p class="category text-gray font-small-1 "><strong>{{ sub.type }}</strong><br>{{sub.plan}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,82 @@
+<div class="wrapper wrapper-full-page">
+  <!--   you can change the color of the filter page using: data-color="blue | purple | green | orange | red | rose " -->
+  <div class="login-page">
+    <div class="login-container">
+      <form novalidate="" (ngSubmit)="onSubmit()" #f="ngForm" class="form-container">
+        <div class="text-center mr-4">
+          <img class="fermyntIcon" src="./assets/img/logo.png">
+        </div>
+        <h3 class="login-text rose">
+            Log in to your account
+        </h3>
+        <div class="form-field-control">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text">
+                <i class="material-icons">email</i>
+              </span>
+            </div>
+            <input type="email" class="form-control" name="inputEmail" id="inputEmail" placeholder="Email" ngModel required email>
+          </div>
+          <div class="input-group mt-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text">
+                <i class="material-icons">lock_outline</i>
+              </span>
+            </div>
+            <input type="password" class="form-control" name="inputPass" id="inputPass" placeholder="Password" ngModel required>
+          </div>
+          <a href="javascript:;" class="pull-right text-primary mt-3" (click)="onForgotPassword()" style="font-size:12px;text-decoration:underline">Forgot Password?</a>
+        </div>
+        <div class="text-center mt-5">
+          <button type="submit" class="btn btn-rose btn-sm">Submit</button>
+        </div>
+      </form>
+    </div>
+    <div class="image-container" style="width:100%;">
+      <ngb-carousel>
+        <ng-template ngbSlide>
+          <div class="picsum-img-wrapper">
+            <img [src]="images[0]" alt="Random first slide">
+          </div>
+          <div class="carousel-caption">
+            <h3>First slide label</h3>
+            <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+          </div>
+        </ng-template>
+        <ng-template ngbSlide>
+          <div class="picsum-img-wrapper">
+            <img [src]="images[1]" alt="Random second slide">
+          </div>
+          <div class="carousel-caption">
+            <h3>Second slide label</h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+          </div>
+        </ng-template>
+        <ng-template ngbSlide>
+          <div class="picsum-img-wrapper">
+            <img [src]="images[2]" alt="Random third slide">
+          </div>
+          <div class="carousel-caption">
+            <h3>Third slide label</h3>
+            <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
+          </div>
+        </ng-template>
+      </ngb-carousel>
+    </div>
+    <!-- <div class="image-container" style="background-image: url('./assets/img/wine7.jpg'); background-size: auto;width:100%;background-repeat: no-repeat; background-position: center;"> -->
+     <!-- <div class="row">
+      <div class="col-sm-6">
+          <a href="https://www.fermynt.com">
+            FERMYNT
+          </a>
+      </div>
+      <div class="col-sm-6">
+          <div class="text-white">
+            Copyright  &copy; {{currentDate | date: 'yyyy'}}&nbsp;<a href="https://www.fermynt.com" target="_blank">Fermynt</a>, All rights reserved.
+          </div>
+      </div>
+    </div> -->
+     <!-- </div> -->
+  </div>
+</div>

@@ -1,0 +1,336 @@
+<div class="main-content removeTopPadding">
+  <div  class="container-fluid">
+    <section>
+      <div class="row">
+        <div class="col-md-8 mr-auto ml-auto">
+          <!--      Wizard container        -->
+          <div class="wizard-container">
+            <div class="card card-wizard" data-color="rose" id="wizardProfile">
+              <form novalidate (ngSubmit)="onSubmit(f)" #f="ngForm">
+              <!--        You can switch " data-color="primary" "  with one of the next bright colors: "green", "orange", "red", "blue"       -->
+              <div class="card-header text-center">
+                <h3 class="card-title">
+                  Subscription Details
+                </h3>
+                <h5 class="card-description">This information will let us know more about subscription.</h5>
+              </div>
+              <div class="wizard-navigation">
+                <ul class="nav nav-pills">
+                  <li class="nav-item">
+                    <a class="nav-link active" href="#basic" data-toggle="tab" role="tab">
+                    Basic
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#account" data-toggle="tab" role="tab">
+                    Account
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#address" data-toggle="tab" role="tab">
+                    Address
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              <div class="card-body">
+                <div class="tab-content">
+                  <div class="tab-pane active" id="basic">
+                    <h5 class="info-text"> Let's start with the basic information</h5>
+                    <div class="row justify-content-center">
+                      <div class="col-md-8">
+                        <div class="row">
+                          <div class="form-group col-md-12 mb-2">
+                            <label for="name">Name *</label>
+                            <input type="text" [disabled]="isEdit" class="form-control border-primary" id="name" name="name" placeholder="Name" #name="ngModel"
+                            [(ngModel)]="subModel.name" required />
+                            <small *ngIf="f.submitted && name.errors" class="form-text text-muted text-danger">Name Required</small>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="form-group col-md-12 mb-2">
+                            <label for="firstname">First Name *</label>
+                            <input type="text" class="form-control border-primary" id="firstname" name="firstname" placeholder="First Name" #firstname="ngModel"
+                            [(ngModel)]="subModel.firstname" required/>
+                            <small *ngIf="f.submitted && firstname.errors" class="form-text text-muted text-danger">First Name Required</small>
+                          </div>
+                          <div class="form-group col-md-12 mb-2">
+                            <label for="lastname">Last Name *</label>
+                            <input type="text" class="form-control border-primary" id="lastname" name="lastname" placeholder="Last Name" #lastname="ngModel"
+                            [(ngModel)]="subModel.lastname" required />
+                            <small *ngIf="f.submitted && lastname.errors" class="form-text text-muted text-danger">Last Name Required</small>
+                          </div>
+                          <div class="form-group col-md-6 mb-2">
+                            <label for="email">Email *</label>
+                            <input type="email" class="form-control border-primary" id="email" name="email" placeholder="Email" #email="ngModel" [(ngModel)]="subModel.email"
+                            required email />
+                            <small *ngIf="f.submitted && !f.value.email" class="form-text text-muted text-danger">Email Required</small>
+                            <small *ngIf="!!f.value.email && email.errors?.email" class="form-text text-muted text-danger">Invalid Email</small>
+                          </div>
+                          <div class="form-group col-md-6 mb-2">
+                            <label for="mobile">Mobile</label>
+                            <input appMobile type="text" class="form-control border-primary" id="mobile" name="mobile" placeholder="Mobile" #mobile="ngModel" [(ngModel)]="subModel.mobile"
+                            required/>
+                            <small *ngIf="f.submitted && mobile.errors" class="form-text text-muted text-danger">Mobile Required</small>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <label for="bottlesize">Image</label>
+                        <app-image-upload [imgSize]="'lg'" [imageUrl]="thumbnailurl" [uploadUrl]="imgUploadUrl" [name]="'Image'" [headers]="appservice.getImgUploadHeaders()"  (changeImage)="onFileUploadEvent($event)"></app-image-upload>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="tab-pane" id="account">
+                    <div class="row">
+                      <div class="form-group col-md-12 mb-2">
+                        <label for="role">Type *</label>
+                        <select class="form-control border-primary" id="type" name="type" placeholder="Type" [(ngModel)]="subModel.type" #type="ngModel"
+                        required>
+                        <option value="">Select Type</option>
+                        <option value="PRODUCER">Producer</option>
+                        <option value="SHOP">Shop</option>
+                        <option value="RETAIL">Retail</option>
+                        <option value="EXHIBIT">Exhibit</option>
+                        </select>
+                        <small *ngIf="f.submitted && type.errors" class="form-text text-muted text-danger">Type Required</small>
+                      </div>
+                      <div class="form-group col-md-6 mb-2" *ngIf="!isEdit">
+                        <label for="password">Password *</label>
+                        <input type="password" class="form-control border-primary" id="password" autocomplete="off" name="password" placeholder="Password" #password="ngModel"
+                        [(ngModel)]="subModel.password" required />
+                        <small *ngIf="f.submitted && password.errors" class="form-text text-muted text-danger">Psssword Required</small>
+                      </div>
+                      <div class="form-group col-md-6 mb-2" *ngIf="!isEdit">
+                        <label for="confirmpassword">Confirm Password *</label>
+                        <input type="password" class="form-control border-primary" id="confirmpassword" autocomplete="off" name="confirmpassword" #confirmpassword="ngModel"
+                        placeholder="Confirm Password" [(ngModel)]="subModel.confirmpassword" required />
+                        <small *ngIf="f.submitted && confirmpassword.errors" class="form-text text-muted danger">Confirm Psssword Required</small>
+                        <small *ngIf="f.submitted && !confirmpassword.errors &&(f.value.password !== f.value.confirmpassword)" class="form-text text-muted text-danger">Password and Confirm Password should be same</small>
+                      </div>
+                      <div class="form-group col-md-6 mb-2">
+                        <label for="status">Status *</label>
+                        <select class="form-control border-primary" id="status" name="status" placeholder="Status" [(ngModel)]="subModel.status" #status="ngModel"
+                        required>
+                        <option value="A">Active</option>
+                        <option value="I">Inactive</option>
+                        </select>
+                      </div>
+                      <div class="form-group col-md-6 mb-2" *ngIf="userRole !== 'SUBSCRIPTION'" >
+                        <label for="plan">Plan *</label>
+                        <select class="form-control border-primary" id="plan" name="plan" placeholder="Plan" [(ngModel)]="subModel.plan" #plan="ngModel"
+                        required>
+                        <option value="">Select Plan</option>
+                        <option value="SILVER">Silver</option>
+                        <option value="GOLD">Gold</option>
+                        <option value="PLATINUM">Platinum</option>
+                        </select>
+                        <small *ngIf="f.submitted && plan.errors" class="form-text text-muted text-danger">Plan Required</small>
+                        <!-- <input type="text" class="form-control border-primary" id="plan" name="plan" placeholder="Plan" #plan="ngModel" [(ngModel)]="subModel.plan"/> -->
+                      </div>
+                    </div>
+                  </div>
+                  <div class="tab-pane" id="address">
+                    <div class="row justify-content-center">
+                      <div class="form-group col-md-6 mb-2">
+                        <label for="address1">Address *</label>
+                        <input required type="text" class="form-control border-primary" id="address1" name="address1" placeholder="Address" #address1="ngModel" [(ngModel)]="subModel.address.address1"/>
+                        <small *ngIf="f.submitted && address1.errors" class="form-text text-muted text-danger">Addrees Required</small>
+                      </div>
+                      <div class="form-group col-md-6 mb-2">
+                        <label for="address2">Address(Optional)</label>
+                        <input type="text" class="form-control border-primary" id="address2" name="address2" placeholder="Address" #address2="ngModel" [(ngModel)]="subModel.address.address2"/>
+                      </div>
+                      <div class="form-group col-md-6 mb-2">
+                        <label for="zip">Zip / Postal Code *</label>
+                        <input required type="text" class="form-control border-primary" id="zip" name="zip" placeholder="Zip" #mobile="ngModel" #zip="ngModel" [(ngModel)]="subModel.address.zip"/>
+                        <small *ngIf="f.submitted && zip.errors" class="form-text text-muted text-danger">Zip Required</small>
+                      </div>
+                      <div class="form-group col-md-6 mb-2">
+                        <label for="city">City *</label>
+                        <input required type="text" class="form-control border-primary" id="city" name="city" placeholder="City" #mobile="ngModel" #city="ngModel" [(ngModel)]="subModel.address.city"/>
+                        <small *ngIf="f.submitted && city.errors" class="form-text text-muted text-danger">City Required</small>
+                      </div>
+                      <div class="form-group col-md-12 mb-2">
+                        <label for="country">Country *</label>
+                        <select required class="form-control border-primary" id="country" name="country" placeholder="Country" [(ngModel)]="subModel.address.country" #country="ngModel"
+                        >
+                        <option *ngFor="let country of countryList" [value]="country.seo_name">{{country.name}}</option>
+                        </select>
+                        <small *ngIf="f.submitted && country.errors" class="form-text text-muted text-danger">Country Required</small>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="card-footer">
+                <div class="mr-auto">
+                  <input type="button" class="btn btn-previous btn-fill btn-default btn-wd disabled" name="previous" value="Previous" />
+                </div>
+                <div class="ml-auto">
+                  <input type="button" class="btn btn-next btn-fill btn-rose btn-wd" name="next" value="Next" />
+                  <input type="submit" class="btn btn-finish btn-fill btn-rose btn-wd" name="finish" value="Save" style="display: none;">
+                </div>
+                <div class="clearfix"></div>
+              </div>
+              </form>
+            </div>
+          </div>
+          <!-- wizard container -->
+        </div>
+        <!-- <div class="col-md-12">
+          <div class="card">
+            <div class="card-header">
+              <h4 class="card-title" id="from-actions-bottom-right">{{title}} Subscription Details</h4>
+            </div>
+            <div class="card-body">
+              <div class="px-3">
+                <form novalidate (ngSubmit)="onSubmit(f)" #f="ngForm">
+                  <div class="form-body">
+                    <div class="row">
+                      <div class="col-md-8">
+                        <div class="row">
+                          <div class="form-group col-md-6 mb-2">
+                            <label for="name">Name *</label>
+                            <input type="text" [disabled]="isEdit" class="form-control border-primary" id="name" name="name" placeholder="Name" #name="ngModel"
+                              [(ngModel)]="subModel.name" required />
+                            <small *ngIf="f.submitted && name.errors" class="form-text text-muted danger">Name Required</small>
+                          </div>
+                          <div class="form-group col-md-6 mb-2">
+                            <label for="role">Type *</label>
+                            <select class="form-control border-primary" id="type" name="type" placeholder="Type" [(ngModel)]="subModel.type" #type="ngModel"
+                              required>
+                              <option value="">Select Type</option>
+                              <option value="PRODUCER">Producer</option>
+                              <option value="SHOP">Shop</option>
+                              <option value="RETAIL">Retail</option>
+                              <option value="EXHIBIT">Exhibit</option>
+                            </select>
+                            <small *ngIf="f.submitted && type.errors" class="form-text text-muted danger">Type Required</small>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="form-group col-md-6 mb-2">
+                            <label for="firstname">First Name *</label>
+                            <input type="text" class="form-control border-primary" id="firstname" name="firstname" placeholder="First Name" #firstname="ngModel"
+                              [(ngModel)]="subModel.firstname" required/>
+                            <small *ngIf="f.submitted && firstname.errors" class="form-text text-muted danger">First Name Required</small>
+                          </div>
+                          <div class="form-group col-md-6 mb-2">
+                            <label for="lastname">Last Name *</label>
+                            <input type="text" class="form-control border-primary" id="lastname" name="lastname" placeholder="Last Name" #lastname="ngModel"
+                              [(ngModel)]="subModel.lastname" required />
+                            <small *ngIf="f.submitted && lastname.errors" class="form-text text-muted danger">Last Name Required</small>
+                          </div>
+                        </div>
+                        <div class="row" *ngIf="!isEdit">
+                          <div class="form-group col-md-6 mb-2">
+                            <label for="password">Password *</label>
+                            <input type="password" class="form-control border-primary" id="password" name="password" placeholder="Password" #password="ngModel"
+                              [(ngModel)]="subModel.password" required />
+                            <small *ngIf="f.submitted && password.errors" class="form-text text-muted danger">Psssword Required</small>
+                          </div>
+                          <div class="form-group col-md-6 mb-2">
+                            <label for="confirmpassword">Confirm Password *</label>
+                            <input type="password" class="form-control border-primary" id="confirmpassword" name="confirmpassword" #confirmpassword="ngModel"
+                              placeholder="Confirm Password" [(ngModel)]="subModel.confirmpassword" required />
+                            <small *ngIf="f.submitted && confirmpassword.errors" class="form-text text-muted danger">Confirm Psssword Required</small>
+                            <small *ngIf="f.submitted && !confirmpassword.errors &&(f.value.password !== f.value.confirmpassword)" class="form-text text-muted danger">Password and Confirm Password should be same</small>
+                          </div>
+                        </div>
+                       </div>
+                       <div class="col-md-4">
+                         <label for="bottlesize">Subscription Image</label>
+                         <app-image-upload [imgSize]="'lg'" [imageUrl]="thumbnailurl" [uploadUrl]="imgUploadUrl" [name]="'Subscription Image'" [headers]="appservice.getImgUploadHeaders()"  (changeImage)="onFileUploadEvent($event)"></app-image-upload>
+                       </div>
+                    </div>
+                    <div class="row">
+                      <div class="form-group col-md-6 mb-2">
+                        <label for="email">Email *</label>
+                        <input type="email" class="form-control border-primary" id="email" name="email" placeholder="Email" #email="ngModel" [(ngModel)]="subModel.email"
+                          required email />
+                        <small *ngIf="f.submitted && !f.value.email" class="form-text text-muted danger">Email Required</small>
+                        <small *ngIf="!!f.value.email && email.errors?.email" class="form-text text-muted danger">Invalid Email</small>
+                      </div>
+                      <div class="form-group col-md-6 mb-2">
+                        <label for="mobile">Mobile</label>
+                        <input appMobile type="text" class="form-control border-primary" id="mobile" name="mobile" placeholder="Mobile" #mobile="ngModel" [(ngModel)]="subModel.mobile"
+                          required/>
+                        <small *ngIf="f.submitted && mobile.errors" class="form-text text-muted danger">Mobile Required</small>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="form-group col-md-6 mb-2">
+                        <label for="status">Status *</label>
+                        <select class="form-control border-primary" id="status" name="status" placeholder="Status" [(ngModel)]="subModel.status" #status="ngModel"
+                          required>
+                          <option value="A">Active</option>
+                          <option value="I">Inactive</option>
+                        </select>
+                      </div>
+                      <div class="form-group col-md-6 mb-2">
+                        <label for="plan">plan *</label>
+                        <select class="form-control border-primary" id="plan" name="plan" placeholder="Plan" [(ngModel)]="subModel.plan" #plan="ngModel"
+                          required>
+                          <option value="">Select Plan</option>
+                          <option value="SILVER">Silver</option>
+                          <option value="GOLD">Gold</option>
+                          <option value="PLATINUM">Platinum</option>
+                        </select>
+                        <small *ngIf="f.submitted && plan.errors" class="form-text text-muted danger">Plan Required</small>
+
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="form-group col-md-6 mb-2">
+                        <label for="address1">Address *</label>
+                        <input required type="text" class="form-control border-primary" id="address1" name="address1" placeholder="Address" #address1="ngModel" [(ngModel)]="subModel.address.address1"/>
+                        <small *ngIf="f.submitted && address1.errors" class="form-text text-muted danger">Addrees Required</small>
+                      </div>
+                      <div class="form-group col-md-6 mb-2">
+                        <label for="address2">Address(Optional)</label>
+                        <input type="text" class="form-control border-primary" id="address2" name="address2" placeholder="Address" #address2="ngModel" [(ngModel)]="subModel.address.address2"/>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="form-group col-md-6 mb-2">
+                        <label for="zip">Zip / Postal Code *</label>
+                        <input required type="text" class="form-control border-primary" id="zip" name="zip" placeholder="Zip" #mobile="ngModel" #zip="ngModel" [(ngModel)]="subModel.address.zip"/>
+                        <small *ngIf="f.submitted && zip.errors" class="form-text text-muted danger">Zip Required</small>
+                      </div>
+                      <div class="form-group col-md-6 mb-2">
+                        <label for="city">City *</label>
+                        <input required type="text" class="form-control border-primary" id="city" name="city" placeholder="City" #mobile="ngModel" #city="ngModel" [(ngModel)]="subModel.address.city"/>
+                        <small *ngIf="f.submitted && city.errors" class="form-text text-muted danger">City Required</small>
+                      </div>
+
+                    </div>
+                    <div class="row">
+                      <div class="form-group col-md-6 mb-2">
+                          <label for="country">Country *</label>
+                          <select required class="form-control border-primary" id="country" name="country" placeholder="Country" [(ngModel)]="subModel.address.country" #country="ngModel"
+                          >
+                           <option *ngFor="let country of countryList" [value]="country.seo_name">{{country.name}}</option>
+                         </select>
+                        <small *ngIf="f.submitted && country.errors" class="form-text text-muted danger">Country Required</small>
+                      </div>
+                    </div>
+
+                  </div>
+                  <div class="form-actions right">
+                    <button type="button" class="btn btn-raised btn-warning mr-1" (click)="onClearValue()">
+                      <i class="ft-x"></i> Cancel
+                    </button>
+                    <button type="submit" class="btn btn-raised btn-primary">
+                      <i class="fa fa-check-square-o"></i> Save
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          </div> -->
+      </div>
+    </section>
+  </div>
+</div>
