@@ -1,0 +1,87 @@
+<section>
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header">
+        <h4 class="card-title" id="from-actions-bottom-right">{{title}} Fermynt Warehouse Details</h4>
+      </div>
+      <div class="card-body">
+        <div class="px-3">
+          <form novalidate (ngSubmit)="onSubmit(f)" #f="ngForm">
+            <div class="form-body">
+              <div class="row">
+                <div class="form-group col-md-6 mb-2">
+                  <label for="name">Name</label>
+                  <input type="text" class="form-control border-primary" id="name" name="name" placeholder="Name" #name="ngModel"
+                    [(ngModel)]="warehouseModel.name" required />
+                  <small *ngIf="f.submitted && name.errors" class="form-text text-muted danger">Name Required</small>
+                </div>
+                <div class="form-group col-md-6 mb-2">
+                  <label for="status">Status</label>
+                  <select class="form-control border-primary" id="status" name="status" placeholder="Status" [(ngModel)]="warehouseModel.status" #status="ngModel"
+                    required>
+                    <option value="A">Active</option>
+                    <option value="I">Inactive</option>
+                  </select>
+                </div>
+              </div>
+              <div class="row">
+                <div class="form-group col-md-12 mb-2">
+                  <label for="desc">Description</label>
+                  <textarea class="form-control border-primary" id="description" name="description" placeholder="Description" #description="ngModel" [(ngModel)]="warehouseModel.description" ></textarea>
+                </div>
+              </div>
+              <div class="row">
+                <div class="form-group col-md-6 mb-2">
+                  <label for="address1">Address</label>
+                  <input required type="text" class="form-control border-primary" id="address1" name="address1" placeholder="Address" #address1="ngModel" [(ngModel)]="warehouseModel.address.address1"/>
+                  <small *ngIf="f.submitted && address1.errors" class="form-text text-muted danger">Addrees Required</small>
+                </div>
+                <div class="form-group col-md-6 mb-2">
+                  <label for="address2">Address (optional)</label>
+                  <input type="text" class="form-control border-primary" id="address2" name="address2" placeholder="Address" #address2="ngModel" [(ngModel)]="warehouseModel.address.address2"/>
+                </div>
+              </div>
+              <div class="row">
+                <div class="form-group col-md-6 mb-2">
+                    <label for="zip">Zip / Postal Code</label>
+                    <input required type="text" class="form-control border-primary" id="zip" name="zip" placeholder="Zip" #mobile="ngModel" #zip="ngModel" [(ngModel)]="warehouseModel.address.zip"/>
+                    <small *ngIf="f.submitted && zip.errors" class="form-text text-muted danger">Zip Required</small>
+                  </div>
+                <div class="form-group col-md-6 mb-2">
+                  <label for="city">City</label>
+                  <input required type="text" class="form-control border-primary" id="city" name="city" placeholder="City" #mobile="ngModel" #city="ngModel" [(ngModel)]="warehouseModel.address.city"/>
+                  <small *ngIf="f.submitted && city.errors" class="form-text text-muted danger">City Required</small>
+                </div>
+                <!-- <div class="form-group col-md-6 mb-2">
+                  <label for="state">State</label>
+                  <input required type="text" class="form-control border-primary" id="state" name="state" placeholder="State" #mobile="ngModel" #state="ngModel" [(ngModel)]="warehouseModel.address.state"/>
+                  <small *ngIf="f.submitted && state.errors" class="form-text text-muted danger">State Required</small>
+                </div> -->
+              </div>
+              <div class="row">
+                <div class="form-group col-md-6 mb-2">
+                  <label for="country">Country</label>
+                    <select required class="form-control border-primary" id="country" name="country" placeholder="Country" [(ngModel)]="warehouseModel.address.country" #country="ngModel"
+                    >
+                      <option value="">Select Country</option>
+                      <option value="FRANCE">France</option>
+                      <option value="GERMANY">Germany</option>
+                  </select>
+                  <small *ngIf="f.submitted && country.errors" class="form-text text-muted danger">Country Required</small>
+                </div>
+              </div>
+            </div>
+            <div class="form-actions right">
+              <button type="button" class="btn btn-raised btn-warning mr-1" (click)="onClearValue()">
+                <i class="ft-x"></i> Back
+              </button>
+              <button type="submit" class="btn btn-raised btn-primary">
+                <i class="fa fa-check-square-o"></i> Save
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

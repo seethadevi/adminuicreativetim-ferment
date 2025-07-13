@@ -1,0 +1,77 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-10">
+        <div class="input-group no-border">
+          <input type="text" [(ngModel)]="searchString" (keyup.enter)="onSearchText()" class="form-control" placeholder="Search Product">
+          <button mat-raised-button type="submit" (click)="onSearchText()" class="btn btn-white btn-round btn-just-icon">
+              <i class="material-icons">search</i>
+              <div class="ripple-container"></div>
+          </button>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <button mat-raised-button class="btn add-new btn-rose" (click)="createnew()">
+          <span class="btn-label">
+            <i class="material-icons">add</i>
+          </span>
+          Create
+        </button>
+      </div>
+    </div>
+    <app-virtual-infinite-scroll [items]="warehouseProducts"
+                                [actions]="actions"
+                                [displayColumnList] = "displayColumnList"
+                                 [classList] = "classList"
+                                 [defaultList] = "defaultList"
+                                (reloadEvent)="onReloadEvent($event)"
+                                (operationEvent)="onOperation($event)" >
+
+    </app-virtual-infinite-scroll>
+    <!-- <swal #deleteSwalProduct
+          title="Delete record?"
+          text="Do you want to delete?"
+          type="question"
+          [showCancelButton]="true"
+          [focusCancel]="true"
+          (confirm)="deleteRecords()"
+          (close)="onCloseDialog($event)">
+    </swal> -->
+  </div>
+</div>
+
+<!-- <section id="friends">
+  <div class="row headerRow">
+      <div class="col-8">
+          <div class="content-header-title">
+              <button class="btn btn-flat primary btnStyle" (click)='gotoWarehouse()'>Warehouse</button>
+              <span class="font-size-xsmall">></span>
+              <span class="alignment"> Products</span></div>
+      </div>
+      <div class="col-4">
+          <div class="text-right">
+            <button class="btn btn-just-icon btn-round btn-primary newBtn" (click)="createnew()">
+              <i class="ft-plus font-medium-3 mr-2"></i>
+            </button>
+          </div>
+      </div>
+  </div>
+  <div class="row">
+      <div class="col-lg-3 col-md-3 col-sm-6" *ngFor="let wsProd of warehouseProducts" >
+          <div class="card text-center" (click)="editWarehouseProduct(wsProd.id)">
+              <div class="card-body">
+                  <div class="card-img overlap">
+                      <img *ngIf="!!wsProd.picture && !!wsProd.picture.lg"  [src]="wsProd.picture.lg" [alt]="wsProd.name" width="100" height="300">
+                      <img *ngIf="!wsProd.picture"  [src]="environmentLocal.DEFAULT_WINE_BOTTLE" [alt]="wsProd.name" width="100" height="300">
+                  </div>
+                  <div class="card-block">
+                      <h4 class="font-small-3 ellipsisTxt" placement="top" ngbTooltip="{{wsProd.name}}" >{{ wsProd.name }}</h4>
+                      <a class="btn addBtn">
+                          <img *ngIf="!!wsProd.logo && !!wsProd.logo.sm" [src]="wsProd.logo.sm" [alt]="Logo"/>
+                      </a>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</section> -->

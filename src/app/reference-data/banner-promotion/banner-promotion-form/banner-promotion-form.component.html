@@ -1,0 +1,248 @@
+<div class="main-sub-content">
+    <div  class="container-fluid">
+
+      <app-banner-promotion-list></app-banner-promotion-list>
+
+      <section>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card">
+              <div class="card-header">
+                <h4 class="card-title" id="from-actions-bottom-right">{{title}} Banner Details</h4>
+              </div>
+              <div class="card-body">
+                <div class="px-3">
+                  <form novalidate (ngSubmit)="onSubmit(f)" #f="ngForm">
+                  <div class="form-body">
+                    <div class="row">
+                      <div class="form-group col-md-6 mb-2">
+                        <label for="country_name">Country *</label>
+                        <select required [disabled]="isEdit" class="form-control border-primary" id="country" name="country" placeholder="Country" [(ngModel)]="bannerModel.country_code" #country="ngModel"
+                        required>
+                        <option *ngFor="let country of countryList" [value]="country.code">{{country.name}}</option>
+                        </select>
+                        <small *ngIf="f.submitted && country.errors" class="form-text text-muted text-danger">Country Required</small>
+                      </div>
+                      <div class="form-group col-md-6 pullTop">
+                        <label for="wine">Location</label>
+                        <tag-input [(ngModel)]="codeList" name="codeList"
+                        [placeholder]="'Search a new Location'"
+                        [onTextChangeDebounce]="500"
+                        [secondaryPlaceholder]="'Search Location'"
+                        [onlyFromAutocomplete]="true"
+                        (onAdd) = "onAddingCode($event)"
+                        (onRemove) = "onRemovingCode($event)"
+                        [identifyBy]="'id'"
+                        [removable]="!isEdit"
+                        [maxItems] = "1"
+                        [disable]="!bannerModel.country_code"
+                        [displayBy]="'name'">
+                        <tag-input-dropdown
+                        [autocompleteObservable]="requestAutocompleteItems"
+                        [minimumTextLength]="3"
+                        [identifyBy]="'id'"
+                        [displayBy]="'code'">
+                        <ng-template let-item="item" let-index="index">
+                          {{item.code}}
+                        </ng-template>
+                        </tag-input-dropdown>
+                        </tag-input>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="row justify-content-center">
+                          <div class="col-sm-12">
+                            <mat-form-field appearance="outline">
+                              <mat-label>Name</mat-label>
+                              <input matInput required placeholder="Name" [(ngModel)]="bannerModel.name" name="name" />
+                              <mat-hint class="mat-error" *ngIf="f.submitted && !bannerModel.name">
+                                Name is Required
+                              </mat-hint>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                        <div class="row justify-content-center">
+                          <div class="col-sm-12">
+                            <mat-form-field appearance="outline">
+                              <mat-label>Start Date *</mat-label>
+                              <input matInput [matDatepicker]="stratDatePicker" placeholder="Start date" name="startdate"  [(ngModel)]="startDate">
+                              <mat-datepicker-toggle matSuffix [for]="stratDatePicker"></mat-datepicker-toggle>
+                              <mat-datepicker #stratDatePicker></mat-datepicker>
+                              <mat-hint class="mat-error" *ngIf="f.submitted && !startDate">
+                                Startdate is Required
+                              </mat-hint>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                        <div class="row justify-content-center">
+                          <div class="col-sm-12">
+                            <mat-form-field appearance="outline">
+                              <mat-label>End Date *</mat-label>
+                              <input matInput [matDatepicker]="endDatepicker" placeholder="End date" name="enddate" [(ngModel)]="endDate">
+                              <mat-datepicker-toggle matSuffix [for]="endDatepicker"></mat-datepicker-toggle>
+                              <mat-datepicker #endDatepicker></mat-datepicker>
+                              <mat-hint class="mat-error" *ngIf="f.submitted  && !endDate">
+                                Enddate is Required
+                              </mat-hint>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                        <div class="row  justify-content-center">
+                          <div class="col-sm-12 mb-2">
+                            <mat-checkbox [(ngModel)]="bannerModel.isVisible" [ngModelOptions]="{standalone: true}" > Visible</mat-checkbox>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-8">
+                        <div class="row">
+                          <div class="col-md-6 text-center">
+                            <label for="bottlesize">Banner *</label><br>
+                            <app-image-upload [imgSize]="'sm'" [imageUrl]="thumbnailurlBanner" [uploadUrl]="imgUploadUrl" [name]="'Banner'" [headers]="appservice.getImgUploadHeaders()"  (changeImage)="onFileUploadEventBanner($event)"></app-image-upload>
+                            <div class="text-danger errorTxt" *ngIf="f.submitted && isEmptyObject(bannerModel.picture)">
+                                Upload Banner Image
+                            </div>
+                          </div>
+                          <div class="col-md-6 text-center">
+                            <label for="bottlesize">Logo</label><br>
+                            <app-image-upload [imgSize]="'sm'" [imageUrl]="thumbnailurlLogo" [uploadUrl]="imgUploadUrl" [name]="'Logo'" [headers]="appservice.getImgUploadHeaders()"  (changeImage)="onFileUploadEventLogo($event)"></app-image-upload>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12">
+                          <div>
+                            <div class="row">
+                              <div class="col-md-3">
+                                <ul class="nav nav-pills nav-pills-rose flex-column" role="tablist">
+                                  <li class="nav-item">
+                                    <a class="nav-link" [ngClass]="bannerModel.action_type === listOfTabString[0] ?'active':''" data-toggle="tab" [href]="'#'+listOfTabString[0]" role="tablist" (click)="setSelectedTab(listOfTabString[0])">
+                                      {{listOfTabString[0]}}
+                                    </a>
+                                  </li>
+                                  <li class="nav-item">
+                                    <a class="nav-link" [ngClass]="bannerModel.action_type === listOfTabString[1] ?'active':''"  data-toggle="tab" [href]="'#'+listOfTabString[1]" role="tablist" (click)="setSelectedTab(listOfTabString[1])">
+                                      {{listOfTabString[1]}}
+                                    </a>
+                                  </li>
+                                  <li class="nav-item">
+                                    <a class="nav-link" [ngClass]="bannerModel.action_type === listOfTabString[2] ?'active':''"  data-toggle="tab" [href]="'#'+listOfTabString[2]" role="tablist" (click)="setSelectedTab(listOfTabString[2])">
+                                      {{listOfTabString[2]}}
+                                    </a>
+                                  </li>
+                                </ul>
+                              </div>
+                              <div class="col-md-9">
+                                <div class="tab-content">
+                                  <div class="tab-pane" [ngClass]="bannerModel.action_type === listOfTabString[0] ?'active':''" [id]="listOfTabString[0]">
+                                  <div class='row'>
+                                    <div class="col-md-6">
+                                      <mat-form-field appearance="outline">
+                                        <mat-label>Search Subscription </mat-label>
+                                        <mat-select id="searchSub" name="searchSub" [(ngModel)]="sel_sub_id" (selectionChange)="getSubEventList('')">
+                                        <mat-option *ngFor="let sub of subscriptionList" [value]="sub.id">
+                                        {{sub.name}}
+                                        </mat-option>
+                                        </mat-select>
+                                        <mat-hint class="mat-error" *ngIf="f.submitted && !sel_sub_id && bannerModel.action_type === 'EVENT'">
+                                            Subscription is Required
+                                          </mat-hint>
+                                      </mat-form-field>
+                                    </div>
+                                  </div>
+                                  <div class='row'>
+                                      <div class="col-md-6">
+                                        <mat-form-field appearance="outline">
+                                          <mat-label>Search Event </mat-label>
+                                          <mat-select id="eventList" name="eventList" [(ngModel)]="sel_event" (selectionChange)="displayEventDetail()">
+                                          <mat-option *ngFor="let event of eventList" [value]="event.id">
+                                          {{event.name}}
+                                          </mat-option>
+                                          </mat-select>
+                                          <mat-hint class="mat-error" *ngIf="f.submitted && !sel_event && bannerModel.action_type === 'EVENT'">
+                                              Event is Required
+                                            </mat-hint>
+                                        </mat-form-field>
+                                      </div>
+                                    </div>
+                                    <div class="row" *ngIf="!isEmptyObject(bannerModel.evt_shop)" >
+                                      <div class="col-12">
+                                        <div class="card card_row">
+                                          <div class="row">
+                                              <div class="col-4">
+                                                <div class="eventImage">
+                                                    <img class="img" *ngIf="!!bannerModel.evt_shop.picture && !!bannerModel.evt_shop.picture.sm" [src]="bannerModel.evt_shop.picture.sm">
+                                                    <img class="img" *ngIf="!bannerModel.evt_shop.picture" height="152px"  width="152px" src="assets/img/defaults/pop-up-store-icon.png">
+                                                  </div>
+                                              </div>
+                                              <div class="col-8">
+                                                <div class="">
+                                                  <h4><strong>{{bannerModel.evt_shop.name}}</strong></h4>
+                                                  <p>{{bannerModel.evt_shop.address['address1']}}</p>
+                                                  <p><strong>{{bannerModel.evt_shop.address['city']}}</strong></p>
+                                                  <div>{{bannerModel.evt_shop.startDate | date : 'dd MMM yyyy'}} - {{bannerModel.evt_shop.endDate | date : 'dd MMM yyyy'}}</div>
+                                                </div>
+                                              </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="tab-pane"  [ngClass]="bannerModel.action_type === listOfTabString[1] ?'active':''" [id]="listOfTabString[1]">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <mat-form-field appearance="outline">
+                                              <mat-label>Weblink</mat-label>
+                                              <input matInput placeholder="http://url" [(ngModel)]="bannerModel.weblink" name="weblink" />
+                                              <mat-hint class="mat-error" *ngIf="f.submitted && !bannerModel.weblink && bannerModel.action_type === 'WEBLINK'">
+                                                Weblink is Required
+                                              </mat-hint>
+                                            </mat-form-field>
+                                          </div>
+                                    </div>
+                                  </div>
+                                  <div class="tab-pane" [ngClass]="bannerModel.action_type === listOfTabString[2] ?'active':''" [id]="listOfTabString[2]">
+                                    Note: Default banner type will not have any action in the mobile app.
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                      </div>
+                    </div> <!-- Vertical Option row-->
+                  </div>
+                  <div class="form-actions pull-right">
+                    <button type="button" class="btn btn-raised btn-warning mr-1" (click)="onClearValue()">
+                    <i class="ft-x"></i> Cancel
+                    </button>
+                    <button type="submit" class="btn btn-raised btn-primary">
+                    <i class="fa fa-check-square-o"></i> {{btnTitle}}
+                    </button>
+                  </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- <div class="col-md-3">
+            <div class="row">
+              <div class="col-md-12 removePadding">
+                <div class="card">
+                  <div class="card-header">
+                    <h4 class="card-title" id="from-actions-bottom-right">Banner List</h4>
+                  </div>
+                  <div class="card-body">
+                    <div class="">
+                      <app-banner-promotion-list></app-banner-promotion-list>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div> -->
+        </div>
+      </section>
+
+    </div>
+  </div>

@@ -1,0 +1,195 @@
+<div class="main-sub-content">
+  <div  class="container-fluid">
+    <section>
+      <form novalidate #f="ngForm">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <h4 class="card-title" id="from-actions-bottom-right">{{title}} Producer details of <strong>{{wineryModel.sub_name}}</strong> subscription is waiting for approval from {{wineryModel.createddate | date : 'dd/MMM/yyyy HH:mm:ss'}}.</h4>
+          </div>
+          <div class="card-body">
+            <div class="px-3">
+              <div class="form-body">
+                <div class="row">
+                  <div class="col-md-8">
+                    <div class="row">
+                      <div class="form-group col-md-6 mb-2">
+                        <label for="name">Name</label>
+                        <input type="text" [disabled]="isEdit" class="form-control border-primary" id="name" name="name" placeholder="Name" #name="ngModel" [(ngModel)]="wineryModel.name"
+                        required  />
+                        <small *ngIf="f.submitted && name.errors" class="form-text text-muted text-danger">Name Required</small>
+                      </div>
+                      <!-- <div class="form-group col-md-6 mb-2">
+                        <label for="seo_name">SEO Name</label>
+                        <input required type="text" class="form-control border-primary" id="seo_nameseo_nameseo_name" name="seo_name" placeholder="SEO Name"  #seo_name="ngModel"  [(ngModel)]="wineryModel.seo_name" />
+                        <small *ngIf="f.submitted && seo_name.errors" class="form-text text-muted text-danger">SEO Name Required</small>
+                        </div> -->
+                    </div>
+                    <div class="row">
+                      <div class="form-group col-md-12 mb-2">
+                        <label for="seo_name">Description</label>
+                        <textarea rows="6"  [disabled]="isEdit" required class="form-control border-primary" id="description" [placeholder]="isEdit ? '' : 'Description'" name="description" #description="ngModel" [(ngModel)]="wineryModel.description" ></textarea>
+                        <small *ngIf="f.submitted && description.errors" class="form-text text-muted text-danger">Description Required</small>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="form-group col-md-6 mb-2">
+                        <label for="address1">Address</label>
+                        <input required  [disabled]="isEdit"  type="text" class="form-control border-primary" id="address1" name="address1" placeholder="Address" #address1="ngModel" [(ngModel)]="wineryModel.address.address1"/>
+                        <small *ngIf="f.submitted && address1.errors" class="form-text text-muted text-danger">Addrees Required</small>
+                      </div>
+                      <div class="form-group col-md-6 mb-2">
+                        <label for="address2">Address(Optional)</label>
+                        <input type="text"  [disabled]="isEdit" class="form-control border-primary" id="address2" name="address2" [placeholder]="isEdit ? '' : 'Address'" #address2="ngModel" [(ngModel)]="wineryModel.address.address2"/>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="form-group col-md-6 mb-2">
+                        <label for="zip">Zip / Postal Code</label>
+                        <input required  [disabled]="isEdit" type="text" class="form-control border-primary" id="zip" name="zip" placeholder="Zip" #mobile="ngModel" #zip="ngModel" [(ngModel)]="wineryModel.address.zip" />
+                        <small *ngIf="f.submitted && zip.errors" class="form-text text-muted text-danger">Zip Required</small>
+                      </div>
+                      <div class="form-group col-md-6 mb-2">
+                        <label for="city">City</label>
+                        <input required  [disabled]="isEdit"  type="text" class="form-control border-primary" id="city" name="city" placeholder="City" #mobile="ngModel" #city="ngModel" [(ngModel)]="wineryModel.address.city" />
+                        <small *ngIf="f.submitted && city.errors" class="form-text text-muted text-danger">City Required</small>
+                      </div>
+                      <!-- <div class="form-group col-md-6 mb-2">
+                        <label for="state">State</label>
+                        <input required type="text" class="form-control border-primary" id="state" name="state" placeholder="State" #mobile="ngModel" #state="ngModel" [(ngModel)]="wineryModel.address.state" required/>
+                        <small *ngIf="f.submitted && state.errors" class="form-text text-muted text-danger">State Required</small>
+                        </div> -->
+                    </div>
+                    <div class="row">
+                      <div class="form-group col-md-6 mb-2">
+                        <label for="country">Country</label>
+                        <input required  [disabled]="isEdit"  type="text" class="form-control border-primary" id="country" name="country" placeholder="Country" #country="ngModel" #country="ngModel" [(ngModel)]="wineryModel.address.country" />
+
+                        <!-- <select required  [disabled]="isEdit" class="form-control border-primary" id="country" name="country" placeholder="Country" [(ngModel)]="wineryModel.address.country" #country="ngModel"
+                    >
+                        <option *ngFor="let country of countryList" [value]="country.seo_name">{{country.name}}</option>
+                        </select>
+                        <small *ngIf="f.submitted && country.errors" class="form-text text-muted text-danger">Country Required</small> -->
+                      </div>
+                      <div class="form-group col-md-6 mb-2">
+                        <label for="region">Region</label>
+                        <input required  [disabled]="isEdit"  type="text" class="form-control border-primary" id="region" name="region" placeholder="Region" #region="ngModel" #region="ngModel" [(ngModel)]="wineryModel.region" />
+                        <!-- <select required  [disabled]="isEdit"  class="form-control border-primary" id="region" name="region" placeholder="Region" [(ngModel)]="wineryModel.region" #region="ngModel"
+                        >
+                        <option value="">Select Region</option>
+                        <option *ngFor="let region of regionList" [value]="region.name">{{region.name}}</option>
+                        </select> -->
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="row">
+                      <div class="col-md-12 text-center">
+                        <label for="bottlesize">Producer Logo</label><br>
+                        <img style="max-width: 175px;" *ngIf='!!wineryModel.picture && !!wineryModel.picture.md' [src]="wineryModel.picture['lg']" class="img-responsive thumbimg imageAlign" alt="Producer Logo"
+                        />
+                        <!-- <app-image-upload [imgSize]="'md'" [imageUrl]="thumbnailurlLogo" [uploadUrl]="imgUploadUrl" [name]="'Producer Logo'" [headers]="appservice.getImgUploadHeaders()"  (changeImage)="onFileUploadEventLogo($event)"></app-image-upload> -->
+                      </div>
+                    </div>
+                    <!-- <div class="row" id="print-QRcode" *ngIf="isEdit" >
+                      <div class="form-group col-md-12 mb-2 text-center printData" id="printData">
+                        <div class="changetxt">QR Code</div>
+                        <div class="hidetext">{{wineryModel.name}}</div>
+                        <qrcode [qrdata]="qrURLString" [width]="120" [errorCorrectionLevel]="'M'" [elementType]="img"></qrcode>
+                      </div>
+                    </div> -->
+                    <!-- <div class="row" *ngIf="isEdit">
+                      <div class="form-group col-md-12 mb-2 text-center">
+                        <button class="btn btn-primary btn-raised"(click)="Print('print-QRcode')">Print</button>
+                      </div>
+                    </div> -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header card-header-info card-header-icon">
+            <div class="card-icon">
+              <i class="material-icons">contacts</i>
+            </div>
+            <h4 class="card-title" id="from-actions-bottom-right">Primary Contact</h4>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="form-group col-md-12 mb-2">
+                <label for="pri_contact_name">Contact Name(Optional)</label>
+                <input  [disabled]="isEdit" type="text" class="form-control border-primary" id="pri_contact_name" name="pri_contact_name" [placeholder]="isEdit ? '' : 'Contact Name'" #pri_contact_name="ngModel" [(ngModel)]="wineryModel.pri_contact_name"/>
+              </div>
+              <div class="form-group col-md-12 mb-2">
+                <label for="pri_email">Email(Optional)</label>
+                <input  [disabled]="isEdit" type="text" class="form-control border-primary" id="pri_email" name="pri_email" [placeholder]="isEdit ? '' : 'Email'" #pri_email="ngModel" [(ngModel)]="wineryModel.pri_email"/>
+              </div>
+              <div class="form-group col-md-12 mb-2">
+                <label for="pri_phone">Phone number(Optional)</label>
+                <input  [disabled]="isEdit" type="text" class="form-control border-primary" id="pri_phone" name="pri_phone" [placeholder]="isEdit ? '' : 'Phone number'" #pri_phone="ngModel" [(ngModel)]="wineryModel.pri_phone"/>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header card-header-info card-header-icon">
+            <div class="card-icon">
+              <i class="material-icons">contacts</i>
+            </div>
+            <h4 class="card-title" id="from-actions-bottom-right">Secondary Contact</h4>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="form-group col-md-12 mb-2">
+                <label for="sec_contact_name">Contact Name(Optional)</label>
+                <input  [disabled]="isEdit" type="text" class="form-control border-primary" id="sec_contact_name" name="sec_contact_name" #sec_contact_name="ngModel" [(ngModel)]="wineryModel.sec_contact_name"/>
+              </div>
+              <div class="form-group col-md-6 mb-2">
+                <label for="sec_email1">Email 1(Optional)</label>
+                <input  [disabled]="isEdit" type="text" class="form-control border-primary" id="sec_email1" name="sec_email1"  #sec_email1="ngModel" [(ngModel)]="wineryModel.sec_email1"/>
+              </div>
+              <div class="form-group col-md-6 mb-2">
+                <label for="sec_phone1">Phone number 1(Optional)</label>
+                <input  [disabled]="isEdit" type="text" class="form-control border-primary" id="sec_phone1" name="sec_phone1"  #sec_phone1="ngModel" [(ngModel)]="wineryModel.sec_phone1"/>
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col-md-6 mb-2">
+                <label for="sec_email2">Email 2(Optional)</label>
+                <input  [disabled]="isEdit" type="text" class="form-control border-primary" id="sec_email2" name="sec_email2"  #sec_email2="ngModel" [(ngModel)]="wineryModel.sec_email2"/>
+              </div>
+              <div class="form-group col-md-6 mb-2">
+                <label for="sec_phone2">Phone number 2(Optional)</label>
+                <input  [disabled]="isEdit" type="text" class="form-control border-primary" id="sec_phone2" name="sec_phone2"  #sec_phone2="ngModel" [(ngModel)]="wineryModel.sec_phone2"/>
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col-md-6 mb-2">
+                <label for="sec_email3">Email 3(Optional)</label>
+                <input  [disabled]="isEdit" type="text" class="form-control border-primary" id="sec_email3" name="sec_email3" #sec_email3="ngModel" [(ngModel)]="wineryModel.sec_email3"/>
+              </div>
+              <div class="form-group col-md-6 mb-2">
+                <label for="sec_phone3">Phone number 3(Optional)</label>
+                <input  [disabled]="isEdit" type="text" class="form-control border-primary" id="sec_phone3" name="sec_phone3"  #sec_phone3="ngModel" [(ngModel)]="wineryModel.sec_phone3"/>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-actions pull-right mb-2">
+          <button type="button" class="btn btn-raised btn-warning mr-1" (click)="onClearValue()">
+          <i class="ft-x"></i> Cancel
+          </button>
+          <button type="button" class="btn btn-raised btn-danger" (click)="actionReject()">
+          <i class="fa fa-ban"></i> Reject
+          </button>
+          <button type="submit" class="btn btn-raised btn-success" (click)="actionApproval()">
+            <i class="fa fa-check-square-o"></i> Approve
+        </button>
+        </div>
+      </div>
+      </form>
+    </section>
+  </div>
+</div>

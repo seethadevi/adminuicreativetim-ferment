@@ -1,0 +1,48 @@
+.main-sub-content{
+    // margin:30px;
+    margin-top:70px;
+}
+
+.pullTop{
+    margin-top: -10px;
+}
+
+.removePadding{
+    padding: 0;
+}
+.errorTxt {
+    font-size:10.5px;
+    font-weight:400;
+    font-weight:400;
+    text-align:left;
+}
+.card_row{
+    margin-top:0;
+    margin-bottom: 10px;
+}
+.content_row{
+    padding: 0 20px;
+}
+
+.txt_color{
+    color:#999;
+}
+
+.eventImage{
+    width: 132px;
+    height: 132px;
+    position: relative;
+    margin: 0 auto;
+  }
+
+  .eventImage .img{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: 0;
+    margin: auto;
+    opacity: 1;
+    max-width: 100%;
+    max-height: 100%;
+  }

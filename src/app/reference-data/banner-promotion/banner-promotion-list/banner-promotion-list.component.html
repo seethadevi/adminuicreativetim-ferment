@@ -1,0 +1,35 @@
+<section>
+  <div class="row">
+    <div class="col-md-12 justify-content-center">
+      <div class="card">
+        <div class="card-header">
+          <h4 class="card-title" >
+              Banner List
+
+              <mat-slide-toggle class="pull-right" (change) = "reloadBannerList($event)" [(ngModel)]="isVisibleFlag"  [color]="'rose'">{{displayText}}</mat-slide-toggle>
+
+           </h4>
+        </div>
+        <div class="card-body">
+          <div class="">
+            <div cdkDropList cdkDropListOrientation="horizontal"  class="banner-list" (cdkDropListDropped)="drop($event)">
+              <div class="col-md-3 banner-box" *ngFor="let banner of banners" cdkDrag>
+                <div class="card card-pricing card-raised removeSpace">
+                  <div class="card-body">
+                    <div class="card-icon icon-rose">
+                      <img class="changeStyle" *ngIf="!!banner.picture && !!banner.picture.lg"[src]="banner.picture.lg" [alt]="banner.name">
+                    </div>
+                    <p class="card-title">{{ banner.name }}</p>
+                    <a class="btn btn-rose btn-round text-white" (click)='editBannerData(banner.id)'>
+                    <i class="material-icons">edit</i> Edit
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

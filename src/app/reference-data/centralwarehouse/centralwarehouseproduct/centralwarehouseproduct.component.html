@@ -1,0 +1,333 @@
+<div class="main-sub-content">
+  <div  class="container-fluid">
+    <section>
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <h4 class="card-title" id="from-actions-bottom-right">{{title}} Fermynt Warehouse Product Details</h4>
+          </div>
+          <div class="card-body">
+            <div class="px-3">
+              <form novalidate (ngSubmit)="onSubmit(f)" #f="ngForm">
+                <div class="form-body">
+                  <div class="row">
+                    <div class="col-md-8">
+                      <div class="row" *ngIf="!isEdit">
+                          <div class="form-group col-md-6 mb-2">
+                            <label for="category_type">category</label>
+                            <select [disabled]="isEdit" required class="form-control border-primary" id="category_type" name="category_type" #category_type="ngModel"  placeholder="Select Category type" [(ngModel)]="warehouseProdModel.category_type">
+                                <option *ngFor="let category of (allCategoryList)" [value]="category.type">{{category.type}}</option>
+                            </select>
+                            <small *ngIf="f.submitted && category_type.errors" class="form-text text-muted danger">Category type Required</small>
+                          </div>
+                          <!-- <div class="form-group col-md-6 mb-2">
+                            <label for="vendor_id">Vendor</label>
+                            <select required class="form-control border-primary" id="vendor_id" name="vendor_id" #vendor_id="ngModel"  placeholder="Select Vendor" [(ngModel)]="warehouseProdModel.vendor_id">
+                              <option value="">Select a Vendor</option>
+                              <option *ngFor="let vendor of (allVendorList)" [value]="vendor.id">{{vendor.name}}</option>
+                            </select>
+                            <small *ngIf="f.submitted && vendor_id.errors" class="form-text text-muted danger">Vendor is Required</small>
+                          </div> -->
+                      </div>
+                      <div class="row">
+                        <div class="form-group col-md-12 mb-2" *ngIf="!isEdit">
+                            <label for="wine">Product</label>
+                            <tag-input [(ngModel)]="products" name="products"
+                              [placeholder]="'Search a new Product'"
+                              [onTextChangeDebounce]="500"
+                              [secondaryPlaceholder]="'Search Product'"
+                              [onlyFromAutocomplete]="true"
+                              (onAdd) = "onAddingProduct($event)"
+                              (onRemove) = "onRemovingProduct($event)"
+                              [removable]="!isEdit"
+                              [identifyBy]="'id'"
+                              [maxItems] = "1"
+                              [displayBy]="'displayName'">
+                              <tag-input-dropdown
+                                      [autocompleteObservable]="requestAutocompleteItems"
+                                      [minimumTextLength]="0"
+                                      [identifyBy]="'id'"
+                                      [displayBy]="'displayName'">
+                                  <ng-template let-item="item" let-index="index">
+                                      <img [src]="item.picture.sm" width="16">
+                                      {{item.name + ' ' +item.year}}
+                                  </ng-template>
+                              </tag-input-dropdown>
+                          </tag-input>
+                          <small *ngIf="f.submitted && !warehouseProdModel.prod_id" class="form-text text-muted danger">Product Required</small>
+                        </div>
+                      </div>
+                      <!-- <div class="row" *ngIf='isEdit'>
+                          <div class="form-group col-md-6 mb-2" >
+                              <label for="category">Category</label>
+                              <div class='changetxt'> {{warehouseProdModel.category_type}}</div>
+                          </div>
+                        <div class="form-group col-md-6 mb-2" >
+                            <label for="products">Product</label>
+                            <div class='changetxt'> {{displayProduct}}</div>
+                        </div>
+                      </div> -->
+                      <div class="row">
+                        <div class="col-md-12 mb-1">
+                          <label>Product Information</label>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="form-group col-md-6 mb-2">
+                          <label for="username">Name</label>
+                          <input [disabled]="isEdit"   type="text" class="form-control border-primary" id="name" name="name" placeholder="Name" #name="ngModel" [(ngModel)]="warehouseProdModel.name"
+                            required  />
+                          <small *ngIf="f.submitted && name.errors" class="form-text text-muted danger">Product Name Required</small>
+                        </div>
+                        <div class="form-group col-md-6 mb-2">
+                          <label for="gtin">GTIN (SKU,SSCC,GLN)</label>
+                          <input type="text" id="gtin" class="form-control border-primary" placeholder="GTIN" name="gtin" #gtin="ngModel" [(ngModel)]="warehouseProdModel.gtin" maxlength="13" minlength="12" >
+                          <!-- <small *ngIf="f.submitted && gtin.errors" class="form-text text-muted danger">GTIN Required</small> -->
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="form-group col-md-12 mb-2">
+                          <label for="desc">Description</label>
+                          <textarea required class="form-control border-primary" id="description" name="description" placeholder="Description" #description="ngModel" [(ngModel)]="warehouseProdModel.description" ></textarea>
+                          <small *ngIf="f.submitted && description.errors" class="form-text text-muted danger">Description Required</small>
+                        </div>
+                      </div>
+                      <div class="row" *ngIf='isEdit'>
+                        <div class="col-md-12 mb-1">
+                          <label>Stock Information</label>
+                        </div>
+                      </div>
+                      <div class="row" *ngIf='isEdit'>
+                        <div class="form-group col-md-6 mb-2">
+                            <label for="stockAvailablity">Stock Availability</label>
+                            <input type="text" readonly id="stockAvailablity" class="form-control border-primary" placeholder="Stock Availability" name="stockAvailablity" [(ngModel)]="warehouseProdModel.stock_availability">
+                          </div>
+                          <div class="form-group col-md-6 mt-4" [hidden]="!isEdit">
+                            <button type="button" class="btn btn-raised btn-sm btn-success mr-1" (click)="openTypeSelectionModal(addstock)">
+                              <i class="ft-plus-circle"></i> Add Stock
+                            </button>
+                            <button type="button" class="btn btn-raised btn-sm btn-danger ml-1" (click)="openTypeSelectionModal(removestock)">
+                              <i class="ft-minus-circle"></i> Remove Stock
+                            </button>
+                          </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col-md-12 mb-1">
+                          <label>Pricing Information</label>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="form-group col-md-4 mb-2">
+                          <label for="price">Price</label>
+                          <input appDecimal type="number" (change)="calculateTotalPrice($event)" class="form-control border-primary" id="price" name="price" placeholder="Price" #price="ngModel" [(ngModel)]="warehouseProdModel.pricing.price"
+                            required />
+                          <small *ngIf="f.submitted && price.errors" class="form-text text-muted danger">Price Required</small>
+                        </div>
+                        <!-- <div class="form-group col-md-4 mb-2">
+                          <label for="vat">VAT</label>
+                          <input type="number" required (change)="calculateTotalPrice($event)" class="form-control border-primary" id="vat" name="vat" placeholder="VAT" #vat="ngModel" [(ngModel)]="warehouseProdModel.pricing.vat"
+                            />
+                        </div> -->
+                        <div class="form-group col-md-4 mb-2">
+                          <label for="vat">VAT</label>
+                          <select (change)="taxclassOnChange($event)" required class="form-control border-primary" id="vat" name="vat" #vat="ngModel"  placeholder="Select VAT" [(ngModel)]="warehouseProdModel.pricing.taxclass_id">
+                            <option value="">Select VAT</option>
+                            <option *ngFor="let taxclass of (allTaxclassList)" [value]="taxclass._id">{{taxclass.name}}</option>
+                          </select>
+                          <small *ngIf="f.submitted && vat.errors" class="form-text text-muted danger">Vat Required</small>
+                        </div>
+                        <div class="form-group col-md-4 mb-2">
+                            <label for="price_w_vat">Price with VAT</label>
+                            <input required type="text" class="form-control border-primary" id="price_w_vat" name="price_w_vat" placeholder="Price with VAT" readonly="readonly" #price_w_vat="ngModel" [(ngModel)]="warehouseProdModel.pricing.price_w_vat"
+                              />
+                              <small *ngIf="f.submitted && price_w_vat.errors" class="form-text text-muted danger">Price with VAT Required</small>  
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-4" >
+                        <!-- <label for="bottlesize">Wine Logo Image</label> -->
+                        <div class="fileinput-new thumbnail thumbcontainer">
+                            <img  *ngIf='!!warehouseProdModel.logo && !!warehouseProdModel.logo.md' [src]="warehouseProdModel.logo['md']" class="img-responsive thumbimg imageAlign" alt="{{name}}"
+                            />
+                            <img *ngIf="!warehouseProdModel.logo" [src]="'assets/img/defaults/default-logo.png'" class="img-responsive thumbimg imageAlign" alt="{{name}}"
+                            />
+                          </div>
+                          <br/>
+                        <!-- <label for="bottlesize">Wine Brand Image</label> -->
+                        <div class="fileinput-new thumbnail thumbcontainer">
+                            <img *ngIf='!!warehouseProdModel.picture && !!warehouseProdModel.picture.md'  [src]="warehouseProdModel.picture['md']" class="img-responsive thumbimg imageAlign" alt="{{name}}"
+                            />
+                            <img *ngIf="!warehouseProdModel.picture" [src]="'assets/img/defaults/wine-bottle.png'" class="img-responsive thumbimg imageAlign" alt="{{name}}"
+                            />
+                        </div>
+                      </div>
+                  </div>
+                  <div class="row" *ngIf="isEdit" >
+                    <ngb-accordion #acc="ngbAccordion" (panelChange)="beforeChange($event)" style="width: 100%;">
+                      <ngb-panel id="1" title="Fermynt Warehouse Stock History">
+                          <ng-template ngbPanelContent>
+                              <table class="table table-striped text-center">
+                                  <thead>
+                                    <tr>
+                                      <th>&nbsp;</th>
+                                      <th>Vendor</th>
+                                      <th>Product</th>
+                                      <th>Stock</th>
+                                      <th>Status</th>
+                                      <th>SKU Price</th>
+                                      <th>Order Date</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody *ngFor="let item of whShippingHistory;let i = index">
+                                    <tr>
+                                      <td><img class="media-object round-media height-50" src="assets/img/defaults/vendor_icon.png"  /></td>
+                                      <td>{{ item.vendor_name }}</td>
+                                      <td>{{ item.name }}</td>
+                                      <td> {{ item.stock_added }}</td>
+                                      <td>
+                                        <a class="btn btn-raised btn-round btn-primary" *ngIf="item.status.toUpperCase() === 'ADDEDTOWAREHOUSE'" >Added</a>
+                                        <a class="btn btn-raised btn-round btn-danger" *ngIf="item.status.toUpperCase() !== 'ADDEDTOWAREHOUSE'">Removed</a>
+                                      </td>
+                                      <td >
+                                        <span *ngIf="!!item.skuPricing">{{ item.skuPricing}}</span>
+                                        <span *ngIf="!item.skuPricing">-</span>
+                                      </td>
+                                      <td>
+                                          <span *ngIf="!!item.orderDate">{{ item.orderDate | date : 'dd/MMM/yyyy'}}</span>
+                                          <span *ngIf="!item.orderDate">-</span>
+                                        </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                          </ng-template>
+                        </ngb-panel>
+                    </ngb-accordion>
+                  </div>
+                </div>
+                <div class="form-actions pull-right">
+                  <button type="button" class="btn btn-raised btn-warning mr-1" (click)="onClearValue()">
+                    <i class="ft-x"></i> Back
+                  </button>
+                  <button type="submit" class="btn btn-raised btn-primary">
+                    <i class="fa fa-check-square-o"></i> Save
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ng-template #addstock let-modal>
+        <div class="modal-header">
+          <h4 class="modal-title" id="modal-basic-title">Add Stock</h4>
+          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="row">
+                <div class="form-group col-md-12 mb-2">
+                  <label for="product2">Product</label>
+                  <!-- <input readonly type="text" class="form-control border-primary changetxt" id="product2" name="product2" placeholder="Name" #product2="ngModel" [(ngModel)]="warehouseProdModel.name"
+                      /> -->
+                  <div class='changetxt'> {{warehouseProdModel.name}}</div>    
+                </div>
+            </div>
+            <div class="row">
+              <div class="form-group col-md-6 mb-1">
+                <label for="startdate">Date</label>
+                <fieldset>
+                  <div class="input-group">
+                    <input type="text" class="form-control border-primary" ngbDatepicker id="startdate" name="startdate" placeholder="Start Date" 
+                      required [(ngModel)]="startDate" #startdate="ngModel" #d1="ngbDatepicker"/>
+                      <span class="input-group-addon" (click)="d1.toggle()" id="basic-addon6">
+                        <i class="ft-calendar input-group-text"></i>
+                      </span>
+                    <small *ngIf="addStockClick && !startDate" class="form-text text-muted danger">Date Required</small>
+                  </div>
+                </fieldset>
+              </div>
+              <div class="form-group col-md-6 mb-2">
+                <label for="vendor_id">Vendor</label>
+                <select required class="form-control border-primary" id="vendor_id" name="vendor_id" #vendor_id="ngModel"  placeholder="Select Vendor" [(ngModel)]="warehouseaddModel.vendor_id">
+                  <option value="">Select a Vendor</option>
+                  <option *ngFor="let vendor of (allVendorList)" [value]="vendor._id">{{vendor.name}}</option>
+                </select>
+                <small *ngIf="addStockClick && !warehouseaddModel.vendor_id" class="form-text text-muted danger">Vendor is Required</small>
+              </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-6 mb-2">
+                  <label for="quantity">Quantity</label>
+                  <input appNumberOnly type="text" maxlength ="6" id="sescription" class="form-control border-primary" placeholder="Quantity" name="quantity" [(ngModel)]="warehouseaddModel.quantity">
+                  <small *ngIf="addStockClick && !warehouseaddModel.quantity" class="form-text text-muted danger">Quantity is required</small>
+                </div>
+                <div class="form-group col-md-6 mb-2">
+                    <label for="price">SKU Price</label>
+                    <input appDecimal type="number" class="form-control border-primary" id="price" name="price" placeholder="Price" #price="ngModel" [(ngModel)]="warehouseaddModel.skuprice"
+                      required />
+                    <small *ngIf="addStockClick && !warehouseaddModel.skuprice" class="form-text text-muted danger">SKU Price Required</small>
+                </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-danger" (click)="modal.close('Close click')">Close</button>
+          <button type="button" class="btn btn-outline-primary" (click)="addStockToProduct()">Save</button>
+        </div>
+      </ng-template>
+      <ng-template #removestock let-modal>
+          <div class="modal-header">
+            <h4 class="modal-title" id="modal-basic-title">Remove Stock</h4>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="row">
+                <div class="form-group col-md-12 mb-2">
+                  <label for="product1">Product</label>
+                  <!-- <input readonly type="text" class="form-control border-primary changetxt" id="product1" name="product1" placeholder="Name" #product1="ngModel" [(ngModel)]="warehouseProdModel.name"
+                    /> -->
+                  <div class='changetxt'> {{warehouseProdModel.name}}</div>  
+                </div>
+              </div>
+              <div class="row">
+                  <div class="col-md-12 mb-2">
+                    <span class="danger">Note** : Only UnTagged products can be removed. Use mobile app to UnTag the products.</span>
+                  </div>
+                </div>
+              <div class="row">
+                  <div class="form-group col-md-6 mb-2">
+                    <label for="quantity">Quantity To Remove</label>
+                    <input appNumberOnly maxlength= "6" type="text" id="sescription" class="form-control border-primary" placeholder="Quantity" name="quantity" [(ngModel)]="warehouseremoveModel.quantity">
+                  </div>
+                  <div class="form-group col-md-6 mb-2">
+                      <label for="reason">Reason</label>
+                      <select class="form-control border-primary" id="reason" name="reason" placeholder="Reason" [(ngModel)]="warehouseremoveModel.reason"
+                        required>
+                        <option value="">Select Reason</option>
+                        <option value="DAMAGED">Damaged / Broken</option>
+                        <option value="RETURNTOVENDOR">Return to Vendor</option>
+                      </select>
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="form-group col-md-12 mb-2">
+                    <label for="Remarks">Remarks</label>
+                    <textarea class="form-control border-primary" id="remarks" name="remarks" placeholder="Remarks" #remarks="ngModel" [(ngModel)]="warehouseremoveModel.remarks" ></textarea> 
+                  </div>
+                </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-danger" (click)="modal.close('Close click')">Close</button>
+            <button type="button" class="btn btn-outline-primary" (click)="removeStockToProduct()">Save</button>
+          </div>
+        </ng-template>
+    </section>
+  </div>
+</div>

@@ -1,0 +1,57 @@
+.card .card-block {
+    padding: 0.5rem 0.5rem 0.5rem;
+}
+.ellipsisTxt{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.newBtn {
+    margin-top: 1rem;
+}
+
+.addBtn {
+    position: absolute;
+    top: -50px;
+    right: 30px !important;
+}
+
+.removeBtn{
+    top: -20px;
+    right: 36px !important;
+}
+
+.card{
+    cursor: pointer;
+}
+
+.overWriteTitle{
+    font-weight: 100!important;
+    font-size: 1rem!important;
+    text-align: center;
+}
+.card{
+    background: transparent;
+    box-shadow: none;
+    border-radius: none;
+}
+
+.btnStyle {
+    background: transparent !important;
+    margin-bottom: 0;
+}
+
+.content-header-title {
+    font-weight: 400;
+    letter-spacing: 0.5px;
+    font-size: 1rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.25rem;
+}
+
+.alignment{
+    padding: 0.380rem 0.75rem;
+}
+.headerRow{
+    margin-bottom: 1em;
+}
