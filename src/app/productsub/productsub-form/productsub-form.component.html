@@ -1,0 +1,136 @@
+<div class="main-sub-content">
+    <div  class="container-fluid">
+      <section>
+        <div class="col-md-12">
+          <form novalidate="" (ngSubmit)="onSubmit(f)" #f="ngForm">
+          <div class="card">
+            <div class="card-header">
+              <h4 class="card-title" id="from-actions-bottom-right">Product Details</h4>
+            </div>
+            <div class="card-body">
+              <div class="px-3">
+                <div class="form-body">
+                  <div class="row">
+                    <div class="col-md-8">
+                      <div class="row">
+                        <div class="form-group col-md-6 mb-2">
+                          <label for="country">Country *</label>
+                          <select [disabled]="isEdit" required class="form-control border-primary" id="country" name="country" placeholder="Country" [(ngModel)]="productModel.country.seo_name" #country="ngModel"
+                          (change)="loadCountryData($event.target.value)">
+                          <option *ngFor="let country of countryList" [value]="country.seo_name">{{country.name}}</option>
+                          </select>
+                          <small *ngIf="f.submitted && country.errors" class="form-text text-muted danger">Country Required</small>
+                        </div>
+                        <div class="form-group col-md-6 mb-2">
+                          <label for="category_type">Category *</label>
+                          <select [disabled]="!productModel.country.seo_name" required class="form-control border-primary" id="category_type" name="category_type" #category_type="ngModel"  placeholder="Select Category"
+                          [(ngModel)]="productModel.category_type.type" (change)="getRequiredFormDetails($event, '')" >
+                          <option value="">Select Category</option>
+                          <option *ngFor="let category of (allCategoryList)" [value]="category.type">{{category.type}}</option>
+                          </select>
+                          <small *ngIf="f.submitted && category_type.errors" class="form-text text-muted danger">Category Required</small>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="form-group col-md-6 mb-2">
+                          <label for="productname">Product Name *</label>
+                          <!-- <input type="text" id="productname" class="form-control border-primary" placeholder="Product Name" name="productname" #productname="ngModel"  [(ngModel)]="product.name"> -->
+                          <input type="text" class="form-control border-primary" id="productname" name="productname" placeholder="Product Name"
+                          required [(ngModel)]="productModel.name" #productname="ngModel"/>
+                          <small *ngIf="f.submitted && productname.errors" class="form-text text-muted danger">Product Name Required</small>
+                        </div>
+                        <div class="form-group col-md-6 mb-2">
+                          <label for="gtin">GTIN</label>
+                          <input type="text" id="gtin" class="form-control border-primary" placeholder="GTIN" name="gtin" [(ngModel)]="productModel.gtin" #gtin="ngModel" />
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="form-group col-md-12 mb-2">
+                          <label for="description">Description *</label>
+                          <textarea rows="8" required type="text" id="description" class="form-control border-primary" placeholder="Description" name="description" #description="ngModel" [(ngModel)]="productModel.description"> </textarea>
+                          <small *ngIf="f.submitted && description.errors" class="form-text text-muted danger">Description Required</small>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="form-group col-md-6 mb-2">
+                          <label for="producer">Producer *</label>
+                          <div class="position-relative has-icon-right">
+                            <input type="text" id="producer" class="form-control border-primary"  (selectItem)="selectedProducer($event)"  placeholder="Producer" name="producer" [(ngModel)]="winery" [ngbTypeahead]="producerSearch" [resultTemplate]="rt"
+                            [inputFormatter]="formatter">
+                            <div *ngIf="searching" class="form-control-position"><i class="ft-refresh-cw spinner"></i></div>
+                          </div>
+                          <small *ngIf="f.submitted && !productModel.winery.name" class="form-text text-muted danger">Producer Required</small>
+                        </div>
+                        <ng-template #rt let-r="result" let-t="term">
+                          <img *ngIf='!!r.pciture' [src]="r.picture['sm']" class="mr-1" style="width: 16px">
+                          <ngb-highlight [result]="r.name" [term]="t"></ngb-highlight>
+                        </ng-template>
+                        <div class="col-md-6">
+                            <label for="bottlesize">Producer Logo</label><br>
+                            <div class="fileinput-new thumbnail thumbcontainer">
+                               <img  *ngIf='!!productModel.logo && !!productModel.logo.md' [src]="productModel.logo['lg']" class="img-responsive thumbimg imageAlign" alt="Producer Logo"
+                                />
+                              <!-- <app-image-upload [imgSize]="'lg'" [imageUrl]="thumbnailurlLogo" [uploadUrl]="imgUploadUrl" [name]="'Producer Logo'" [headers]="appService.getImgUploadHeaders()"  (changeImage)="onFileUploadEventLogo($event)"></app-image-upload> -->
+                            </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-4 text-center">
+                      <label for="bottlesize">Product Label</label><br>
+                      <app-image-upload [imgSize]="'md'" [imageUrl]="thumbnailurlLabel" [uploadUrl]="imgUploadUrl" [name]="'Product Label'" [headers]="appService.getImgUploadHeaders()"  (changeImage)="onFileUploadEventLabel($event)"></app-image-upload>
+                      <br>
+                      <label for="bottlesize">Product Image</label><br>
+                      <app-image-upload  [imgSize]="'md'" [imageUrl]="thumbnailurl" [uploadUrl]="imgUploadUrl" [name]="'Product Image'" [headers]="appService.getImgUploadHeaders()"  (changeImage)="onFileUploadEvent($event)"></app-image-upload>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Standered Form -->
+          <div class="card" *ngIf="!!categoryFormlyDetails.std_form_component && !!categoryFormlyDetails.std_form_component.length">
+            <div class="card-header card-header-info card-header-icon">
+              <div class="card-icon">
+                <i class="material-icons">import_contacts</i>
+              </div>
+              <h4 class="card-title" id="from-actions-bottom-right">Standard Information</h4>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-12">
+                  <formly-form [fields]="categoryFormlyDetails.std_form_component" [model]="productModel.attr_value" [options]="options" >
+                  </formly-form>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Dynamic Form -->
+          <div class="card" *ngIf="!!categoryFormlyDetails.dyn_form_component && !!categoryFormlyDetails.dyn_form_component.length">
+            <div class="card-header card-header-info card-header-icon">
+              <div class="card-icon">
+                <i class="material-icons">more</i>
+              </div>
+              <h4 class="card-title" id="from-actions-bottom-right">Additional Information</h4>
+            </div>
+            <div class="card-body">
+              <div class="row" >
+                <div class="col-md-12">
+                  <formly-form [fields]="categoryFormlyDetails.dyn_form_component" [model]="productModel.ext_attr_value" [options]="options" >
+                  </formly-form>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-actions pull-right mb-3">
+            <button type="button" class="btn btn-raised btn-warning mr-1" (click)="onClearValue()">
+            <i class="ft-x"></i> Cancel
+            </button>
+            <button type="submit" class="btn btn-raised btn-primary">
+            <i class="fa fa-check-square-o"></i> Save
+            </button>
+          </div>
+          </form>
+        </div>
+      </section>
+    </div>
+  </div>

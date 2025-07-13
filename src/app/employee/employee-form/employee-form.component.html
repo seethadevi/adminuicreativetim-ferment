@@ -1,0 +1,209 @@
+<section>
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header">
+        <h4 class="card-title" id="from-actions-bottom-right">{{title}} Employee Details</h4>
+      </div>
+      <div class="card-body">
+        <div class="px-3">
+          <form novalidate (ngSubmit)="onSubmit(f)" #f="ngForm">
+            <div class="form-body">
+              <div class="row">
+                <div class="col-md-8">
+                  <div class="row">
+                    <div class="form-group col-md-6 mb-2">
+                      <label for="name">User Name</label>
+                      <input type="text" autocomplete="off" [disabled]="isEdit" class="form-control border-primary" id="name" name="name" placeholder="Name" #name="ngModel"
+                        [(ngModel)]="employeeModel.username" required />
+                      <small *ngIf="f.submitted && name.errors" class="form-text text-muted danger">User Name Required</small>
+                    </div>
+                    <div class="form-group col-md-6 mb-2">
+                      <label for="status">Status</label>
+                      <select class="form-control border-primary" id="status" name="status" placeholder="Status" [(ngModel)]="employeeModel.status" #status="ngModel"
+                        required>
+                        <option value="A">Active</option>
+                        <option value="I">Inactive</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="form-group col-md-6 mb-2">
+                      <label for="firstname">First Name</label>
+                      <input type="text" class="form-control border-primary" id="firstname" name="firstname" placeholder="First Name" #firstname="ngModel"
+                        [(ngModel)]="employeeModel.firstname" required/>
+                      <small *ngIf="f.submitted && firstname.errors" class="form-text text-muted danger">First Name Required</small>
+                    </div>
+                    <div class="form-group col-md-6 mb-2">
+                      <label for="lastname">Last Name</label>
+                      <input type="text" class="form-control border-primary" id="lastname" name="lastname" placeholder="Last Name" #lastname="ngModel"
+                        [(ngModel)]="employeeModel.lastname" required />
+                      <small *ngIf="f.submitted && lastname.errors" class="form-text text-muted danger">Last Name Required</small>
+                    </div>
+                  </div>
+                  <div class="row" *ngIf="!isEdit">
+                    <div class="form-group col-md-6 mb-2">
+                      <label for="password">Password</label>
+                      <input type="password" autocomplete="off" class="form-control border-primary" id="password" name="password" placeholder="Password" #password="ngModel"
+                        [(ngModel)]="employeeModel.password" required />
+                      <small *ngIf="f.submitted && password.errors" class="form-text text-muted danger">Psssword Required</small>
+                    </div>
+                    <div class="form-group col-md-6 mb-2">
+                      <label for="confirmpassword">Confirm Password</label>
+                      <input type="password" autocomplete="off" class="form-control border-primary" id="confirmpassword" name="confirmpassword" #confirmpassword="ngModel"
+                        placeholder="Confirm Password" [(ngModel)]="employeeModel.confirmpassword" required />
+                      <small *ngIf="f.submitted && confirmpassword.errors" class="form-text text-muted danger">Confirm Psssword Required</small>
+                      <small *ngIf="f.submitted && !confirmpassword.errors &&(f.value.password !== f.value.confirmpassword)" class="form-text text-muted danger">Password and Confirm Password should be same</small>
+                    </div>
+                  </div>
+                  <div class="row" *ngIf="isEdit">
+                    <div class="form-group col-md-6 mb-2">
+                      <label for="password">Password</label>
+                      <input type="password" autocomplete="new-password" class="form-control border-primary" id="password" name="password"
+                        value="******" required />
+                    </div>
+                    <div class="form-group col-md-6 mt-4" [hidden]="!isEdit">
+                        <button type="button" class="btn btn-raised btn-sm btn-warning mr-1" (click)="openTypeSelectionModal(changePassword)">
+                          <i class="fa fa-asterisk"></i> Change Password
+                        </button>
+                      </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <label for="bottlesize">Employee Image</label>
+                  <br/>
+                  <app-image-upload [imgSize]="'lg'" [imageUrl]="thumbnailurl" [uploadUrl]="imgUploadUrl" [name]="'Employee Image'" [headers]="appService.getImgUploadHeaders()"  (changeImage)="onFileUploadEvent($event)"></app-image-upload>
+                </div>
+              </div>
+              <div class="row">
+                <div class="form-group col-md-6 mb-2">
+                  <label for="email">Email</label>
+                  <input type="email" class="form-control border-primary" id="email" name="email" placeholder="Email" #email="ngModel" [(ngModel)]="employeeModel.email"
+                    required email />
+                  <small *ngIf="f.submitted && !f.value.email" class="form-text text-muted danger">Email Required</small>
+                  <small *ngIf="!!f.value.email && email.errors?.email" class="form-text text-muted danger">Invalid Email</small>
+                </div>
+                <div class="form-group col-md-6 mb-2">
+                  <label for="mobile">Mobile</label>
+                  <input appMobile type="text" class="form-control border-primary" id="mobile" name="mobile" placeholder="Mobile" #mobile="ngModel" [(ngModel)]="employeeModel.mobile"
+                    required/>
+                  <small *ngIf="f.submitted && mobile.errors" class="form-text text-muted danger">Mobile Required</small>
+                </div>
+              </div>
+              <div class="row">
+                <!-- <div class="form-group col-md-6 mb-2">
+                  <label for="shop">Select Shop</label>
+                  <select class="form-control border-primary" id="shop" name="shop" [(ngModel)]="employeeModel.accessToShop.shop_id"
+                  #shop="ngModel">
+                  <option *ngFor="let shop of (allSubsShopList)" [value]="shop.id">{{shop.name}}</option>
+                  </select>
+                  <small *ngIf="f.submitted && !employeeModel.accessToShop.shop_id" class="form-text text-muted danger">Shop is Required</small>
+                </div> -->
+                <div class="form-group col-md-6 mb-2">
+                    <label for="wine">Select Event Role as Manager</label>
+                    <tag-input [(ngModel)]="shopsListManager" name="shopSelectionManager" id= "shopSelectionManager"
+                      [placeholder]="'Search a new Event'"
+                      [onTextChangeDebounce]="500"
+                      [secondaryPlaceholder]="'Search Event'"
+                      [onlyFromAutocomplete]="true"
+                      (onAdd) = "onAddingShop($event, 'MANAGER')"
+                      (onRemove) = "onRemovingShop($event, 'MANAGER')"
+                      [identifyBy]="'id'"
+                      [maxItems] = "maxItemCountManager"
+                      [displayBy]="'name'"
+                      >
+                      <tag-input-dropdown
+                              [autocompleteObservable]="requestAutocompleteItems"
+                              [minimumTextLength]="3"
+                              [identifyBy]="'id'"
+                              [displayBy]="'name'">
+                          <ng-template let-item="item" let-index="index">
+                              <img [src]="item.picture.sm" width="16">
+                              {{item.name}}
+                          </ng-template>
+                      </tag-input-dropdown>
+                  </tag-input>
+                  <!-- <small *ngIf="f.submitted && shopsList.legnth === 0" class="form-text text-muted danger">Shop Required</small> -->
+                </div>
+                <div class="form-group col-md-6 mb-2">
+                    <label for="wine">Select Event Role as Staff</label>
+                    <tag-input [(ngModel)]="shopsListStaff" name="shopSelectionStaff" id= "shopSelectionStaff"
+                      [placeholder]="'Search a new Event'"
+                      [onTextChangeDebounce]="500"
+                      [secondaryPlaceholder]="'Search Event'"
+                      [onlyFromAutocomplete]="true"
+                      (onAdd) = "onAddingShop($event, 'STAFF')"
+                      (onRemove) = "onRemovingShop($event, 'STAFF')"
+                      [identifyBy]="'id'"
+                      [maxItems] = "maxItemCountStaff"
+                      [displayBy]="'name'"
+                      >
+                      <tag-input-dropdown
+                              [autocompleteObservable]="requestAutocompleteItems"
+                              [minimumTextLength]="3"
+                              [identifyBy]="'id'"
+                              [displayBy]="'name'">
+                          <ng-template let-item="item" let-index="index">
+                              <img [src]="item.picture.sm" width="16">
+                              {{item.name}}
+                          </ng-template>
+                      </tag-input-dropdown>
+                  </tag-input>
+                  <!-- <small *ngIf="f.submitted && shopsList.legnth === 0" class="form-text text-muted danger">Shop Required</small> -->
+                </div>
+                <!-- <div class="form-group col-md-6 mb-2">
+                  <label for="role">Role</label>
+                  <select class="form-control border-primary" id="role" name="role" [(ngModel)]="employeeModel.accessToShop.role" #role="ngModel">
+                    <option value="">Select Role</option>
+                    <option value="STAFF">Staff</option>
+                    <option value="MANAGER">Manager</option>
+                  </select>
+                  <small *ngIf="f.submitted && !employeeModel.accessToShop.role" class="form-text text-muted danger">Role is Required</small>
+                </div> -->
+              </div>
+            </div>
+            <div class="form-actions pull-right">
+              <button type="button" class="btn btn-raised btn-warning mr-1" (click)="onClearValue()">
+                <i class="ft-x"></i> Clear
+              </button>
+              <button type="submit" class="btn btn-raised btn-primary">
+                <i class="fa fa-check-square-o"></i> Save
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #changePassword let-modal>
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Change Password</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="row">
+            <div class="form-group col-md-6 mb-2">
+              <label for="password">Password</label>
+              <input type="password" autocomplete="off" class="form-control border-primary" id="password" name="password" placeholder="Password" #password="ngModel"
+                [(ngModel)]="updatePwd.password" required />
+              <small *ngIf="changePwdClick && !updatePwd.password" class="form-text text-muted danger">Psssword Required</small>
+            </div>
+            <div class="form-group col-md-6 mb-2">
+              <label for="confirmpassword">Confirm Password</label>
+              <input type="password" autocomplete="off" class="form-control border-primary" id="confirmpassword" name="confirmpassword" #confirmpassword="ngModel"
+                placeholder="Confirm Password" [(ngModel)]="updatePwd.confirmpassword" required />
+              <small *ngIf="changePwdClick && !updatePwd.confirmpassword" class="form-text text-muted danger">Confirm Psssword Required</small>
+              <small *ngIf="changePwdClick && !!updatePwd.password && !!updatePwd.confirmpassword && updatePwd.password !== updatePwd.confirmpassword" class="form-text text-muted danger">Password and Confirm Password should be same</small>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-danger" (click)="modal.close('Close click')">Close</button>
+        <button type="button" class="btn btn-outline-primary" (click)="updateNewPassword()">Save</button>
+      </div>
+    </ng-template>
+</section>
